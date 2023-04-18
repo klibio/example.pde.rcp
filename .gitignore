@@ -1,0 +1,8 @@
+.metadata/
+/workspace
+bin/
+target/
+state/
+.DS_Store
+.tycho-consumer-pom.xml
+pk.md

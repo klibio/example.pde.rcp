@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+
+   <category-def name="category.example.pde.rcp" label="example.rcp.pde"/>
+   <feature id="example.all" version="0.0.0">
+      <category name="category.example.pde.rcp"/>
+   </feature>
+
+
+</site>

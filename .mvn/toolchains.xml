@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF8"?>
+<toolchains>
+    <!-- JDK toolchains -->
+    <toolchain>
+        <type>jdk</type>
+        <provides>
+            <id>JavaSE-17</id>
+            <vendor>OpenJDK Runtime Environment Temurin</vendor>
+            <version>17</version>
+        </provides>
+        <configuration>
+            <jdkHome>${env.KLIBIO}/java/ee/JAVA17</jdkHome>
+        </configuration>
+    </toolchain>
+    <toolchain>
+        <type>jdk</type>
+        <provides>
+            <id>JavaSE-11</id>
+            <vendor>OpenJDK Runtime Environment Temurin</vendor>
+            <version>11</version>
+        </provides>
+        <configuration>
+            <jdkHome>${env.KLIBIO}/java/ee/JAVA11</jdkHome>
+        </configuration>
+    </toolchain>
+    <toolchain>
+        <type>jdk</type>
+        <provides>
+            <id>JavaSE-8</id>
+            <vendor>OpenJDK Runtime Environment Temurin</vendor>
+            <version>8</version>
+        </provides>
+        <configuration>
+            <jdkHome>${env.KLIBIO}/java/ee/JAVA8</jdkHome>
+        </configuration>
+    </toolchain>
+</toolchains>
