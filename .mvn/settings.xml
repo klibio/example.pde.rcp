@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <servers>
+        <server>
+            <id>cec-playground-one-maven-local</id>
+            <username>${env.artifactory_username}</username>
+            <password>${env.artifactory_token}</password>
+        </server>
+        <server>
+            <id>smaragd-main-maven-releases</id>
+            <username>${env.artifactory_username}</username>
+            <password>${env.artifactory_token}</password>
+        </server>
+        <server>
+            <id>smaragd-main-maven-snapshots</id>
+            <username>${env.artifactory_username}</username>
+            <password>${env.artifactory_token}</password>
+        </server>
+    </servers>
+
+    <profiles>
+        <!-- do not deploy connector pom.xml files -->
+        <profile>
+            <id>skip-deploy-connector-pom</id>
+            <activation>
+                <file>
+                    <exists>.polyglot.pom.tycho</exists>
+                </file>
+            </activation>
+            <properties>
+                <maven.deploy.skip>true</maven.deploy.skip>
+            </properties>
+        </profile>
+
+        <profile>
+            <id>artifactory-plugin-properties</id>
+            <properties>
+                <contextUrl>${env.artifactory_url}</contextUrl>
+                <username>${env.artifactory_username}</username>
+                <token>${env.artifactory_token}</token>
+            </properties>
+        </profile>
+    </profiles>
+
+    <activeProfiles>
+        <activeProfile>artifactory-plugin-properties</activeProfile>
+    </activeProfiles>
+    <proxies>
+        <proxy>
+            <id>MB_proxy_http</id>
+            <active>${env.proxy_mvn_activate}</active>
+            <protocol>http</protocol>
+            <host>${env.proxyHost}</host>
+            <!-- hardcoded value instead of ${env.proxyPort} due to bug -
+            https://issues.apache.org/jira/browse/MNG-6401 -->
+            <port>3128</port>
+            <nonProxyHosts>localhost|127.0.0.1|gsep.daimler.com|gsep.in623.corpintra.net</nonProxyHosts>
+        </proxy>
+        <proxy>
+            <id>MB_proxy_https</id>
+            <active>${env.proxy_mvn_activate}</active>
+            <protocol>https</protocol>
+            <host>${env.proxyHost}</host>
+            <!-- hardcoded value instead of ${env.proxyPort} due to bug -
+            https://issues.apache.org/jira/browse/MNG-6401 -->
+            <port>3128</port>
+            <nonProxyHosts>localhost|127.0.0.1|gsep.daimler.com|gsep.in623.corpintra.net</nonProxyHosts>
+        </proxy>
+    </proxies>
+</settings>

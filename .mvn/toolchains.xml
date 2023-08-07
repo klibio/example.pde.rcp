@@ -9,7 +9,7 @@
             <version>17</version>
         </provides>
         <configuration>
-            <jdkHome>${env.KLIBIO}/java/ee/JAVA17</jdkHome>
+            <jdkHome>${env.HOME}/.klibio/java/ee/JAVA17</jdkHome>
         </configuration>
     </toolchain>
     <toolchain>
@@ -20,7 +20,7 @@
             <version>11</version>
         </provides>
         <configuration>
-            <jdkHome>${env.KLIBIO}/java/ee/JAVA11</jdkHome>
+            <jdkHome>${env.HOME}/.klibio/java/ee/JAVA11</jdkHome>
         </configuration>
     </toolchain>
     <toolchain>
@@ -31,7 +31,7 @@
             <version>8</version>
         </provides>
         <configuration>
-            <jdkHome>${env.KLIBIO}/java/ee/JAVA8</jdkHome>
+            <jdkHome>${env.HOME}/.klibio/java/ee/JAVA8</jdkHome>
         </configuration>
     </toolchain>
 </toolchains>

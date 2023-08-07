@@ -3,6 +3,10 @@
 bin/
 target/
 state/
+.polyglot.*
 .DS_Store
 .tycho-consumer-pom.xml
 pk.md
+_log/
+.local_m2_cache/
+

@@ -2,6 +2,12 @@
 
 [![Java Maven Tycho CI](https://github.com/klibio/example.pde.rcp/actions/workflows/build.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/build.yml)
 
+## pre-requisites
+
+based on github repo [klibio/bootstrap](https://github.com/klibio/bootstrap)
+
+## tycho build example
+
 contains examples of eclipse products, features and bundles/plugins for
 
 * Equinox Headless application
@@ -47,6 +53,8 @@ and Maven Tycho build version 3.0.4 requiring Java 17
 |   +- e.r.site/                # repository/update site
 |   +- target.platform/         # target platform
 |
++- build.sh                 # execute build and create log file inside _log
+|
 +- pom.xml                  # parent pom containing modules for
                                 feature
                                 bundles
@@ -61,14 +69,7 @@ and Maven Tycho build version 3.0.4 requiring Java 17
 ## W-I-P
 
 ```bash
-# execute with contained toolchain file
-./mvnw --global-toolchains .mvn/toolchains.xml clean package
-
-# execute with contained toolchain file with timestamp log file
-./mvnw \
-    --global-toolchains .mvn/toolchains.xml \
-    --log-file log/build_$(date +%Y%m%d-%H%M%S).log \
-    clean package
+./build.sh
 ```
 
 ## Useful analyse

@@ -10,21 +10,43 @@
 
     <!-- Tycho version (<https://github.com/eclipse/tycho/blob/master/RELEASE_NOTES.md>) 
       specified in file `.mvn/extensions.xml`and here: -->
-    <tycho.version>3.0.4</tycho.version>
+    <tycho.version>${tycho.version}</tycho.version>
 
     <!-- To skip integration tests use: mvn verify -Dskip.ui-tests=true -->
     <skip.ui-tests>false</skip.ui-tests>
 
-    <!-- Skip the deployment here, submodules can override this property -->
-    <!--maven.deploy.skip>true</maven.deploy.skip-->
-
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <tycho.scmUrl>scm:git:https://github.com/klibio/example.rcp.git</tycho.scmUrl>
+    <tycho.scmUrl>scm:git:${env.git_url}/${env.git_username}/${env.git_project}.git</tycho.scmUrl>
 
+    <artifactory.plugin.version>3.6.1</artifactory.plugin.version>
     <jarsigner-version>1.3.3</jarsigner-version>
   </properties>
-
+  <scm>
+    <!--  -->
+    <connection>scm:git:${env.git_url}/${env.git_username}/${env.git_project}.git</connection>
+    <developerConnection>scm:git:${env.git_url}/${env.git_username}/${env.git_project}.git</developerConnection>
+  </scm>
+  <distributionManagement>
+    <repository>
+      <!--
+        <id>smaragd-main-maven-releases</id>
+        <url>${env.artifactory_url}/smaragd-main-maven-releases</url>
+      -->
+      <id>cec-playground-one-maven-local</id>
+      <url>${env.artifactory_url}/cec-playground-one-maven-local</url>
+      <layout>maven2</layout>
+    </repository>
+    <snapshotRepository>
+      <!--
+            <id>smaragd-main-maven-snapshots</id>
+            <url>${env.artifactory_url}/smaragd-main-maven-snapshots</url>
+      -->
+      <id>cec-playground-one-maven-local</id>
+      <url>${env.artifactory_url}/cec-playground-one-maven-local</url>
+      <layout>maven2</layout>
+    </snapshotRepository>
+  </distributionManagement>
   <pluginRepositories>
     <pluginRepository>
       <id>eclipse-maven-releases</id>
@@ -38,7 +60,7 @@
 
   <build>
     <plugins>
-      <!--Enable
+      <!--enable
       replacement of the SNAPSHOT version based on the last commit-->
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
@@ -182,6 +204,53 @@
         <artifactId>tycho-p2-director-plugin</artifactId>
         <version>${tycho.version}</version>
       </plugin>
+      <plugin>
+        <groupId>org.jfrog.buildinfo</groupId>
+        <artifactId>artifactory-maven-plugin</artifactId>
+        <version>${artifactory.plugin.version}</version>
+        <executions>
+          <execution>
+            <id>build-info</id>
+            <goals>
+              <goal>publish</goal>
+            </goals>
+            <configuration>
+              <deployProperties>
+                <maven>awesome</maven>
+                <something>enter-meaningful-property</something>
+              </deployProperties>
+              <artifactory>
+                <includeEnvVars>true</includeEnvVars>
+                <envVarsExcludePatterns>*password*,*secret*,*key*,*token*,*passphrase*</envVarsExcludePatterns>
+                <timeoutSec>60</timeoutSec>
+              </artifactory>
+              <publisher>
+                <contextUrl>${contextUrl}</contextUrl>
+                <username>${username}</username>
+                <password>${token}</password>
+                <excludePatterns>*-tests.jar</excludePatterns>
+                <repoKey>smaragd-main-maven-snapshots</repoKey>
+                <snapshotRepoKey>smaragd-main-maven-snapshots</snapshotRepoKey>
+
+                <publishArtifacts>true</publishArtifacts>
+                <publishBuildInfo>true</publishBuildInfo>
+              </publisher>
+              <buildInfo>
+                <buildName>plugin-demo</buildName>
+                <buildNumber>${buildnumber}</buildNumber>
+                <buildUrl>http://build-url.org</buildUrl>
+              </buildInfo>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <!--
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>2.8.2</version>
+      </plugin>
+-->
     </plugins>
   </build>
 
