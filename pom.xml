@@ -209,10 +209,8 @@
                 <contextUrl>${contextUrl}</contextUrl>
                 <username>${username}</username>
                 <password>${token}</password>
-                <excludePatterns>*-tests.jar</excludePatterns>
-                <repoKey>smaragd-main-maven-snapshots</repoKey>
+                <repoKey>smaragd-main-maven-releases</repoKey>
                 <snapshotRepoKey>smaragd-main-maven-snapshots</snapshotRepoKey>
-
                 <publishArtifacts>true</publishArtifacts>
                 <publishBuildInfo>true</publishBuildInfo>
               </publisher>
