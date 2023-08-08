@@ -230,6 +230,18 @@
             org.apache.maven.plugins:maven-scm-plugin:${maven-scm-plugin-version}:add
             org.apache.maven.plugins:maven-scm-plugin:${maven-scm-plugin-version}:checkin</preparationGoals>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.scm</groupId>
+            <artifactId>maven-scm-api</artifactId>
+            <version>2.0.1</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.maven.scm</groupId>
+            <artifactId>maven-scm-provider-gitexe</artifactId>
+            <version>2.0.1</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
