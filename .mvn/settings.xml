@@ -5,11 +5,6 @@
 
     <servers>
         <server>
-            <id>cec-playground-one-maven-local</id>
-            <username>${env.artifactory_username}</username>
-            <password>${env.artifactory_token}</password>
-        </server>
-        <server>
             <id>smaragd-main-maven-releases</id>
             <username>${env.artifactory_username}</username>
             <password>${env.artifactory_token}</password>
@@ -28,6 +23,71 @@
             <activation>
                 <file>
                     <exists>.polyglot.pom.tycho</exists>
+                </file>
+            </activation>
+            <properties>
+                <maven.deploy.skip>true</maven.deploy.skip>
+            </properties>
+        </profile>
+
+        <!-- do not parent -->
+        <profile>
+            <id>skip-deploy-parent</id>
+            <activation>
+                <file>
+                    <exists>.gitattributes</exists>
+                </file>
+            </activation>
+            <properties>
+                <maven.deploy.skip>true</maven.deploy.skip>
+            </properties>
+        </profile>
+
+        <!-- do not deploy features -->
+        <profile>
+            <id>skip-deploy-eclipse-feature</id>
+            <activation>
+                <file>
+                    <exists>feature.xml</exists>
+                </file>
+            </activation>
+            <properties>
+                <maven.deploy.skip>true</maven.deploy.skip>
+            </properties>
+        </profile>
+
+        <!-- do not deploy target definitions -->
+        <profile>
+            <id>skip-deploy-eclipse-target</id>
+            <activation>
+                <file>
+                    <exists>target-platform.target</exists>
+                </file>
+            </activation>
+            <properties>
+                <maven.deploy.skip>true</maven.deploy.skip>
+            </properties>
+        </profile>
+
+        <!-- do not deploy test bundles -->
+        <profile>
+            <id>skip-deploy-eclipse-test</id>
+            <activation>
+                <file>
+                    <exists>no_deploy.txt</exists>
+                </file>
+            </activation>
+            <properties>
+                <maven.deploy.skip>true</maven.deploy.skip>
+            </properties>
+        </profile>
+
+        <!-- do not deploy update sites -->
+        <profile>
+            <id>skip-deploy-eclipse-updatesite</id>
+            <activation>
+                <file>
+                    <exists>category.xml</exists>
                 </file>
             </activation>
             <properties>

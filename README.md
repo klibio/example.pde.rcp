@@ -111,3 +111,5 @@ MIND the hardcoded version
 ### Maven
 
 * [Configuring Apache Maven](https://maven.apache.org/configure.html)
+* [Maven Artifactory Plugin](https://github.com/jfrog/artifactory-maven-plugin)
+* [Artifactory Maven Plugin example](https://github.com/jfrog/project-examples/tree/master/artifactory-maven-plugin-example)

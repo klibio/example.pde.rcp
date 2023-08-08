@@ -23,30 +23,12 @@
     <jarsigner-version>1.3.3</jarsigner-version>
   </properties>
   <scm>
-    <!--  -->
-    <connection>scm:git:${env.git_url}/${env.git_username}/${env.git_project}.git</connection>
-    <developerConnection>scm:git:${env.git_url}/${env.git_username}/${env.git_project}.git</developerConnection>
+    <!-- make sure that ssh key is configured and working in target git host -->
+    <connection>scm:git:https://git.i.mercedes-benz.com/pekirsc/example.pde.rcp</connection>
+    <developerConnection>scm:git:https://git.i.mercedes-benz.com/pekirsc/example.pde.rcp</developerConnection>
+    <url>https://git.i.mercedes-benz.com/pekirsc/example.pde.rcp</url>
+    <tag>@{project.version}</tag>
   </scm>
-  <distributionManagement>
-    <repository>
-      <!--
-        <id>smaragd-main-maven-releases</id>
-        <url>${env.artifactory_url}/smaragd-main-maven-releases</url>
-      -->
-      <id>cec-playground-one-maven-local</id>
-      <url>${env.artifactory_url}/cec-playground-one-maven-local</url>
-      <layout>maven2</layout>
-    </repository>
-    <snapshotRepository>
-      <!--
-            <id>smaragd-main-maven-snapshots</id>
-            <url>${env.artifactory_url}/smaragd-main-maven-snapshots</url>
-      -->
-      <id>cec-playground-one-maven-local</id>
-      <url>${env.artifactory_url}/cec-playground-one-maven-local</url>
-      <layout>maven2</layout>
-    </snapshotRepository>
-  </distributionManagement>
   <pluginRepositories>
     <pluginRepository>
       <id>eclipse-maven-releases</id>
