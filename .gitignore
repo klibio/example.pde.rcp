@@ -1,12 +1,15 @@
 .metadata/
 /workspace
 bin/
-target/
 state/
-.polyglot.*
 .DS_Store
+
+# tycho
 .tycho-consumer-pom.xml
+release.properties
+target/
+.polyglot.*
+
 pk.md
 _log/
 .local_m2_cache/
-
