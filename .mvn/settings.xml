@@ -5,6 +5,11 @@
 
     <servers>
         <server>
+            <id>git.i.mercedes-benz.com</id>
+            <username>${env.git_username}</username>
+            <password>${env.git_token}</password>
+        </server>
+        <server>
             <id>smaragd-main-maven-releases</id>
             <username>${env.artifactory_username}</username>
             <password>${env.artifactory_token}</password>
