@@ -5,10 +5,11 @@ state/
 .DS_Store
 
 # tycho
+.polyglot.*
 .tycho-consumer-pom.xml
+pom.tycho
 release.properties
 target/
-.polyglot.*
 
 pk.md
 _log/
