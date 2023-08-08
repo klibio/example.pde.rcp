@@ -24,7 +24,6 @@
     <connection>scm:git:https://git.i.mercedes-benz.com/pekirsc/example.pde.rcp</connection>
     <developerConnection>scm:git:https://git.i.mercedes-benz.com/pekirsc/example.pde.rcp</developerConnection>
     <url>https://git.i.mercedes-benz.com/pekirsc/example.pde.rcp</url>
-    <tag>@{project.version}</tag>
   </scm>
   <pluginRepositories>
     <pluginRepository>
