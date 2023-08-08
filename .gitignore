@@ -8,6 +8,7 @@ state/
 .polyglot.*
 .tycho-consumer-pom.xml
 pom.tycho
+pom.xml.releaseBackup
 release.properties
 target/
 

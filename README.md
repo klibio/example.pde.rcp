@@ -113,3 +113,7 @@ MIND the hardcoded version
 * [Configuring Apache Maven](https://maven.apache.org/configure.html)
 * [Maven Artifactory Plugin](https://github.com/jfrog/artifactory-maven-plugin)
 * [Artifactory Maven Plugin example](https://github.com/jfrog/project-examples/tree/master/artifactory-maven-plugin-example)
+
+### Errors occured during creation
+
+* [How to configure maven-release-plugin to use maven-scm-provider-gitexe](https://stackoverflow.com/questions/50633906/how-to-configure-maven-release-plugin-to-use-maven-scm-provider-gitexe-shallow)
