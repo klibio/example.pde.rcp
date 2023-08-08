@@ -61,7 +61,20 @@
             </properties>
         </profile>
 
-        <!-- do not deploy target definitions -->
+        <!-- do not deploy products -->
+        <profile>
+            <id>skip-deploy-products</id>
+            <activation>
+                <file>
+                    <exists>example.rcp.app.ui.feature.product</exists>
+                </file>
+            </activation>
+            <properties>
+                <maven.deploy.skip>true</maven.deploy.skip>
+            </properties>
+        </profile>
+
+        <!-- do not deploy *.target definitions -->
         <profile>
             <id>skip-deploy-eclipse-target</id>
             <activation>
