@@ -1,9 +1,9 @@
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>example.rcp</groupId>
   <artifactId>example.rcp.parent</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>pom</packaging>
 
   <properties>
@@ -24,6 +24,7 @@
     <connection>scm:git:https://git.i.mercedes-benz.com/pekirsc/example.pde.rcp</connection>
     <developerConnection>scm:git:https://git.i.mercedes-benz.com/pekirsc/example.pde.rcp</developerConnection>
     <url>https://git.i.mercedes-benz.com/pekirsc/example.pde.rcp</url>
+    <tag>example.rcp.parent-1.0.0</tag>
   </scm>
   <pluginRepositories>
     <pluginRepository>
@@ -226,9 +227,9 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>${maven-release-plugin-version}</version>
         <configuration>
-          <preparationGoals>org.eclipse.tycho:tycho-versions-plugin:${tycho-version}:update-eclipse-metadata
-            org.apache.maven.plugins:maven-scm-plugin:${maven-scm-plugin-version}:add
-            org.apache.maven.plugins:maven-scm-plugin:${maven-scm-plugin-version}:checkin</preparationGoals>
+          <preparationGoals>org.eclipse.tycho:tycho-versions-plugin:4.0.1:update-eclipse-metadata
+            org.apache.maven.plugins:maven-scm-plugin:2.0.1:add
+            org.apache.maven.plugins:maven-scm-plugin:2.0.1:checkin</preparationGoals>
         </configuration>
         <dependencies>
           <dependency>
