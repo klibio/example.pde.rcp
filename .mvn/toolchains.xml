@@ -4,6 +4,17 @@
     <toolchain>
         <type>jdk</type>
         <provides>
+            <id>JavaSE-21</id>
+            <vendor>OpenJDK Runtime Environment Temurin</vendor>
+            <version>21</version>
+        </provides>
+        <configuration>
+            <jdkHome>${env.HOME}/.klibio/java/ee/JAVA21</jdkHome>
+        </configuration>
+    </toolchain>
+    <toolchain>
+        <type>jdk</type>
+        <provides>
             <id>JavaSE-17</id>
             <vendor>OpenJDK Runtime Environment Temurin</vendor>
             <version>17</version>
@@ -23,6 +34,7 @@
             <jdkHome>${env.HOME}/.klibio/java/ee/JAVA11</jdkHome>
         </configuration>
     </toolchain>
+<!-- not available on macosx aarch64
     <toolchain>
         <type>jdk</type>
         <provides>
@@ -34,4 +46,5 @@
             <jdkHome>${env.HOME}/.klibio/java/ee/JAVA8</jdkHome>
         </configuration>
     </toolchain>
+-->
 </toolchains>

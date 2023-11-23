@@ -1,2 +1,118 @@
-# Set default behaviour, in case users don't have core.autocrlf set.
-* text=auto
+# fix eol with LF for following text based files
+.classpath   text eol=lf
+.project     text eol=lf
+.options     text eol=lf
+.gitignore   text eol=lf
+gradlew      text eol=lf
+packageinfo  text eol=lf
+LICENSE      text eol=lf
+Makefile     text eol=lf
+README       text eol=lf
+p2.inf       text eol=lf
+p2.index     text eol=lf
+*.aj         text eol=lf ident
+*.auth       text eol=lf
+*.awk        text eol=lf
+*.bnd        text eol=lf
+*.bndrun     text eol=lf
+*.bundles    text eol=lf
+*.c          text eol=lf ident
+*.clj        text eol=lf
+*.cljs       text eol=lf
+*.conf       text eol=lf
+*.cpp        text eol=lf ident
+*.css        text eol=lf
+*.ddf        text eol=lf
+*.drawio     text eol=lf -diff
+*.ee         text eol=lf
+*.ecore      text eol=lf -diff
+*.ecorediag  text eol=lf
+*.edn        text eol=lf
+*.exsd       text eol=lf
+*.gradle     text eol=lf
+*.graphml    text eol=lf
+*.groovy     text eol=lf
+*.gogo       text eol=lf
+*.h          text eol=lf ident
+*.html       text eol=lf ident
+*.ini        text eol=lf
+*.iml        text eol=lf
+*.java       text eol=lf ident
+*.js         text eol=lf
+*.json       text eol=lf -diff
+*.kts        text eol=lf
+*.launch     text eol=lf
+*.less       text eol=lf
+*.lib        text eol=lf
+*.list       text eol=lf
+*.md         text eol=lf -diff
+*.mf         text eol=lf
+*.MF         text eol=lf
+*.perm       text eol=lf
+*.php        text eol=lf
+*.pl         text eol=lf
+*.pom        text eol=lf
+*.properties text eol=lf
+*.prefs      text eol=lf
+*.py         text eol=lf
+*.schema     text eol=lf
+*.SF         text eol=lf
+*.sh         text eol=lf
+*.story      text eol=lf
+*.svg        text eol=lf -diff
+*.tcl        text eol=lf
+*.txt        text eol=lf
+*.wsdl       text eol=lf
+*.xml        text eol=lf
+*.xsd        text eol=lf ident
+*.xsl        text eol=lf
+*.xslt       text eol=lf
+*.yml        text eol=lf -diff
+*.yaml       text eol=lf -diff
+
+# fix eol with CRLF for following text based files
+*.bat        text eol=crlf
+*.cmd        text eol=crlf
+*.ps1        text eol=crlf
+
+# git supports only 1-byte encodings for texts like ANSI, UTF-8 and so on but not encodings like UTF-16 and UTF-32.
+# If a UTF-16 encoded text file is checked in, git handles it as e.g. UTF-8 and makes the file unusable.
+# There are bad workarounds based on assumptions or common gitconfigs but since there are no automatisms we don't use them.
+
+# registry files are typically stored in UTF-16
+*.reg      binary
+
+# Binary. No EOL translation, no diff
+package-lock.json   binary
+*.cer      binary
+*.crt      binary
+*.doc      binary
+*.dll      binary
+*.ico      binary
+*.jar      binary
+*.jks      binary
+*.jnilib   binary
+*.jpeg     binary
+*.jpg      binary
+*.key      binary
+*.gif      binary
+*.png      binary
+*.pdf      binary
+*.odg      binary
+*.odp      binary
+*.ods      binary
+*.odt      binary
+*.otg      binary
+*.otp      binary
+*.ots      binary
+*.ott      binary
+*.ppt      binary
+*.xls      binary
+*.numbers  binary
+*.pages    binary
+*.so       binary
+*.ttf      binary
+*.wmf      binary
+*.woff     binary
+*.woff2    binary
+*.zip      binary

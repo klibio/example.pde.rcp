@@ -2,9 +2,11 @@
 <site>
 
    <category-def name="category.example.pde.rcp" label="example.rcp.pde"/>
-   <feature id="example.all" version="0.0.0">
+   <feature id="example.rcp.feature.app.ui" version="0.0.0">
       <category name="category.example.pde.rcp"/>
    </feature>
-
+   <feature id="example.rcp.feature.headless" version="0.0.0">
+      <category name="category.example.pde.rcp"/>
+   </feature>
 
 </site>

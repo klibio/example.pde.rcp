@@ -5,17 +5,17 @@
 
     <servers>
         <server>
-            <id>git.i.mercedes-benz.com</id>
+            <id>github.com</id>
             <username>${env.git_username}</username>
             <password>${env.git_token}</password>
         </server>
         <server>
-            <id>smaragd-main-maven-releases</id>
+            <id>maven-releases</id>
             <username>${env.artifactory_username}</username>
             <password>${env.artifactory_token}</password>
         </server>
         <server>
-            <id>smaragd-main-maven-snapshots</id>
+            <id>maven-snapshots</id>
             <username>${env.artifactory_username}</username>
             <password>${env.artifactory_token}</password>
         </server>
@@ -128,24 +128,24 @@
     </activeProfiles>
     <proxies>
         <proxy>
-            <id>MB_proxy_http</id>
+            <id>proxy_http</id>
             <active>${env.proxy_mvn_activate}</active>
             <protocol>http</protocol>
             <host>${env.proxyHost}</host>
             <!-- hardcoded value instead of ${env.proxyPort} due to bug -
             https://issues.apache.org/jira/browse/MNG-6401 -->
             <port>3128</port>
-            <nonProxyHosts>localhost|127.0.0.1|gsep.daimler.com|gsep.in623.corpintra.net</nonProxyHosts>
+            <nonProxyHosts>localhost|127.0.0.1</nonProxyHosts>
         </proxy>
         <proxy>
-            <id>MB_proxy_https</id>
+            <id>Mproxy_https</id>
             <active>${env.proxy_mvn_activate}</active>
             <protocol>https</protocol>
             <host>${env.proxyHost}</host>
             <!-- hardcoded value instead of ${env.proxyPort} due to bug -
             https://issues.apache.org/jira/browse/MNG-6401 -->
             <port>3128</port>
-            <nonProxyHosts>localhost|127.0.0.1|gsep.daimler.com|gsep.in623.corpintra.net</nonProxyHosts>
+            <nonProxyHosts>localhost|127.0.0.1</nonProxyHosts>
         </proxy>
     </proxies>
 </settings>
