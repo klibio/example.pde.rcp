@@ -19,8 +19,9 @@ jobs:
     env:
       APP_FEATURE:  'example-rcp-app-ui-feature'
       APP_BUNDLE: 'example-rcp-app-ui-plugin'
-    
-    runs-on: [ self-hosted, linux, X64 ]
+
+    runs-on: [ ubuntu-latest ]
+#    runs-on: [ self-hosted, linux, X64 ]
 
     steps:
 
