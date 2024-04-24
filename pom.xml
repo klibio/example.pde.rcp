@@ -1,25 +1,28 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>example.rcp</groupId>
   <artifactId>example.rcp.parent</artifactId>
-  <version>${build-rev}</version>
+  <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <tycho.scmUrl>scm:git:https://github.com/klibio/example.pde.rcp</tycho.scmUrl>
+    <!-- specified inside file .mvn/extensions.xml -->
+    <tycho.version>${tycho.version}</tycho.version>
+    <!-- plugin version -->
     <artifactory-maven-plugin-version>3.6.1</artifactory-maven-plugin-version>
-    <maven.build.timestamp.format>yyyyMMdd-HHmmss</maven.build.timestamp.format>
-    <maven.jarsigner.plugin.version>3.0.0</maven.jarsigner.plugin.version>
+    <exec-maven-plugin-version>3.2.0</exec-maven-plugin-version>
+    <maven-deploy-version>3.1.1</maven-deploy-version>
+    <maven-jarsigner-plugin-version>3.0.0</maven-jarsigner-plugin-version>
     <maven-release-plugin-version>3.0.1</maven-release-plugin-version>
     <maven-scm-plugin-version>2.0.1</maven-scm-plugin-version>
-    <!-- default values -->
-    <!-- Tycho version (<https://github.com/eclipse/tycho/blob/master/RELEASE_NOTES.md>) 
-      specified in file `.mvn/extensions.xml`and here: -->
-    <tycho.version>${tycho.version}</tycho.version>
-    <sign_skip>true</sign_skip>
+    <maven-gpg-version>3.2.2</maven-gpg-version>
+
+    <maven.build.timestamp.format>yyyyMMdd-HHmmss</maven.build.timestamp.format>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <tycho.scmUrl>scm:git:https://git.i.mercedes-benz.com:smaragd/example.pde.rcp.git</tycho.scmUrl>
   </properties>
   <scm>
     <!-- make sure that ssh key is configured and working in target git host -->
@@ -30,8 +33,17 @@
 
   <build>
     <plugins>
-      <!--enable
-      replacement of the SNAPSHOT version based on the last commit-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>${maven-deploy-version}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho.version}</version>
+        <extensions>true</extensions>
+      </plugin>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-packaging-plugin</artifactId>
@@ -77,32 +89,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jarsigner-plugin</artifactId>
-        <version>${maven.jarsigner.plugin.version}</version>
-        <executions>
-          <execution>
-            <id>sign</id>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <skip>${sign_skip}</skip>
-          <keystore>${keystore}</keystore>
-          <alias>${sign_alias}</alias>
-          <storepass>${sign_storepass}</storepass>
-          <keypass>${sign_keypass}</keypass>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-maven-plugin</artifactId>
-        <version>${tycho.version}</version>
-        <extensions>true</extensions>
-      </plugin>
-      <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-compiler-plugin</artifactId>
         <version>${tycho.version}</version>
@@ -121,9 +107,9 @@
         <configuration>
           <target>
             <artifact>
-              <groupId>example.rcp</groupId>
+              <groupId>${project.groupId}</groupId>
               <artifactId>target-platform</artifactId>
-              <version>${build-rev}</version>
+              <version>${project.version}</version>
             </artifact>
           </target>
           <environments>
@@ -185,6 +171,19 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-repository-plugin</artifactId>
+        <version>${tycho.version}</version>
+        <configuration>
+          <includeAllDependencies>true</includeAllDependencies>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-versions-plugin</artifactId>
+        <version>${tycho.version}</version>
+      </plugin>
+      <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>3.1.3</version>
@@ -198,96 +197,22 @@
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-p2-director-plugin</artifactId>
         <version>${tycho.version}</version>
-      </plugin>
-      <plugin>
-        <groupId>org.jfrog.buildinfo</groupId>
-        <artifactId>artifactory-maven-plugin</artifactId>
-        <version>${artifactory-maven-plugin-version}</version>
-        <executions>
-          <execution>
-            <id>build-info</id>
-            <goals>
-              <goal>publish</goal>
-            </goals>
-            <configuration>
-              <deployProperties>
-                <maven>awesome</maven>
-                <something>enter-meaningful-property</something>
-              </deployProperties>
-              <artifactory>
-                <includeEnvVars>true</includeEnvVars>
-                <envVarsExcludePatterns>*password*,*secret*,*key*,*token*,*passphrase*</envVarsExcludePatterns>
-                <timeoutSec>60</timeoutSec>
-              </artifactory>
-              <publisher>
-                <contextUrl>${contextUrl}</contextUrl>
-                <username>${username}</username>
-                <password>${token}</password>
-                <repoKey>maven-releases</repoKey>
-                <snapshotRepoKey>maven-snapshots</snapshotRepoKey>
-                <publishArtifacts>true</publishArtifacts>
-                <publishBuildInfo>true</publishBuildInfo>
-              </publisher>
-              <buildInfo>
-                <buildName>plugin-demo</buildName>
-                <buildNumber>${buildnumber}</buildNumber>
-                <!--<buildUrl>http://build-url.org</buildUrl>-->
-              </buildInfo>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- release plugins START -->
-      <!--
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>${maven-release-plugin-version}</version>
         <configuration>
-          <checkModificationExcludes>
-            <checkModificationExclude>.polyglot.pom.tycho</checkModificationExclude>
-          </checkModificationExcludes>
-          <preparationGoals>org.eclipse.tycho:tycho-versions-plugin:${tycho.version}:update-eclipse-metadata
-            org.apache.maven.plugins:maven-scm-plugin:${maven-scm-plugin-version}:add
-            org.apache.maven.plugins:maven-scm-plugin:${maven-scm-plugin-version}:checkin</preparationGoals>
-          <completionGoals>org.eclipse.tycho:tycho-versions-plugin:${tycho.version}:update-eclipse-metadata
-            org.apache.maven.plugins:maven-scm-plugin:${maven-scm-plugin-version}:add
-            org.apache.maven.plugins:maven-scm-plugin:${maven-scm-plugin-version}:checkin</completionGoals>
+          <products>
+            <product>
+              <id>example.rcp.app.ui.feature.product</id>
+              <archiveFileName>example.rcp.app.ui.feature.product-${project.version}.${buildQualifier}</archiveFileName>
+              <rootFolder>example-rcp-app</rootFolder>
+            </product>
+            <product>
+              <id>example.rcp.app.ui.plugin.product</id>
+              <archiveFileName>example.rcp.app.ui.plugin.product-${project.version}.${buildQualifier}</archiveFileName>
+              <rootFolder>example-rcp-app</rootFolder>
+            </product>
+          </products>
         </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.maven.scm</groupId>
-            <artifactId>maven-scm-api</artifactId>
-            <version>2.0.1</version>
-          </dependency>
-          <dependency>
-            <groupId>org.apache.maven.scm</groupId>
-            <artifactId>maven-scm-provider-gitexe</artifactId>
-            <version>2.0.1</version>
-          </dependency>
-        </dependencies>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-scm-plugin</artifactId>
-        <version>${maven-scm-plugin-version}</version>
-        <executions>
-          <execution>
-            <id>default-cli</id>
-            <goals>
-              <goal>add</goal>
-              <goal>checkin</goal>
-            </goals>
-            <configuration>
-              <includes>**/META-INF/MANIFEST.MF,**/feature.xml,**/*.product,**/category.xml</includes>
-              <excludes>**/.polyglot.pom.tycho,pom.xml</excludes>
-              <message>version updates of poms, features and plugins</message>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    -->
-      <!-- release plugins END -->
+
     </plugins>
   </build>
 
@@ -301,4 +226,167 @@
     <module>releng</module>
   </modules>
 
+  <profiles>
+    <profile>
+      <id>deploy-maven</id>
+      <activation>
+        <property>
+          <name>deploy-maven</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jfrog.buildinfo</groupId>
+            <artifactId>artifactory-maven-plugin</artifactId>
+            <version>${artifactory-maven-plugin-version}</version>
+            <executions>
+              <execution>
+                <id>upload-bundles</id>
+                <goals>
+                  <goal>publish</goal>
+                </goals>
+                <configuration>
+                  <deployProperties>
+                    <someProperty1>awesome</someProperty1>
+                  </deployProperties>
+                  <artifactory>
+                    <includeEnvVars>true</includeEnvVars>
+                    <envVarsExcludePatterns>*password*,*secret*,*key*,*token*,*passphrase*</envVarsExcludePatterns>
+                    <timeoutSec>60</timeoutSec>
+                  </artifactory>
+                  <publisher>
+                    <contextUrl>${contextUrl}</contextUrl>
+                    <username>${username}</username>
+                    <password>${token}</password>
+                    <repoKey>klibio-main-maven-releases</repoKey>
+                    <snapshotRepoKey>klibio-main-maven-snapshots</snapshotRepoKey>
+                    <publishArtifacts>true</publishArtifacts>
+                    <publishBuildInfo>true</publishBuildInfo>
+                 </publisher>
+                  <buildInfo>
+                    <buildName>${project.artifactId}</buildName>
+                    <buildNumber>${buildnumber}</buildNumber>
+                    <buildUrl>http://build-url.org</buildUrl>
+                  </buildInfo>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>deploy-p2</id>
+      <activation>
+        <property>
+          <name>deploy-p2-repos</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jfrog.buildinfo</groupId>
+            <artifactId>artifactory-maven-plugin</artifactId>
+            <version>${artifactory-maven-plugin-version}</version>
+            <executions>
+              <execution>
+                <id>upload-p2-repositories</id>
+                <goals>
+                  <goal>publish</goal>
+                </goals>
+                <configuration>
+                  <deployProperties>
+                    <someProperty1>xyz</someProperty1>
+                  </deployProperties>
+                  <artifactory>
+                    <includeEnvVars>true</includeEnvVars>
+                    <envVarsExcludePatterns>*password*,*secret*,*key*,*token*,*passphrase*</envVarsExcludePatterns>
+                    <timeoutSec>60</timeoutSec>
+                  </artifactory>
+                  <publisher>
+                    <contextUrl>${contextUrl}</contextUrl>
+                    <username>${username}</username>
+                    <password>${token}</password>
+                    <repoKey>klibio-internet-mirror-generic-local</repoKey>
+                    <snapshotRepoKey>klibio-internet-mirror-generic-local</snapshotRepoKey>
+                    <publishArtifacts>true</publishArtifacts>
+                    <publishBuildInfo>true</publishBuildInfo>
+                    <includePatterns>**/*</includePatterns>
+                  </publisher>
+                  <buildInfo>
+                    <buildName>example.pde.rcp</buildName>
+                    <buildNumber>${buildnumber}</buildNumber>
+                  </buildInfo>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>perform-jar-signing</id>
+      <activation>
+        <property>
+          <name>perform-jar-signing</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jarsigner-plugin</artifactId>
+            <version>${maven-jarsigner-plugin-version}</version>
+            <executions>
+              <execution>
+                <id>sign</id>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <skip>${sign_skip}</skip>
+              <keystore>${keystore}</keystore>
+              <alias>${sign_alias}</alias>
+              <storepass>${sign_storepass}</storepass>
+              <keypass>${sign_keypass}</keypass>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>perform-gpg-signing</id>
+      <activation>
+        <property>
+          <name>perform-gpg-signing</name>
+          <value>true</value>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>${maven-gpg-version}</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

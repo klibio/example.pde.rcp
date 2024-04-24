@@ -5,6 +5,8 @@
    <feature id="example.all" version="0.0.0">
       <category name="category.example.pde.rcp"/>
    </feature>
-
+   <feature id="example.all.source" version="0.0.0">
+      <category name="category.example.pde.rcp"/>
+   </feature>
 
 </site>

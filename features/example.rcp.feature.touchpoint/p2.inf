@@ -1,0 +1,10 @@
+instructions.configure= \
+	touchpoint.exec(executable:${installFolder}/script.bat); \
+	touchpoint.exec(executable:${installFolder}/script.sh);
+ instructions.install.import= \
+    touchpoint.exec
+instructions.install = \
+    chmod(targetFile:${installFolder}/script.bat,permissions:755);\
+    chmod(targetFile:${installFolder}/script.sh,permissions:755);
+ instructions.install.import= \
+    org.eclipse.equinox.p2.touchpoint.natives.chmod
