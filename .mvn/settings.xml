@@ -6,18 +6,18 @@
     <servers>
         <server>
             <id>github.com</id>
-            <username>${env.git_username}</username>
-            <password>${env.git_token}</password>
+            <username>${env.github_username}</username>
+            <password>${env.github_token}</password>
         </server>
         <server>
-            <id>maven-releases</id>
-            <username>${env.artifactory_username}</username>
-            <password>${env.artifactory_token}</password>
+            <id>klibio-maven-releases</id>
+            <username>${env.reposilite_user}</username>
+            <password>${env.reposilite_token}</password>
         </server>
         <server>
-            <id>maven-snapshots</id>
-            <username>${env.artifactory_username}</username>
-            <password>${env.artifactory_token}</password>
+            <id>klibio-maven-snapshots</id>
+            <username>${env.reposilite_user}</username>
+            <password>${env.reposilite_token}</password>
         </server>
     </servers>
 
@@ -62,8 +62,9 @@
         </profile>
 
         <!-- do not deploy products -->
-        <profile>
-            <id>skip-deploy-products</id>
+<!-- 
+    <profile>
+        <id>skip-deploy-products</id>
             <activation>
                 <file>
                     <exists>example.rcp.app.ui.feature.product</exists>
@@ -73,6 +74,7 @@
                 <maven.deploy.skip>true</maven.deploy.skip>
             </properties>
         </profile>
+    -->
 
         <!-- do not deploy *.target definitions -->
         <profile>
@@ -101,6 +103,7 @@
         </profile>
 
         <!-- do not deploy update sites -->
+<!--
         <profile>
             <id>skip-deploy-eclipse-updatesite</id>
             <activation>
@@ -112,7 +115,7 @@
                 <maven.deploy.skip>true</maven.deploy.skip>
             </properties>
         </profile>
-
+-->
         <profile>
             <id>artifactory-plugin-properties</id>
             <properties>

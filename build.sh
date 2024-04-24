@@ -93,7 +93,7 @@ fi
 if [[ ${build_deploy} -eq 1 ]]; then
     echo -e "#\n#\n# execute SNAPSHOT/RELEASE build - log file $log_file\n#\n#\n"  2>&1 | tee -a $log_file
 read -r -d '' command << EOM
-./mvnw clean deploy -Ddeploy-maven=true \
+./mvnw clean deploy -Ddeploy-maven-to-klibio=true \
   ${MAVEN_OPTS} \
   ${mvnDebug} \
   ${local_cache} \

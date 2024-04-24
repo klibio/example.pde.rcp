@@ -1,5 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>example.rcp</groupId>
@@ -18,11 +19,12 @@
     <maven-release-plugin-version>3.0.1</maven-release-plugin-version>
     <maven-scm-plugin-version>2.0.1</maven-scm-plugin-version>
     <maven-gpg-version>3.2.2</maven-gpg-version>
+    <maven.deploy.version>3.1.1</maven.deploy.version>
 
     <maven.build.timestamp.format>yyyyMMdd-HHmmss</maven.build.timestamp.format>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <tycho.scmUrl>scm:git:https://git.i.mercedes-benz.com:smaragd/example.pde.rcp.git</tycho.scmUrl>
+    <tycho.scmUrl>scm:git:https://github.com:klibio/example.pde.rcp.git</tycho.scmUrl>
   </properties>
   <scm>
     <!-- make sure that ssh key is configured and working in target git host -->
@@ -30,6 +32,19 @@
     <developerConnection>scm:git:https://github.com/klibio/example.pde.rcp</developerConnection>
     <url>https://github.com/klibio/example.pde.rcp</url>
   </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>klibio-maven-release</id>
+      <uniqueVersion>false</uniqueVersion>
+      <url>https://reposilite.klib.io/releases</url>
+    </repository>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>klibio-maven-snapshots</id>
+      <url>https://reposilite.klib.io/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
 
   <build>
     <plugins>
@@ -201,18 +216,19 @@
           <products>
             <product>
               <id>example.rcp.app.ui.feature.product</id>
-              <archiveFileName>example.rcp.app.ui.feature.product-${project.version}.${buildQualifier}</archiveFileName>
+              <archiveFileName>
+                example.rcp.app.ui.feature.product-${project.version}.${buildQualifier}</archiveFileName>
               <rootFolder>example-rcp-app</rootFolder>
             </product>
             <product>
               <id>example.rcp.app.ui.plugin.product</id>
-              <archiveFileName>example.rcp.app.ui.plugin.product-${project.version}.${buildQualifier}</archiveFileName>
+              <archiveFileName>
+                example.rcp.app.ui.plugin.product-${project.version}.${buildQualifier}</archiveFileName>
               <rootFolder>example-rcp-app</rootFolder>
             </product>
           </products>
         </configuration>
       </plugin>
-
     </plugins>
   </build>
 
@@ -228,10 +244,10 @@
 
   <profiles>
     <profile>
-      <id>deploy-maven</id>
+      <id>deploy-maven-to-artifactory</id>
       <activation>
         <property>
-          <name>deploy-maven</name>
+          <name>deploy-maven-to-artifactory</name>
           <value>true</value>
         </property>
       </activation>
@@ -264,7 +280,7 @@
                     <snapshotRepoKey>klibio-main-maven-snapshots</snapshotRepoKey>
                     <publishArtifacts>true</publishArtifacts>
                     <publishBuildInfo>true</publishBuildInfo>
-                 </publisher>
+                  </publisher>
                   <buildInfo>
                     <buildName>${project.artifactId}</buildName>
                     <buildNumber>${buildnumber}</buildNumber>

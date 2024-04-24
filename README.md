@@ -82,6 +82,57 @@ signing with self-signed code certificate
 
 ## W-I-P
 
+
+
+### deploy snapshot
+
+```bash
+# starting point is current development version e.g. 0.1.0-SNAPSHOT
+
+# before the SNAPSHOT deployment , validate via local build
+./build.sh --jar-signing --gpg-signing
+
+# build and deploy bundle to SNAPSHOT repository
+./build.sh --jar-signing --gpg-signing --deploy
+
+# continue development until next deployment
+```
+
+### deploy release
+
+```bash
+# starting point is current development version e.g. 0.1.0-SNAPSHOT
+
+# before the RELEASE deployment, validate via local build
+./build.sh --jar-signing --gpg-signing
+
+# set the release version before building and deploying
+./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=0.1.0
+
+# build and deploy bundle to RELEASE repository
+./build.sh --jar-signing --gpg-signing --deploy
+
+# tag release
+git tag -a rel_0.1.0 -m "release 0.1.0" && git push --tags
+
+# start next development release cycle with new version e.g. 0.2.0-SNAPSHOT
+./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=0.2.0-SNAPSHOT
+
+# start next development release cycle with new version 
+git add . \
+  && git commit -m "starting next dev cycle - new version 0.2.0-SNAPSHOT" \
+  && git push
+
+# continue development until next deployment
+```
+
+```bash
+# deploy locally available repository to artifactory
+releng/upload_to_artifactory.sh \
+    $(pwd)/releng/repo.sdk/target/repository \
+    smaragd-internet-mirror-generic-local \
+    example.pde.rcp/repo.sdk/$(date +'%Y%m%d-%H%M%S')
+```
 ```bash
 ./build.sh
 ```
@@ -90,7 +141,9 @@ signing with self-signed code certificate
 
 ### Output the generated poms
 
- `-Dpolyglot.dump.pom=pom.xml` just keep in mind that pom.xml takes precedence over pomless configuration, so maybe choose a different name if you only like to use this for debug purpose!
+`-Dpolyglot.dump.pom=pom.xml` just keep in mind that pom.xml takes
+precedence over pomless configuration, so maybe choose a different name
+if you only like to use this for debug purpose!
 
 ### outputs a tree view of the P2 dependecies of a tycho project 
 
@@ -98,7 +151,7 @@ MIND the hardcoded version
 
 ```bash
 ./mvnw \
-    org.eclipse.tycho:tycho-p2-plugin:4.0.4:dependency-tree \
+    org.eclipse.tycho:tycho-p2-plugin:4.0.7:dependency-tree \
     --log-file log/build_$(date +%Y%m%d-%H%M%S).log
 ```
 
