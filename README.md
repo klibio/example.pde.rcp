@@ -2,6 +2,9 @@
 
 [![Tycho CI build](https://github.com/klibio/example.pde.rcp/actions/workflows/build.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/build.yml)
 
+[![release](https://reposilite.klib.io/api/badge/latest/releases/example/rcp/products/?color=40c14a&name=example.pde.rcp)](https://reposilite.klib.io/#/releases/example/rcp/products)
+[![release](https://reposilite.klib.io/api/badge/latest/snapshots/example/rcp/products/?color=40c14a&name=example.pde.rcp)](https://reposilite.klib.io/#/snapshots/example/rcp/products)
+
 ## pre-requisites
 
 based on github repo [klibio/bootstrap](https://github.com/klibio/bootstrap)

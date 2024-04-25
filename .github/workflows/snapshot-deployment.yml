@@ -18,15 +18,15 @@ jobs:
   build:
     environment: pekirsc
     env:
-      ARTIFACTORY_ID: ${{ vars.ARTIFACTORY_ID }}
-      ARTIFACTORY_URL: ${{ vars.ARTIFACTORY_URL }}
-      ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-      ARTIFACTORY_TOKEN: ${{ secrets.ARTIFACTORY_TOKEN }}
-      GIT_ID: ${{ vars.GIT_ID }}
-      GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
-      GIT_URL: ${{ vars.GIT_URL }}
-      GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
-      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+      REPOSILITE_ID: ${{ vars.REPOSILITE_ID }}
+      REPOSILITE_URL: ${{ vars.REPOSILITE_URL }}
+      REPOSILITE_USERNAME: ${{ secrets.REPOSILITE_USERNAME }}
+      REPOSILITE_TOKEN: ${{ secrets.REPOSILITE_TOKEN }}
+      GIT_ID: ${{ vars.GITHUB_ID }}
+      GIT_EMAIL: ${{ secrets.GITHUB_EMAIL }}
+      GIT_URL: ${{ vars.GITHUB_URL }}
+      GIT_USERNAME: ${{ secrets.GITHUB_USERNAME }}
+      GIT_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       APP_FEATURE_PRODUCT: 'example.rcp.app.ui.feature.product'
       APP_BUNDLE_PRODUCT: 'example.rcp.app.ui.plugin.product'
       APP_FEATURE: 'example-rcp-app-ui-feature'

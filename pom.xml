@@ -5,7 +5,7 @@
 
   <groupId>example.rcp</groupId>
   <artifactId>example.rcp.parent</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.2.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
@@ -35,7 +35,7 @@
 
   <distributionManagement>
     <repository>
-      <id>klibio-maven-release</id>
+      <id>klibio-maven-releases</id>
       <url>https://reposilite.klib.io/releases/</url>
     </repository>
     <snapshotRepository>
