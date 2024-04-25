@@ -19,54 +19,46 @@ on:
 
 jobs:
   build:
-    environment: pekirsc
+    environment: release
     env:
-      ARTIFACTORY_ID: ${{ vars.ARTIFACTORY_ID }}
-      ARTIFACTORY_URL: ${{ vars.ARTIFACTORY_URL }}
-      ARTIFACTORY_USERNAME: ${{ secrets.ARTIFACTORY_USERNAME }}
-      ARTIFACTORY_TOKEN: ${{ secrets.ARTIFACTORY_TOKEN }}
-      GIT_ID: ${{ vars.GIT_ID }}
-      GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
-      GIT_URL: ${{ vars.GIT_URL }}
-      GIT_USERNAME: ${{ secrets.GIT_USERNAME }}
-      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+      REPOSILITE_ID: ${{ vars.REPOSILITE_ID }}
+      REPOSILITE_URL: ${{ vars.REPOSILITE_URL }}
+      REPOSILITE_USERNAME: ${{ secrets.REPOSILITE_USERNAME }}
+      REPOSILITE_TOKEN: ${{ secrets.REPOSILITE_TOKEN }}
       APP_FEATURE_PRODUCT: 'example.rcp.app.ui.feature.product'
       APP_BUNDLE_PRODUCT: 'example.rcp.app.ui.plugin.product'
       APP_FEATURE: 'example-rcp-app-ui-feature'
       APP_BUNDLE: 'example-rcp-app-ui-plugin'
   
-#    runs-on: [road-runner, large]
-    runs-on: [road-runner, medium]
+    runs-on: ubuntu-latest
 
     steps:
 
     - name: checkout
       uses: actions/checkout@v3
 
-    - name: caching idefix / ~/.ecdev
+    - name: caching idefix / ~/.klibio
       uses: actions/cache@v3
       with:
         path: |
           ~/.ecdev
           ~/.m2
           ~/.p2
-        key: ecdev-${{ hashFiles('~/.ecdev/eclib.sh') }}
+        key: dev-${{ hashFiles('~/.klibio/klibio.sh') }}
 
     - name: setup idefix
       shell: bash
       run: |
         $GITHUB_WORKSPACE/.github/workflows/1-setup-global-properties.sh
-        $GITHUB_WORKSPACE/.github/workflows/2-gh-setup-idefix.sh
+        $GITHUB_WORKSPACE/.github/workflows/2-setup-idefix.sh
       continue-on-error: false
 
     - name: build
       shell: bash
       run: |
         echo -e "#\n# configure environment for maven/tycho calls\n#\n"
-        . ~/.ecdev/set-env.sh
-        . ~/.ecdev/set-java.sh 17
-        git config --global user.email "$GIT_EMAIL"
-        git config --global user.name "$GIT_USERNAME"
+        . ~/.klibio/set-env.sh
+        . ~/.klibio/set-java.sh 17
       
         echo -e "#\n# update to release version $RELEASE_VERSION\n#\n"
         ./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=$RELEASE_VERSION
