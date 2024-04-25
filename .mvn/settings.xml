@@ -11,8 +11,8 @@
         </server>
         <server>
             <id>klibio-maven-releases</id>
-            <username>${env.reposilite_user}</username>
-            <password>${env.reposilite_token}</password>
+            <username>${env.reposilite_release_user}</username>
+            <password>${env.reposilite_release_token}</password>
         </server>
         <server>
             <id>klibio-maven-snapshots</id>
