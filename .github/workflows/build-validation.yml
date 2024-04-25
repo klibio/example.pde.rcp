@@ -40,11 +40,13 @@ jobs:
       run: |
         $GITHUB_WORKSPACE/.github/workflows/1-setup-global-properties.sh
         $GITHUB_WORKSPACE/.github/workflows/2-setup-idefix.sh
+        ls -la ~
       continue-on-error: false
 
     - name: build
       shell: bash
       run: |
+        ls -la ~
         echo -e "#\n# build\n#\n"
         echo "# configure environment for maven/tycho calls"
         . ~/.klibio/set-java.sh 17
