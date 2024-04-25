@@ -56,5 +56,5 @@ jobs:
         echo -e "#\n# build\n#\n"
         pwd
         ls -la
-        build.sh --jar-signing --deploy
+        ./build.sh --jar-signing --deploy
       continue-on-error: false
