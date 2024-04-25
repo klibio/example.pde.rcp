@@ -1,6 +1,8 @@
 # example for Eclipse RCP applications
 
-[![Tycho CI build](https://github.com/klibio/example.pde.rcp/actions/workflows/build.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/build.yml)
+[![CI build](https://github.com/klibio/example.pde.rcp/actions/workflows/build.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/10_build-validation.yml)
+[![SNAPSHOT build](https://github.com/klibio/example.pde.rcp/actions/workflows/build.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/10_snapshot-deployment.yml)
+[![RELEASE build](https://github.com/klibio/example.pde.rcp/actions/workflows/build.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/10_release-deployment.yml)
 
 [![release](https://reposilite.klib.io/api/badge/latest/releases/example/rcp/products/?color=40c14a&name=example.pde.rcp)](https://reposilite.klib.io/#/releases/example/rcp/products)
 [![release](https://reposilite.klib.io/api/badge/latest/snapshots/example/rcp/products/?color=40c14a&name=example.pde.rcp)](https://reposilite.klib.io/#/snapshots/example/rcp/products)
