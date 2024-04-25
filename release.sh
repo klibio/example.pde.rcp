@@ -6,7 +6,7 @@ fi
 # MIND the DOT at beginning of line
 echo "# configure local bash environment (environment variables and proxy)"
 . ~/.klibio/set-env.sh
-env | sort | grep -E 'artifactory_|git_|engine|HOME' | sed -r 's/artifactory_token=(.*)/artifactory_token=<set-but-hidden>/'
+env | sort | grep -E 'artifactory_|GH_|engine|HOME' | sed -r 's/artifactory_token=(.*)/artifactory_token=<set-but-hidden>/'
 
 mkdir _log >/dev/null 2>&1
 log_file=_log/$(date +"%Y-%m-%d_%H-%M-%S")_release.log

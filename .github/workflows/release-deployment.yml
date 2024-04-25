@@ -1,0 +1,82 @@
+name: release & deploy
+
+#on:
+#  push:
+#    branches: [ "main" ]
+#  pull_request:
+#    branches: [ "main" ]
+on:
+  workflow_dispatch:
+    inputs:
+      release-version:
+        description: 'release-version'
+        required: true
+        type: string
+      next-snaphot-version:
+        description: 'next-snaphot-version'
+        required: true
+        type: string
+
+jobs:
+  build:
+    environment: release
+    env:
+      REPOSILITE_ID: ${{ vars.REPOSILITE_ID }}
+      REPOSILITE_URL: ${{ vars.REPOSILITE_URL }}
+      REPOSILITE_USERNAME: ${{ secrets.REPOSILITE_USERNAME }}
+      REPOSILITE_TOKEN: ${{ secrets.REPOSILITE_TOKEN }}
+      APP_FEATURE_PRODUCT: 'example.rcp.app.ui.feature.product'
+      APP_BUNDLE_PRODUCT: 'example.rcp.app.ui.plugin.product'
+      APP_FEATURE: 'example-rcp-app-ui-feature'
+      APP_BUNDLE: 'example-rcp-app-ui-plugin'
+  
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: checkout
+      uses: actions/checkout@v3
+
+    - name: caching idefix / ~/.klibio
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.ecdev
+          ~/.m2
+          ~/.p2
+        key: dev-${{ hashFiles('~/.klibio/klibio.sh') }}
+
+    - name: setup idefix
+      shell: bash
+      run: |
+        $GITHUB_WORKSPACE/.github/workflows/1-setup-global-properties.sh
+        $GITHUB_WORKSPACE/.github/workflows/2-setup-idefix.sh
+      continue-on-error: false
+
+    - name: build
+      shell: bash
+      run: |
+        echo -e "#\n# configure environment for maven/tycho calls\n#\n"
+        . ~/.klibio/set-env.sh
+        . ~/.klibio/set-java.sh 17
+      
+        echo -e "#\n# update to release version $RELEASE_VERSION\n#\n"
+        ./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=$RELEASE_VERSION
+        git add . && git commit -m "releasing $RELEASE_VERSION" && git push
+
+        echo -e "#\n# RELEASE build and deploy to artifactory\n#\n"
+        MAVEN_OPTS="-Dtycho.localArtifacts=ignore -Dmaven.repo.local=.local_m2_cache"
+        $GITHUB_WORKSPACE/build.sh --jar-signing --deploy
+
+        echo -e "#\n# tag RELEASE in git\n#\n"
+        git tag -a rel_$RELEASE_VERSION -m "release $RELEASE_VERSION" && git push --tags
+
+        echo -e "#\n# start next development release cycle with new version $NEXT_SNAPSHOT_VERSION\n#\n"
+        ./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=$NEXT_SNAPSHOT_VERSION
+        git add . && git commit -m "starting next dev cycle - new version $NEXT_SNAPSHOT_VERSION" && git push
+        git tag -a $NEXT_SNAPSHOT_VERSION -m "start dev cycle with version $NEXT_SNAPSHOT_VERSION" && git push --tags
+
+      env:
+        RELEASE_VERSION: ${{ github.event.inputs.release-version }}
+        NEXT_SNAPSHOT_VERSION: ${{ github.event.inputs.next-snaphot-version }}
+      continue-on-error: false

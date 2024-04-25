@@ -1,0 +1,154 @@
+name: build-validation
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+#on:
+#  workflow_dispatch:
+#    inputs:
+#      name:
+#        description: 'build-evaluation'
+#        default: 'World'
+#        required: true
+#        type: string
+
+jobs:
+  build:
+    environment: dev
+    env:
+      REPOSILITE_ID: ${{ vars.REPOSILITE_ID }}
+      REPOSILITE_URL: ${{ vars.REPOSILITE_URL }}
+      REPOSILITE_USERNAME: ${{ secrets.REPOSILITE_USERNAME }}
+      REPOSILITE_TOKEN: ${{ secrets.REPOSILITE_TOKEN }}
+      APP_FEATURE_PRODUCT: 'example.rcp.app.ui.feature.product'
+      APP_BUNDLE_PRODUCT: 'example.rcp.app.ui.plugin.product'
+      APP_FEATURE: 'example-rcp-app-ui-feature'
+      APP_BUNDLE: 'example-rcp-app-ui-plugin'
+  
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: checkout
+      uses: actions/checkout@v3
+
+    - name: caching idefix / ~/.ecdev
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.ecdev
+          ~/.m2
+          ~/.p2
+        key: dev-${{ hashFiles('~/.klibio/klibio.sh') }}
+
+    - name: setup idefix
+      shell: bash
+      run: |
+        $GITHUB_WORKSPACE/.github/workflows/1-setup-global-properties.sh
+        $GITHUB_WORKSPACE/.github/workflows/2-setup-idefix.sh
+      continue-on-error: false
+
+    - name: build
+      shell: bash
+      run: |
+        echo -e "#\n# build\n#\n"
+        echo "# configure environment for maven/tycho calls"
+        . ~/.klibio/set-env.sh
+        . ~/.klibio/set-java.sh 17
+        $GITHUB_WORKSPACE/build.sh
+      continue-on-error: false
+
+# does not work - https://github.com/actions/upload-artifact/issues/109      
+#    - name: upload product ${{env.APP_FEATURE_PRODUCT}}-*-linux.gtk.aarch64.tar.gz
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: single-file_${{env.APP_FEATURE_PRODUCT}}_linux.gtk.aarch64.tar.gz
+#        path: ${{ github.workspace }}/releng/products/target/products/${{env.APP_FEATURE_PRODUCT}}-*-linux.gtk.aarch64.tar.gz
+#        if-no-files-found: error
+  
+#    - name: upload product ${{env.APP_FEATURE_PRODUCT}}_linux.gtk.aarch64
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: ${{env.APP_FEATURE_PRODUCT}}_linux.gtk.aarch64.tar.gz
+#        path: ${{ github.workspace }}/releng/products/target/products/${{env.APP_FEATURE}}/linux/gtk/aarch64
+#        if-no-files-found: error
+#  
+#    - name: upload product ${{env.APP_FEATURE_PRODUCT}}_linux.gtk.x86_64
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: ${{env.APP_FEATURE_PRODUCT}}_linux.gtk.x86_64.tar.gz
+#        path: ${{ github.workspace }}/releng/products/target/products/${{env.APP_FEATURE}}/linux/gtk/x86_64
+#        if-no-files-found: error
+#
+#    - name: upload product ${{env.APP_FEATURE_PRODUCT}}_macosx.cocoa.aarch64
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: ${{env.APP_FEATURE_PRODUCT}}_macosx.cocoa.aarch64.tar.gz
+#        path: ${{ github.workspace }}/releng/products/target/products/${{env.APP_FEATURE}}/macosx/cocoa/aarch64
+#        if-no-files-found: error
+#  
+#    - name: upload product ${{env.APP_FEATURE_PRODUCT}}_macosx.cocoa.x86_64
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: ${{env.APP_FEATURE_PRODUCT}}_macosx.cocoa.x86_64.tar.gz
+#        path: ${{ github.workspace }}/releng/products/target/products/${{env.APP_FEATURE}}/macosx/cocoa/x86_64
+#        if-no-files-found: error
+#  
+#    - name: upload product ${{env.APP_FEATURE_PRODUCT}}_win32.win32.x86_64.zip
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: ${{env.APP_FEATURE_PRODUCT}}_win32.win32.x86_64.zip
+#        path: ${{ github.workspace }}/releng/products/target/products/${{env.APP_FEATURE}}/win32/win32/x86_64
+#        if-no-files-found: error
+#
+#    - name: upload product ${{env.APP_BUNDLE_PRODUCT}}_linux.gtk.aarch64.tar.gz
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: ${{env.APP_BUNDLE_PRODUCT}}_linux.gtk.aarch64.tar.gz
+#        path: ${{ github.workspace }}/releng/products/target/products/${{env.APP_BUNDLE}}/linux/gtk/aarch64
+#        if-no-files-found: error
+#      
+#    - name: upload product ${{env.APP_BUNDLE_PRODUCT}}_linux.gtk.x86_64.tar.gz
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: ${{env.APP_BUNDLE_PRODUCT}}_linux.gtk.x86_64.tar.gz
+#        path: ${{ github.workspace }}/releng/products/target/products/${{env.APP_BUNDLE}}/linux/gtk/x86_64
+#        if-no-files-found: error
+#
+#    - name: upload product ${{env.APP_BUNDLE_PRODUCT}}_macosx.cocoa.aarch64.tar.gz
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: ${{env.APP_BUNDLE_PRODUCT}}_macosx.cocoa.aarch64.tar.gz
+#        path: ${{ github.workspace }}/releng/products/target/products/${{env.APP_BUNDLE}}/macosx/cocoa/aarch64
+#        if-no-files-found: error
+#
+#    - name: upload product ${{env.APP_BUNDLE_PRODUCT}}_macosx.cocoa.x86_64.tar.gz
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: ${{env.APP_BUNDLE_PRODUCT}}_macosx.cocoa.x86_64.tar.gz
+#        path: ${{ github.workspace }}/releng/products/target/products/${{env.APP_BUNDLE}}/macosx/cocoa/x86_64
+#        if-no-files-found: error
+#
+#    - name: upload product ${{env.APP_BUNDLE_PRODUCT}}_win32.win32.x86_64.zip
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: ${{env.APP_BUNDLE_PRODUCT}}_win32.win32.x86_64.zip
+#        path: ${{ github.workspace }}/releng/products/target/products/${{env.APP_BUNDLE}}/win32/win32/x86_64
+#        if-no-files-found: error
+#
+#    - name: upload repo.binary
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: repo.binary.zip
+#        path: ${{ github.workspace }}/releng/repo.binary/target/repository
+#        if-no-files-found: error
+#
+#    - name: upload repo.sdk
+#      uses: actions/upload-artifact@v3
+#      with:
+#        name: repo.sdk.zip
+#        path: ${{ github.workspace }}/releng/repo.sdk/target/repository
+#        if-no-files-found: error
+#

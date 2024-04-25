@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="example.all"
-      label="Eclipse Example All Feature"
+      id="example.rcp.feature.touchpoint"
+      label="Eclipse Touchpoint Feature"
       version="0.2.0.qualifier"
       provider-name="Kirschners GmbH">
 
@@ -16,17 +16,5 @@
    <license url="http://www.example.com/license">
       [Enter License Description here.]
    </license>
-
-   <includes
-         id="example.rcp.feature.app.ui"
-         version="0.0.0"/>
-
-   <includes
-         id="example.rcp.feature.headless"
-         version="0.0.0"/>
-
-   <includes
-         id="example.rcp.feature.touchpoint"
-         version="0.0.0"/>
 
 </feature>

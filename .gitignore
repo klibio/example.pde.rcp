@@ -11,7 +11,8 @@ pom.tycho
 pom.xml.releaseBackup
 release.properties
 target/
-
+targetBAK/
+.$*
 pk.md
 _log/
 .local_m2_cache/
