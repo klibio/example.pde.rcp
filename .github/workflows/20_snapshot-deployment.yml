@@ -54,8 +54,6 @@ jobs:
       shell: bash
       run: |
         echo -e "#\n# build\n#\n"
-        echo "# configure environment for maven/tycho calls"
-        pushd ~/.klibio && set-java.sh 17 && popd
         pwd
         ls -la
         build.sh --jar-signing --deploy
