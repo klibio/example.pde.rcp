@@ -57,7 +57,7 @@ jobs:
         # ls -laR .
         #env | sort
         #echo -e "#\n# debug - end\n#\n"
-        $GITHUB_WORKSPACE/.github/workflows/1-setup-ec-global-properties.sh
+        $GITHUB_WORKSPACE/.github/workflows/1-setup-global-properties.sh
         $GITHUB_WORKSPACE/.github/workflows/2-gh-setup-idefix.sh
         ls ~/.*
       continue-on-error: false

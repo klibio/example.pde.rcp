@@ -55,7 +55,7 @@ jobs:
     - name: setup idefix
       shell: bash
       run: |
-        $GITHUB_WORKSPACE/.github/workflows/1-setup-ec-global-properties.sh
+        $GITHUB_WORKSPACE/.github/workflows/1-setup-global-properties.sh
         $GITHUB_WORKSPACE/.github/workflows/2-gh-setup-idefix.sh
       continue-on-error: false
 
