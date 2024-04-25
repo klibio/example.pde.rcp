@@ -1,4 +1,4 @@
-#!/bin/bash
+002-setup-idefix.sh#!/bin/bash
 if [[ ${debug:-false} == true ]]; then
     set -o xtrace   # activate bash debug
 fi
