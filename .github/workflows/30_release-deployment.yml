@@ -1,4 +1,4 @@
-name: release & deploy
+name: release deployment
 
 #on:
 #  push:
@@ -35,7 +35,7 @@ jobs:
     steps:
 
     - name: checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: caching idefix / ~/.klibio
       uses: actions/cache@v3
@@ -56,9 +56,9 @@ jobs:
     - name: build
       shell: bash
       run: |
-        echo -e "#\n# configure environment for maven/tycho calls\n#\n"
-        . ~/.klibio/set-env.sh
-        . ~/.klibio/set-java.sh 17
+        echo -e "#\n# build\n#\n"
+        echo "# configure environment for maven/tycho calls"
+        pushd ~/.klibio && set-java.sh 17 && popd
       
         echo -e "#\n# update to release version $RELEASE_VERSION\n#\n"
         ./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=$RELEASE_VERSION
