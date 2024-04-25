@@ -26,7 +26,7 @@ jobs:
     - name: checkout
       uses: actions/checkout@v4
 
-    - name: caching idefix / ~/.ecdev
+    - name: caching idefix / ~/.klibio
       uses: actions/cache@v3
       with:
         path: |
@@ -47,7 +47,7 @@ jobs:
         run: |
         echo -e "#\n# build\n#\n"
         echo "# configure environment for maven/tycho calls"
-        ls -laR ~/.klibio
+        #ls -laR ~/.klibio
         pushd ~/.klibio && set-java.sh 17 && popd
         $GITHUB_WORKSPACE/build.sh
       continue-on-error: false
