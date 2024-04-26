@@ -46,6 +46,7 @@ echo -e "#\n# build - log file $log_file\n#\n"      2>&1 | tee -a $log_file
 
 echo -e "#\n# sourcing environment from build\n#\n" 2>&1 | tee -a $log_file
 pushd ~/.klibio
+ls -la
 set-java.sh 17 # must not use pipe `2>&1 | tee -a $log_file`, cause export env vars will not work
 popd
 
