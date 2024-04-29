@@ -48,6 +48,5 @@ jobs:
         echo -e "#\n# build\n#\n"
         echo "# configure environment for maven/tycho calls"
         #ls -laR ~/.klibio
-        pushd ~/.klibio && set-java.sh 17 && popd
-        $GITHUB_WORKSPACE/build.sh
+        ./build.sh
       continue-on-error: false
