@@ -53,9 +53,5 @@ jobs:
     - name: build
       shell: bash
       run: |
-        echo -e "#\n# build\n#\n"
-        pwd
-        ls -la
-        env | sort
         ./build.sh --jar-signing --deploy
       continue-on-error: false
