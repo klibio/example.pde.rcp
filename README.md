@@ -87,7 +87,15 @@ signing with self-signed code certificate
 
 ## W-I-P
 
+### local build and deployments
 
+```bash
+export 'REPOSILITE_ID=reposilite.klib.io'
+export 'REPOSILITE_URL=https://reposilite.klib.io'
+export 'REPOSILITE_USERNAME=klib-snapshots'
+export 'REPOSILITE_TOKEN=WR6cWIJq+QNMeiHW5gMxElQJs8cUWCZ9vbu6o8biZW5Htr5hZr72WuihQuX234Z4'
+./build.sh --jar-signing --gpg-signing --deploy
+```
 
 ### deploy snapshot
 

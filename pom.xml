@@ -36,12 +36,12 @@
   <distributionManagement>
     <repository>
       <id>klibio-maven-releases</id>
-      <url>https://reposilite.klib.io/releases/</url>
+      <url>${env.REPOSILITE_URL}/releases/</url>
     </repository>
     <snapshotRepository>
       <uniqueVersion>true</uniqueVersion>
       <id>klibio-maven-snapshots</id>
-      <url>https://reposilite.klib.io/snapshots/</url>
+      <url>${env.REPOSILITE_URL}/snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
 

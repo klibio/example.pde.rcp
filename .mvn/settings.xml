@@ -11,13 +11,13 @@
         </server>
         <server>
             <id>klibio-maven-releases</id>
-            <username>${env.reposilite_release_user}</username>
-            <password>${env.reposilite_release_token}</password>
+            <username>${env.REPOSILITE_USERNAME}</username>
+            <password>${env.REPOSILITE_TOKEN}</password>
         </server>
         <server>
             <id>klibio-maven-snapshots</id>
-            <username>${env.reposilite_user}</username>
-            <password>${env.reposilite_token}</password>
+            <username>${env.REPOSILITE_USERNAME}</username>
+            <password>${env.REPOSILITE_TOKEN}</password>
         </server>
     </servers>
 
