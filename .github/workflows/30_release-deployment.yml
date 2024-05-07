@@ -57,7 +57,7 @@ jobs:
       run: |
         echo -e "#\n# build\n#\n"
         echo "# configure environment for maven/tycho calls"
-        ~/.klibio/set-java.sh 17
+        export JAVA_HOME=~/.klibio/java/ee/JAVA17
       
         echo -e "#\n# update to release version $RELEASE_VERSION\n#\n"
         ./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=$RELEASE_VERSION
