@@ -2,7 +2,7 @@
 <feature
       id="example.rcp.feature.app.ui"
       label="Eclipse RCP UI Feature"
-      version="0.2.0"
+      version="0.3.0.qualifier"
       provider-name="Kirschners GmbH"
       os="linux,macosx,win32"
       ws="cocoa,gtk,win32"

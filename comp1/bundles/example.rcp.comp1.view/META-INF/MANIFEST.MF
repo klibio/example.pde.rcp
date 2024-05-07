@@ -4,7 +4,7 @@ Bundle-Name: Example View - Component 1
 Bundle-SymbolicName: example.rcp.comp1.view;singleton:=true
 Bundle-Vendor: Kirschners GmbH
 Automatic-Module-Name: example.rcp.comp1.view
-Bundle-Version: 0.2.0
+Bundle-Version: 0.3.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-17
