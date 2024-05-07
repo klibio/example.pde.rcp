@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.5"?>
 
-<product name="example.rcp.app.ui" uid="example-rcp-app-ui-plugin" id="example.rcp.app.ui.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="0.2.0.qualifier" type="bundles" includeLaunchers="true" autoIncludeRequirements="false">
+<product name="example.rcp.app.ui" uid="example-rcp-app-ui-plugin" id="example.rcp.app.ui.product" application="org.eclipse.e4.ui.workbench.swt.E4Application" version="0.2.0" type="bundles" includeLaunchers="true" autoIncludeRequirements="false">
 
    <configIni use="default">
    </configIni>
