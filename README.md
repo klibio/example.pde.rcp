@@ -1,11 +1,14 @@
 # example for Eclipse RCP applications
 
 [![CI build](https://github.com/klibio/example.pde.rcp/actions/workflows/10_build-validation.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/10_build-validation.yml)
+
 [![SNAPSHOT build](https://github.com/klibio/example.pde.rcp/actions/workflows/20_snapshot-deployment.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/20_snapshot-deployment.yml)
+
 [![RELEASE build](https://github.com/klibio/example.pde.rcp/actions/workflows/30_release-deployment.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/30_release-deployment.yml)
 
-[![release](https://reposilite.klib.io/api/badge/latest/releases/example/rcp/products/?color=40c14a&name=example.pde.rcp)](https://reposilite.klib.io/#/releases/example/rcp/products)
-[![release](https://reposilite.klib.io/api/badge/latest/snapshots/example/rcp/products/?color=40c14a&name=example.pde.rcp)](https://reposilite.klib.io/#/snapshots/example/rcp/products)
+[![release](https://reposilite.klib.io/api/badge/latest/releases/example/rcp/products/?color=40c14a&name=Maven%20RELEASE%20repo%20example.pde.rcp)](https://reposilite.klib.io/#/releases/example/rcp/products)
+
+[![snapshot](https://reposilite.klib.io/api/badge/latest/snapshots/example/rcp/products/?color=40c14a&name=Maven%20SNAPSHOT%20repo%20example.pde.rcp)](https://reposilite.klib.io/#/snapshots/example/rcp/products)
 
 ## pre-requisites
 
@@ -93,7 +96,7 @@ signing with self-signed code certificate
 export 'REPOSILITE_ID=reposilite.klib.io'
 export 'REPOSILITE_URL=https://reposilite.klib.io'
 export 'REPOSILITE_USERNAME=klib-snapshots'
-export 'REPOSILITE_TOKEN=WR6cWIJq+QNMeiHW5gMxElQJs8cUWCZ9vbu6o8biZW5Htr5hZr72WuihQuX234Z4'
+export 'REPOSILITE_TOKEN=<your-token-here>'
 ./build.sh --jar-signing --gpg-signing --deploy
 ```
 

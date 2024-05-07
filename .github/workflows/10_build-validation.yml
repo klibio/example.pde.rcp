@@ -1,4 +1,4 @@
-name: 10 build-validation
+name: 10 build validatation
 
 on:
   push:
