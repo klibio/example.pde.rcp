@@ -61,6 +61,8 @@ jobs:
       
         echo -e "#\n# update to release version $RELEASE_VERSION\n#\n"
         ./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=$RELEASE_VERSION
+        git config user.name "$(git log -n 1 --pretty=format:%an)"
+        git config user.email "$(git log -n 1 --pretty=format:%ae)"
         git add . && git commit -m "releasing $RELEASE_VERSION" && git push
 
         echo -e "#\n# RELEASE build and deploy to artifactory\n#\n"
