@@ -5,7 +5,7 @@
 
   <groupId>example.rcp</groupId>
   <artifactId>example.rcp.parent</artifactId>
-  <version>0.3.0</version>
+  <version>0.4.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>

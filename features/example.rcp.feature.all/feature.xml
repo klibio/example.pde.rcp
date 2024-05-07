@@ -2,7 +2,7 @@
 <feature
       id="example.all"
       label="Eclipse Example All Feature"
-      version="0.3.0"
+      version="0.4.0.qualifier"
       provider-name="Kirschners GmbH">
 
    <description url="http://www.example.com/description">
