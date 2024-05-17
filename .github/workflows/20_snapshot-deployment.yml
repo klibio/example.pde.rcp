@@ -1,18 +1,11 @@
 name: 20 snapshot deployment
 
-#on:
-#  push:
-#    branches: [ "main" ]
-#  pull_request:
-#    branches: [ "main" ]
 on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
   workflow_dispatch:
-#    inputs:
-#      name:
-#        description: 'build-evaluation'
-#        default: 'World'
-#        required: true
-#        type: string
 
 jobs:
   build:
