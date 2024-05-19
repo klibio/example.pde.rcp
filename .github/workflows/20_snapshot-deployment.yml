@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  snapshot:
     environment: dev
     env:
       REPOSILITE_ID: '${{ vars.REPOSILITE_ID }}'
