@@ -9,7 +9,7 @@
             <version>21</version>
         </provides>
         <configuration>
-            <jdkHome>${env.HOME}/.klibio/java/ee/JAVA21</jdkHome>
+            <jdkHome>JAVA_HOME_21_X64</jdkHome>
         </configuration>
     </toolchain>
     <toolchain>
@@ -20,7 +20,7 @@
             <version>17</version>
         </provides>
         <configuration>
-            <jdkHome>${env.HOME}/.klibio/java/ee/JAVA17</jdkHome>
+            <jdkHome>${JAVA_HOME_17_X64}</jdkHome>
         </configuration>
     </toolchain>
     <toolchain>
@@ -31,7 +31,7 @@
             <version>11</version>
         </provides>
         <configuration>
-            <jdkHome>${env.HOME}/.klibio/java/ee/JAVA11</jdkHome>
+            <jdkHome>${JAVA_HOME_11_X64}</jdkHome>
         </configuration>
     </toolchain>
 <!-- not available on macosx aarch64
@@ -43,7 +43,7 @@
             <version>8</version>
         </provides>
         <configuration>
-            <jdkHome>${env.HOME}/.klibio/java/ee/JAVA8</jdkHome>
+            <jdkHome>${JAVA_HOME_8_X64}</jdkHome>
         </configuration>
     </toolchain>
 -->
