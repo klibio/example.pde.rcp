@@ -2,7 +2,7 @@ name: 20 snapshot deployment
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "next" ]
   workflow_dispatch:
 
 jobs:
@@ -45,3 +45,18 @@ jobs:
       run: |
         ./build.sh --jar-signing --deploy
       continue-on-error: false
+     
+    - name: Generate Changelog
+      run: echo "# Good things have arrived" > ${{ github.workspace }}-CHANGELOG.txt
+
+    - name: Release
+      uses: softprops/action-gh-release@v2
+#      if: startsWith(github.ref, 'refs/tags/')
+      with:
+          files: |
+            ${{ github.workspace }}-CHANGELOG.txt
+            releng/repo.binary/target/repository/p2.index
+            releng/repo.binary/target/repository/content.xml.xz
+            releng/repo.binary/target/repository/artifacts.xml.xz
+          draft: true
+          prerelease: false
