@@ -37,7 +37,7 @@ jobs:
     - name: setup idefix
       shell: bash
       run: |
-        .github/workflows/setup-idefix.sh
+        $GITHUB_WORKSPACE/.github/workflows/setup-idefix.sh
       continue-on-error: false
 
     - name: build
@@ -54,6 +54,8 @@ jobs:
       id: finding-files        
       run: |
         {
+          ls -la .
+          ls -la releng/repo.binary/target/repository
           echo 'FILELIST<<EOF'
           find 'releng/repo.binary/target/repository' -print 
           echo EOF
