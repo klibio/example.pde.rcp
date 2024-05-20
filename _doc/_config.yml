@@ -1,6 +1,12 @@
+plugins:
+  - jekyll-github-metadata
+  - jekyll-seo-tag
+  - jekyll-sitemap
 markdown: kramdown
 
 github: [metadata]
+repository: klibio/example.pde.rcp
+
 defaults:
   -
     scope:
