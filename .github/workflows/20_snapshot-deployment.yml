@@ -47,16 +47,23 @@ jobs:
       continue-on-error: false
      
     - name: Generate Changelog
-      run: echo "# Good things have arrived" > ${{ github.workspace }}-CHANGELOG.txt
+      run: env | sort > ${{ github.workspace }}-CHANGELOG.txt
 
+    - name: Finding files
+      id: finding-files        
+      run: |
+        {
+          echo 'FILELIST<<EOF'
+          find 'releng/repo.binary/target/repository' -print 
+          echo EOF
+        } >> "$GITHUB_ENV"
+    
     - name: Release
       uses: softprops/action-gh-release@v2
 #      if: startsWith(github.ref, 'refs/tags/')
       with:
           files: |
             ${{ github.workspace }}-CHANGELOG.txt
-            releng/repo.binary/target/repository/p2.index
-            releng/repo.binary/target/repository/content.xml.xz
-            releng/repo.binary/target/repository/artifacts.xml.xz
+            $FILELIST
           draft: true
           prerelease: false
