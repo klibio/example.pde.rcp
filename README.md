@@ -1,20 +1,15 @@
 # example for Eclipse RCP applications
 
-[[Official Documentation]](https://klibio.github.io/example.pde.rcp/)
-
 ## build pipelines
 
-[![CI build](https://github.com/klibio/example.pde.rcp/actions/workflows/10_build-validation.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/10_build-validation.yml)
+| github action | output |
+| --- | --- |
+| [![Deploy doc on GitHub Pages](https://github.com/klibio/example.pde.rcp/actions/workflows/jekyll-gh-pages.yml/badge.svg?branch=main)](https://github.com/klibio/example.pde.rcp/actions/workflows/jekyll-gh-pages.yml) | <a href="https://klibio.github.io/example.pde.rcp/" target="_blank">Official Doc</a> |
+| [![CI build](https://github.com/klibio/example.pde.rcp/actions/workflows/10_build-validation.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/10_build-validation.yml) | continuous build |
+| [![SNAPSHOT build](https://github.com/klibio/example.pde.rcp/actions/workflows/20_snapshot-deployment.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/20_snapshot-deployment.yml) | [![snapshot](https://reposilite.klib.io/api/badge/latest/snapshots/example/rcp/products/?color=40c14a&name=Maven%20SNAPSHOT%20repo%20example.pde.rcp)](https://reposilite.klib.io/#/snapshots/example/rcp/products) |
+| [![RELEASE build](https://github.com/klibio/example.pde.rcp/actions/workflows/30_release-deployment.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/30_release-deployment.yml) | [![release](https://reposilite.klib.io/api/badge/latest/releases/example/rcp/products/?color=40c14a&name=Maven%20RELEASE%20repo%20example.pde.rcp)](https://reposilite.klib.io/#/releases/example/rcp/products) |
 
-[![SNAPSHOT build](https://github.com/klibio/example.pde.rcp/actions/workflows/20_snapshot-deployment.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/20_snapshot-deployment.yml)
 
-[![RELEASE build](https://github.com/klibio/example.pde.rcp/actions/workflows/30_release-deployment.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/30_release-deployment.yml)
-
-[![release](https://reposilite.klib.io/api/badge/latest/releases/example/rcp/products/?color=40c14a&name=Maven%20RELEASE%20repo%20example.pde.rcp)](https://reposilite.klib.io/#/releases/example/rcp/products)
-
-[![snapshot](https://reposilite.klib.io/api/badge/latest/snapshots/example/rcp/products/?color=40c14a&name=Maven%20SNAPSHOT%20repo%20example.pde.rcp)](https://reposilite.klib.io/#/snapshots/example/rcp/products)
-
-[![Deploy doc on GitHub Pages](https://github.com/klibio/example.pde.rcp/actions/workflows/jekyll-gh-pages.yml/badge.svg?branch=main)](https://github.com/klibio/example.pde.rcp/actions/workflows/jekyll-gh-pages.yml)
 
 ## pre-requisites
 
