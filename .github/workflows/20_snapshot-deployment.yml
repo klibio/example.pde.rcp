@@ -65,12 +65,12 @@ jobs:
       run: |
         env | sort
     
-#    - name: Release
-#      uses: softprops/action-gh-release@v2
+    - name: Release
+      uses: softprops/action-gh-release@v2
 #      if: startsWith(github.ref, 'refs/tags/')
-#      with:
-#          files: |
-#            ${{ github.workspace }}-CHANGELOG.txt
-#            $FILELIST
-#          draft: true
-#          prerelease: false
+      with:
+          files: |
+            ${{ github.workspace }}-CHANGELOG.txt
+            $FILELIST
+          draft: true
+          prerelease: false
