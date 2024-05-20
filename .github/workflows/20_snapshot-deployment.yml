@@ -47,7 +47,8 @@ jobs:
       continue-on-error: false
      
     - name: Generate Changelog
-      run: env | sort > ${{ github.workspace }}-CHANGELOG.txt
+      run: |
+        env | sort > ${{ github.workspace }}-CHANGELOG.txt
 
     - name: Finding files
       id: finding-files        
