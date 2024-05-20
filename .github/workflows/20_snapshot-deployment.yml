@@ -56,16 +56,16 @@ jobs:
         env | sort > ${{ github.workspace }}-CHANGELOG.txt
 
     - name: Finding files
-      id: finding-files        
       run: |
-          ls -la .
-          ls -la releng/repo.binary/target/repository
-          {
-            echo 'FILELIST<<EOF'
-            find 'releng/repo.binary/target/repository' -print 
-            echo EOF
-          } >> "$GITHUB_ENV"
-          env | sort
+        echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
+        FILELIST<<EOF'
+        find 'releng/repo.binary/target/repository' -print 
+        EOF
+        echo "FILELIST=$(echo $FILELIST)" >> $GITHUB_ENV
+
+    - name: Debug
+      run: |
+        env | sort
     
 #    - name: Release
 #      uses: softprops/action-gh-release@v2
