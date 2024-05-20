@@ -34,17 +34,27 @@ jobs:
 #          ~/.p2
 #        key: dev-${{ hashFiles('~/.klibio/klibio.sh') }}
 
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: |
+          8
+          11
+          17
+          21
+
     - name: setup idefix
       shell: bash
       run: |
-        .github/workflows/setup-idefix.sh
+        which java
+#        .github/workflows/setup-idefix.sh
       continue-on-error: false
 
-    - name: build
-      shell: bash
-      run: |
-        ./build.sh --jar-signing --deploy
-      continue-on-error: false
+ #   - name: build
+ #     shell: bash
+ #     run: |
+ #       ./build.sh --jar-signing --deploy
+ #     continue-on-error: false
      
     - name: Generate Changelog
       run: |
@@ -60,13 +70,14 @@ jobs:
             find 'releng/repo.binary/target/repository' -print 
             echo EOF
           } >> "$GITHUB_ENV"
+          env | sort
     
-    - name: Release
-      uses: softprops/action-gh-release@v2
+#    - name: Release
+#      uses: softprops/action-gh-release@v2
 #      if: startsWith(github.ref, 'refs/tags/')
-      with:
-          files: |
-            ${{ github.workspace }}-CHANGELOG.txt
-            $FILELIST
-          draft: true
-          prerelease: false
+#      with:
+#          files: |
+#            ${{ github.workspace }}-CHANGELOG.txt
+#            $FILELIST
+#          draft: true
+#          prerelease: false
