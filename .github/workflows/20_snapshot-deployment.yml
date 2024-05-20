@@ -37,8 +37,6 @@ jobs:
     - name: setup idefix
       shell: bash
       run: |
-        rm -rf ~/.m2
-        rm -rf ~/.p2
         .github/workflows/setup-idefix.sh
       continue-on-error: false
 
