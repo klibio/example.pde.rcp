@@ -1,5 +1,7 @@
 # example for Eclipse RCP applications
 
+{{ page.date| date: "%m-%d-%Y" }}
+
 ## build pipelines
 
 | github action | output |
