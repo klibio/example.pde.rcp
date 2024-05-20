@@ -43,18 +43,20 @@ jobs:
           17
           21
 
-    - name: setup idefix
+#    - name: setup idefix
+#      shell: bash
+#      run: |
+#        which java
+#        .github/workflows/setup-idefix.sh
+#      continue-on-error: false
+
+    - name: build
       shell: bash
       run: |
-        which java
-#        .github/workflows/setup-idefix.sh
+        export JAVA_HOME=$JAVA_HOME_17_X64
+        export PATH=$JAVA_HOME/bin:$PATH
+        ./build.sh --jar-signing --deploy
       continue-on-error: false
-
- #   - name: build
- #     shell: bash
- #     run: |
- #       ./build.sh --jar-signing --deploy
- #     continue-on-error: false
      
     - name: Generate Changelog
       run: |
