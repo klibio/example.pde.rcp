@@ -55,13 +55,13 @@ jobs:
     - name: Finding files
       id: finding-files        
       run: |
-        {
           ls -la .
           ls -la releng/repo.binary/target/repository
-          echo 'FILELIST<<EOF'
-          find 'releng/repo.binary/target/repository' -print 
-          echo EOF
-        } >> "$GITHUB_ENV"
+          {
+            echo 'FILELIST<<EOF'
+            find 'releng/repo.binary/target/repository' -print 
+            echo EOF
+          } >> "$GITHUB_ENV"
     
     - name: Release
       uses: softprops/action-gh-release@v2
