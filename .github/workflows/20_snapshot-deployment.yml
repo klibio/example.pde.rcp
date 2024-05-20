@@ -74,6 +74,6 @@ jobs:
       with:
           files: |
             ${{ github.workspace }}-CHANGELOG.txt
-            $FILELIST
+            ${env.FILELIST}
           draft: true
           prerelease: false
