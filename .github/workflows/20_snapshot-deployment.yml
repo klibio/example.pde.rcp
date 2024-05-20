@@ -58,9 +58,7 @@ jobs:
     - name: Finding files
       run: |
         echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
-        FILELIST<<EOF'
-        find 'releng/repo.binary/target/repository' -print 
-        EOF
+        FILELIST=$(find 'releng/repo.binary/target/repository' -print | sort)
         echo "FILELIST=$(echo $FILELIST)" >> $GITHUB_ENV
 
     - name: Debug
