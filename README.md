@@ -11,8 +11,6 @@
 | [![SNAPSHOT build](https://github.com/klibio/example.pde.rcp/actions/workflows/20_snapshot-deployment.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/20_snapshot-deployment.yml) | [![snapshot](https://reposilite.klib.io/api/badge/latest/snapshots/example/rcp/products/?color=40c14a&name=Maven%20SNAPSHOT%20repo%20example.pde.rcp)](https://reposilite.klib.io/#/snapshots/example/rcp/products) |
 | [![RELEASE build](https://github.com/klibio/example.pde.rcp/actions/workflows/30_release-deployment.yml/badge.svg)](https://github.com/klibio/example.pde.rcp/actions/workflows/30_release-deployment.yml) | [![release](https://reposilite.klib.io/api/badge/latest/releases/example/rcp/products/?color=40c14a&name=Maven%20RELEASE%20repo%20example.pde.rcp)](https://reposilite.klib.io/#/releases/example/rcp/products) |
 
-
-
 ## pre-requisites
 
 based on github repo [klibio/bootstrap](https://github.com/klibio/bootstrap)
