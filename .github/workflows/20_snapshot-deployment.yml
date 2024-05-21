@@ -54,7 +54,9 @@ jobs:
         ./build.sh --jar-signing --deploy
       continue-on-error: true
 
-    - name: discover release files
+    - name: create release
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
         PRODUCTS=$(find releng/products/target -name 'example.rcp.app.ui.*' -type f)
         echo "$PRODUCTS"
