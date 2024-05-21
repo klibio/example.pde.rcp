@@ -54,8 +54,12 @@ jobs:
         ./build.sh --jar-signing --deploy
       continue-on-error: true
 
-    - name: Finding files
+    - name: discover release files
       run: |
+        PRODUCTS=$(find releng/products/target -name 'example.rcp.app.ui.*' -type f)
+        echo "$PRODUCTS"
+        echo "PRODUCTS=$(echo "$PRODUCTS")" >> $GITHUB_ENV
+
         REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
         echo "$REPO_BINARY"
         echo "REPO_BINARY=$(echo "$REPO_BINARY")" >> $GITHUB_ENV
@@ -72,6 +76,7 @@ jobs:
       with:
           files: |
             ${{ github.workspace }}-CHANGELOG.txt
+            ${{ env.PRODUCTS }}
             ${{ env.REPO_BINARY }}
             ${{ env.REPO_SDK }}
           draft: true
