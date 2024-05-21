@@ -67,14 +67,27 @@ jobs:
         REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
         echo "$REPO_SDK"
         echo "REPO_SDK=$(echo "$REPO_SDK")" >> $GITHUB_ENV
+        
+        version=$(grep -oPm1 "(?<=<version>)[^<]+" "$pom_file")
 
-    - name: Release
-      uses: softprops/action-gh-release@v2
+        if [[ $version =~ ([0-9]+)\.([0-9]+)\.([0-9]+.*) ]]; then
+          major="${BASH_REMATCH[1]}"
+          minor="${BASH_REMATCH[2]}"
+          bugfix="${BASH_REMATCH[3]}"
+        else
+          echo "Version format not recognized."
+          exit 1
+        fi
+
+        gh release -d create rel_$major.$minor.$bugfix $REPO_BINARY $REPO_SDK
+
+#    - name: Release
+#      uses: softprops/action-gh-release@v2
 #      if: startsWith(github.ref, 'refs/tags/')
-      with:
-          files: |
-            ${{ env.PRODUCTS }}
-            ${{ env.REPO_BINARY }}
-            ${{ env.REPO_SDK }}
-          draft: true
-          prerelease: false
+#      with:
+#          files: |
+#            ${{ env.PRODUCTS }}
+#            ${{ env.REPO_BINARY }}
+#            ${{ env.REPO_SDK }}
+#          draft: true
+#          prerelease: false
