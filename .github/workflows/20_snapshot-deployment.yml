@@ -50,29 +50,32 @@ jobs:
         export PATH=$JAVA_HOME/bin:$PATH
         ./build.sh --jar-signing --deploy
       continue-on-error: true
-     
-    - name: Generate Changelog
-      run: |
-        env | sort > ${{ github.workspace }}-CHANGELOG.txt
 
     - name: Finding files
       run: |
         echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
-        FILELIST=$(find 'releng/repo.binary/target/repository' -type f)
-        echo "$FILELIST"
-        echo "FILELIST=$(echo "$FILELIST")" >> $GITHUB_ENV
-        echo "$FILELIST"
 
-    - name: Debug
+        REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
+        echo "$REPO_BINARY"
+        echo "REPO_BINARY=$(echo "$REPO_BINARY")" >> $GITHUB_ENV
+
+        REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
+        echo "$REPO_SDK"
+        echo "REPO_SDK=$(echo "$REPO_SDK")" >> $GITHUB_ENV
+
+        echo "$GITHUB_ENV"
+
+    - name: Generate Changelog
       run: |
-        env | sort
-    
+        ${{ env.GITHUB_SHA_SHORT }} > ${{ github.workspace }}-CHANGELOG.txt
+
     - name: Release
       uses: softprops/action-gh-release@v2
 #      if: startsWith(github.ref, 'refs/tags/')
       with:
           files: |
             ${{ github.workspace }}-CHANGELOG.txt
-            "${{ env.FILELIST }}"
+            ${{ env.REPO_BINARY }}
+            ${{ env.REPO_SDK }}
           draft: true
           prerelease: false

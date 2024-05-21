@@ -215,14 +215,12 @@
           <products>
             <product>
               <id>example.rcp.app.ui.feature.product</id>
-              <archiveFileName>
-                example.rcp.app.ui.feature.product-${project.version}.${buildQualifier}</archiveFileName>
+              <archiveFileName>example.rcp.app.ui.feature.product-${project.version}.${buildQualifier}</archiveFileName>
               <rootFolder>example-rcp-app</rootFolder>
             </product>
             <product>
               <id>example.rcp.app.ui.plugin.product</id>
-              <archiveFileName>
-                example.rcp.app.ui.plugin.product-${project.version}.${buildQualifier}</archiveFileName>
+              <archiveFileName>example.rcp.app.ui.plugin.product-${project.version}.${buildQualifier}</archiveFileName>
               <rootFolder>example-rcp-app</rootFolder>
             </product>
           </products>
