@@ -46,7 +46,10 @@ jobs:
     - name: build
       shell: bash
       run: |
-        export JAVA_HOME=$JAVA_HOME_17_X64
+        export JAVA_HOME_8=$JAVA_HOME_8_X64
+        export JAVA_HOME_11=$JAVA_HOME_11_X64
+        export JAVA_HOME_17=$JAVA_HOME_17_X64
+        export JAVA_HOME_21=$JAVA_HOME_21_X64
         export PATH=$JAVA_HOME/bin:$PATH
         ./build.sh --jar-signing --deploy
       continue-on-error: true
