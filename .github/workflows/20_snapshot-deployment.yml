@@ -60,7 +60,7 @@ jobs:
         echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
         FILELIST="$(find 'releng/repo.binary/target/repository' -type f | sort)"
         echo "$FILELIST"
-        echo "FILELIST2=$(echo \"$FILELIST\")" >> $GITHUB_ENV
+        echo "FILELIST=$(echo \"$FILELIST\")" >> $GITHUB_ENV
 
     - name: Debug
       run: |
