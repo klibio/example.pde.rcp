@@ -58,15 +58,15 @@ jobs:
       run: |
         PRODUCTS=$(find releng/products/target -name 'example.rcp.app.ui.*' -type f)
         echo "$PRODUCTS"
-        echo "PRODUCTS=$(echo "$PRODUCTS")" >> $GITHUB_ENV
+        #echo "PRODUCTS=$(echo "$PRODUCTS")" >> $GITHUB_ENV
 
         REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
         echo "$REPO_BINARY"
-        echo "REPO_BINARY=$(echo "$REPO_BINARY")" >> $GITHUB_ENV
+        #echo "REPO_BINARY=$(echo "$REPO_BINARY")" >> $GITHUB_ENV
 
         REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
         echo "$REPO_SDK"
-        echo "REPO_SDK=$(echo "$REPO_SDK")" >> $GITHUB_ENV
+        #echo "REPO_SDK=$(echo "$REPO_SDK")" >> $GITHUB_ENV
         
         version=$(grep -oPm1 "(?<=<version>)[^<]+" "$pom_file")
 
