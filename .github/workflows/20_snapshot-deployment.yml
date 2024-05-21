@@ -59,20 +59,12 @@ jobs:
         GH_TOKEN: ${{ github.token }}
       run: |
         PRODUCTS=$(find releng/products/target -name 'example.rcp.app.ui.*' -type f)
-        echo "$PRODUCTS"
-        #echo "PRODUCTS=$(echo "$PRODUCTS")" >> $GITHUB_ENV
-
         REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
-        echo "$REPO_BINARY"
-        #echo "REPO_BINARY=$(echo "$REPO_BINARY")" >> $GITHUB_ENV
-
         REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
-        echo "$REPO_SDK"
-        #echo "REPO_SDK=$(echo "$REPO_SDK")" >> $GITHUB_ENV
         
         version=$(grep -oPm1 "(?<=<version>)[^<]+" "pom.xml")
 
-        if [[ $version =~ ([0-9]+)\.([0-9]+)\.([0-9]+.*) ]]; then
+        if [[ $version =~ ([0-9]+)\.([0-9]+)\.([0-9]+).* ]]; then
           major="${BASH_REMATCH[1]}"
           minor="${BASH_REMATCH[2]}"
           bugfix="${BASH_REMATCH[3]}"
@@ -81,7 +73,11 @@ jobs:
           exit 1
         fi
 
-        gh release create rel_$major.$minor.$bugfix $REPO_BINARY $REPO_SDK
+        if [[ $version =~ (.*+SNAPSHOT.*+) ]]; then        
+          gh release create pre_$major.$minor.$bugfix $PRODUCTS $REPO_BINARY $REPO_SDK -p
+        else
+          gh release create rel_$major.$minor.$bugfix $PRODUCTS $REPO_BINARY $REPO_SDK
+        fi
 
 #    - name: Release
 #      uses: softprops/action-gh-release@v2
