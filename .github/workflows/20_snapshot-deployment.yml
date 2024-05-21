@@ -79,7 +79,7 @@ jobs:
           exit 1
         fi
 
-        gh release -d create rel_$major.$minor.$bugfix $REPO_BINARY $REPO_SDK
+        gh release create rel_$major.$minor.$bugfix $REPO_BINARY $REPO_SDK
 
 #    - name: Release
 #      uses: softprops/action-gh-release@v2
