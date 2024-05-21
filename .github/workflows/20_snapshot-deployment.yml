@@ -58,9 +58,10 @@ jobs:
     - name: Finding files
       run: |
         echo "GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
-        FILELIST="$(find 'releng/repo.binary/target/repository' -type f | sort)"
+        FILELIST=$(find 'releng/repo.binary/target/repository' -type f)
         echo "$FILELIST"
         echo "FILELIST=$(echo \"$FILELIST\")" >> $GITHUB_ENV
+        echo "$FILELIST"
 
     - name: Debug
       run: |
@@ -72,6 +73,6 @@ jobs:
       with:
           files: |
             ${{ github.workspace }}-CHANGELOG.txt
-            ${{ env.FILELIST }}
+            "${{ env.FILELIST }}"
           draft: true
           prerelease: false
