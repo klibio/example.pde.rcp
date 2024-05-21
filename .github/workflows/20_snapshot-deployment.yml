@@ -68,14 +68,11 @@ jobs:
         echo "$REPO_SDK"
         echo "REPO_SDK=$(echo "$REPO_SDK")" >> $GITHUB_ENV
 
-        echo "$GITHUB_ENV"
-
     - name: Release
       uses: softprops/action-gh-release@v2
 #      if: startsWith(github.ref, 'refs/tags/')
       with:
           files: |
-            ${{ github.workspace }}-CHANGELOG.txt
             ${{ env.PRODUCTS }}
             ${{ env.REPO_BINARY }}
             ${{ env.REPO_SDK }}
