@@ -68,7 +68,7 @@ jobs:
         echo "$REPO_SDK"
         #echo "REPO_SDK=$(echo "$REPO_SDK")" >> $GITHUB_ENV
         
-        version=$(grep -oPm1 "(?<=<version>)[^<]+" "$pom_file")
+        version=$(grep -oPm1 "(?<=<version>)[^<]+" "pom.xml")
 
         if [[ $version =~ ([0-9]+)\.([0-9]+)\.([0-9]+.*) ]]; then
           major="${BASH_REMATCH[1]}"
