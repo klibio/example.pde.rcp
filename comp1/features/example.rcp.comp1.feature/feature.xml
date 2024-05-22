@@ -2,7 +2,7 @@
 <feature
       id="example.rcp.comp1.feature"
       label="Component 1 Feature"
-      version="0.1.0.qualifier"
+      version="0.1.0"
       provider-name="Kirschners GmbH">
 
    <description url="http://www.example.com/description">
