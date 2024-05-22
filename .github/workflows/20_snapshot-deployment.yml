@@ -64,8 +64,8 @@ jobs:
         REPOSILITE_USERNAME: '${{ secrets.REPOSILITE_USERNAME }}'
         REPOSILITE_TOKEN: '${{ secrets.REPOSILITE_TOKEN }}'
       run: |
-        version=$(grep -oPm1 "(?<=<version>)[^<]+" "pom.xml")
-        if [[ $version =~ ([0-9]+)\.([0-9]+)\.([0-9]+)(.*) ]]; then
+        pom_version=$(grep -oPm1 "(?<=<version>)[^<]+" "pom.xml")
+        if [[ $pom_version =~ ([0-9]+)\.([0-9]+)\.([0-9]+)(.*) ]]; then
           major="${BASH_REMATCH[1]}"
           minor="${BASH_REMATCH[2]}"
           bugfix="${BASH_REMATCH[3]}"
@@ -82,7 +82,7 @@ jobs:
         REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
         REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
         jq --version
-        if [[ $version =~ (.*+SNAPSHOT.*+) ]]; then
+        if [[ $pom_version =~ (.*+SNAPSHOT.*+) ]]; then
           echo "eval if snapshot release $snapshot is already existing"
           gh release list --json tagName | jq --arg rel $snapshot 'select(.[].tagName == $snapshot)' | grep $snapshot
           retVal=$?
