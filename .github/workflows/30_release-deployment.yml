@@ -53,7 +53,7 @@ jobs:
     - name: Configure GPG Key
       run: |
         echo -n "$GPG_SIGNING_KEY" | base64 --decode > private-key.gpg
-        echo "$GPG_PASSPHRASE_PETER_AT_KLIB_IO" | gpg --batch --quiet --yes --no-use-agent --passphrase-fd 0 your_file.gpg
+        echo "$GPG_PASSPHRASE_PETER_AT_KLIB_IO" | gpg --batch --quiet --yes --passphrase-fd 0 private-key.gpg
 
     - name: build
       shell: bash
