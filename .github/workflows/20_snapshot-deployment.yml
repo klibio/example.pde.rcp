@@ -64,12 +64,8 @@ jobs:
         REPOSILITE_USERNAME: '${{ secrets.REPOSILITE_USERNAME }}'
         REPOSILITE_TOKEN: '${{ secrets.REPOSILITE_TOKEN }}'
       run: |
-        PRODUCTS=$(find releng/products/target -name 'example.rcp.app.ui.*' -type f)
-        REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
-        REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
-        
         version=$(grep -oPm1 "(?<=<version>)[^<]+" "pom.xml")
-
+      
         if [[ $version =~ ([0-9]+)\.([0-9]+)\.([0-9]+)(.*) ]]; then
           major="${BASH_REMATCH[1]}"
           minor="${BASH_REMATCH[2]}"
@@ -81,14 +77,21 @@ jobs:
           exit 1
         fi
 
+        PRODUCTS=$(find releng/products/target -name 'example.rcp.app.ui.*' -type f)
+        REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
+        REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
+
+        REPO_PRODUCT=releng/products/target/repo.product-$rel$snapshot.zip
+        zip -r $REPO_PRODUCT releng/products/target/repository/*
+
         if [[ $version =~ (.*+SNAPSHOT.*+) ]]; then
           gh release list --json tagName | jq --arg rel $rel 'select(.[].tagName == $rel)' | grep $rel
           if [[ $? ]]; then
             gh release delete snapshot_$rel
             git push --delete origin snapshot_$rel
           fi
-          gh release create snapshot_$rel $PRODUCTS $REPO_BINARY $REPO_SDK -p
+          gh release create snapshot_$rel $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK -p
         else
-          gh release create rel_$rel $PRODUCTS $REPO_BINARY $REPO_SDK --latest
+          gh release create rel_$rel $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK --latest
         fi
 
