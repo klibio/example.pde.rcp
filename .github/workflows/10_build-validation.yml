@@ -46,3 +46,18 @@ jobs:
         export PATH=$JAVA_HOME/bin:$PATH
         ./build.sh --jar-signing
       continue-on-error: true
+
+    - name: validate-build-results
+      shell: bash
+      run: |
+        PRODUCTS=$(find releng/products/target -name 'example.rcp.app.ui.*' -type f)
+        REPO_PRODUCT=$(find releng/products/target -name 'products-*.zip' -type f)
+        REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
+        REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
+
+        for product in "${PRODUCTS[@]}"; do
+          test -f "$product"
+        done
+        test -f $REPO_PRODUCT
+        test -f $REPO_BINARY
+        test -f $REPO_SDK

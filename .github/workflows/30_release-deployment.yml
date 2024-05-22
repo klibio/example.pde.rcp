@@ -14,6 +14,7 @@ on:
 
 jobs:
   release:
+    runs-on: ubuntu-latest
     env:
       REPOSILITE_ID: '${{ vars.REPOSILITE_ID }}'
       REPOSILITE_URL: '${{ vars.REPOSILITE_URL }}'
@@ -21,12 +22,6 @@ jobs:
       REPOSILITE_TOKEN_RELEASE: '${{ secrets.REPOSILITE_TOKEN_RELEASE }}'
       REPOSILITE_USER_SNAPSHOT: '${{ secrets.REPOSILITE_USER_SNAPSHOT }}'
       REPOSILITE_TOKEN_SNAPSHOT: '${{ secrets.REPOSILITE_TOKEN_SNAPSHOT }}'
-      APP_FEATURE_PRODUCT: 'example.rcp.app.ui.feature.product'
-      APP_BUNDLE_PRODUCT: 'example.rcp.app.ui.plugin.product'
-      APP_FEATURE: 'example-rcp-app-ui-feature'
-      APP_BUNDLE: 'example-rcp-app-ui-plugin'
-  
-    runs-on: ubuntu-latest
 
     steps:
 
@@ -53,15 +48,6 @@ jobs:
 
     - name: build
       shell: bash
-      env:
-        RELEASE_VERSION: ${{ github.event.inputs.release-version }}
-        NEXT_SNAPSHOT_VERSION: ${{ github.event.inputs.next-snaphot-version }}
-        REPOSILITE_ID: '${{ vars.REPOSILITE_ID }}'
-        REPOSILITE_URL: '${{ vars.REPOSILITE_URL }}'
-        REPOSILITE_USER_RELEASE: '${{ secrets.REPOSILITE_USER_RELEASE }}'
-        REPOSILITE_TOKEN_RELEASE: '${{ secrets.REPOSILITE_TOKEN_RELEASE }}'
-        REPOSILITE_USER_SNAPSHOT: '${{ secrets.REPOSILITE_USER_SNAPSHOT }}'
-        REPOSILITE_TOKEN_SNAPSHOT: '${{ secrets.REPOSILITE_TOKEN_SNAPSHOT }}'
       run: |
         echo -e "#\n# build\n#\n"
         echo "# configure environment for maven/tycho calls"
@@ -118,6 +104,7 @@ jobs:
         fi
 
     - name: start next development cycle
+      shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
       run:
