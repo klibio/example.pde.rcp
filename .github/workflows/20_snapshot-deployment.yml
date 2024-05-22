@@ -79,6 +79,7 @@ jobs:
         REPO_PRODUCT=$(find releng/products/target -name 'products-*.zip' -type f)
         REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
         REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
+        jq --version
         if [[ $version =~ (.*+SNAPSHOT.*+) ]]; then
           gh release list --json tagName | jq --arg rel $rel 'select(.[].tagName == $rel)' | grep $rel
           retVal=$?
