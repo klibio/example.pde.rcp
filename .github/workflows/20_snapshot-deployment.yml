@@ -80,13 +80,13 @@ jobs:
         REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
         REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
         if [[ $version =~ (.*+SNAPSHOT.*+) ]]; then
-          gh release list --json tagName | jq --arg rel $rel 'select(.[].tagName == $rel)' | grep $rel
-          retVal=$?
-          if [[ $retVal == 0 ]]; then
-            echo "delete existiong snapshot release, before creating new one"
-            gh release delete snapshot_$rel
-            git push --delete origin snapshot_$rel
-          fi
+        #  gh release list --json tagName | jq --arg rel $rel 'select(.[].tagName == $rel)' | grep $rel
+        #  retVal=$?
+        #  if [[ $retVal == 0 ]]; then
+        #    echo "delete existiong snapshot release, before creating new one"
+        #    gh release delete snapshot_$rel
+        #    git push --delete origin snapshot_$rel
+        #  fi
           gh release create snapshot_$rel $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK -p
         else
           gh release create rel_$rel $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK --latest
