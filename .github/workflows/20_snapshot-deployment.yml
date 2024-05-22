@@ -97,6 +97,7 @@ jobs:
           echo "d"
           gh release list --json tagName | jq --arg jqSnapshot "$snapshot" 'select(.[].tagName == $jqSnapshot)' | grep $snapshot
           retVal=$?
+          echo "e=$retVal"
           if [[ $retVal == 0 ]]; then
             echo "delete existiong snapshot release, before creating new one"
             gh release delete $snapshot
