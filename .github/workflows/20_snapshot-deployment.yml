@@ -81,6 +81,7 @@ jobs:
         REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
         jq --version
         if [[ $version =~ (.*+SNAPSHOT.*+) ]]; then
+          echo "eval if snapshot release $rel is already existing"
           gh release list --json tagName | jq --arg rel $rel 'select(.[].tagName == $rel)' | grep $rel
           retVal=$?
           if [[ $retVal == 0 ]]; then
