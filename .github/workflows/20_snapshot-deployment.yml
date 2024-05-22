@@ -71,11 +71,11 @@ jobs:
           minor="${BASH_REMATCH[2]}"
           bugfix="${BASH_REMATCH[3]}"
           snapshot="${BASH_REMATCH[4]}"
-          rel=$major.$minor.$bugfix
         else
           echo "Version format not recognized."
           exit 1
         fi
+        rel=$major.$minor.$bugfix
 
         PRODUCTS=$(find releng/products/target -name 'example.rcp.app.ui.*' -type f)
         REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
