@@ -84,7 +84,9 @@ jobs:
 
         if [[ $version =~ (.*+SNAPSHOT.*+) ]]; then
           gh release list --json tagName | jq --arg rel $rel 'select(.[].tagName == $rel)' | grep $rel
-          if [[ $? ]]; then
+          retVal=$?
+          if [[ $retVal == 0 ]]; then
+            echo "delete existiong snapshot release, before creating new one"
             gh release delete snapshot_$rel
             git push --delete origin snapshot_$rel
           fi
