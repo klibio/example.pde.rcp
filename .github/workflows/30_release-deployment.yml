@@ -16,6 +16,10 @@ jobs:
   release:
     runs-on: ubuntu-latest
     env:
+      RELEASE_VERSION: '${{ github.event.inputs.release-version }}'
+      NEXT_SNAPSHOT_VERSION: '${{ github.event.inputs.next-snaphot-version }}'
+      GPG_SIGNING_KEY: '${{ secrets.GPG_SIGNING_KEY }}'
+      GPG_PASSPHRASE_PETER_AT_KLIB_IO: '${{ secrets.GPG_PASSPHRASE_PETER_AT_KLIB_IO }}'
       REPOSILITE_ID: '${{ vars.REPOSILITE_ID }}'
       REPOSILITE_URL: '${{ vars.REPOSILITE_URL }}'
       REPOSILITE_USER_RELEASE: '${{ secrets.REPOSILITE_USER_RELEASE }}'
@@ -45,6 +49,11 @@ jobs:
           11
           17
           21
+
+    - name: Configure GPG Key
+      run: |
+        echo -n "$GPG_SIGNING_KEY" | base64 --decode > private-key.gpg
+        echo "$GPG_PASSPHRASE_PETER_AT_KLIB_IO" | gpg --batch --quiet --yes --no-use-agent --passphrase-fd 0 your_file.gpg
 
     - name: build
       shell: bash
