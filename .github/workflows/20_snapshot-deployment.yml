@@ -74,23 +74,24 @@ jobs:
           echo "Version format not recognized."
           exit 1
         fi
-        rel=$major.$minor.$bugfix
+        version=$major.$minor.$bugfix
+        release=rel_$version
+        snapshot=snapshot_$version
         PRODUCTS=$(find releng/products/target -name 'example.rcp.app.ui.*' -type f)
         REPO_PRODUCT=$(find releng/products/target -name 'products-*.zip' -type f)
         REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
         REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
         jq --version
         if [[ $version =~ (.*+SNAPSHOT.*+) ]]; then
-          export snapshot_rel=snapshot_$rel
-          echo "eval if snapshot release $snapshot_rel is already existing"
-          gh release list --json tagName | jq --arg rel $snapshot_rel 'select(.[].tagName == $snapshot_rel)' | grep $snapshot_rel
+          echo "eval if snapshot release $snapshot is already existing"
+          gh release list --json tagName | jq --arg rel $snapshot 'select(.[].tagName == $snapshot)' | grep $snapshot
           retVal=$?
           if [[ $retVal == 0 ]]; then
             echo "delete existiong snapshot release, before creating new one"
-        #    gh release delete $snapshot_rel
-        #    git push --delete origin $snapshot_rel
+        #    gh release delete $snapshot
+        #    git push --delete origin $snapshot
           fi
-          gh release create $snapshot_rel $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK -p
+          gh release create $snapshot $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK -p
         else
-          gh release create rel_$rel $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK --latest
+          gh release create release $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK --latest
         fi
