@@ -7,18 +7,14 @@ on:
 
 jobs:
   snapshot:
-    environment: dev
+    runs-on: ubuntu-latest
     env:
       REPOSILITE_ID: '${{ vars.REPOSILITE_ID }}'
       REPOSILITE_URL: '${{ vars.REPOSILITE_URL }}'
-      REPOSILITE_USERNAME: '${{ secrets.REPOSILITE_USERNAME }}'
-      REPOSILITE_TOKEN: '${{ secrets.REPOSILITE_TOKEN }}'
-      APP_FEATURE_PRODUCT: 'example.rcp.app.ui.feature.product'
-      APP_BUNDLE_PRODUCT: 'example.rcp.app.ui.plugin.product'
-      APP_FEATURE: 'example-rcp-app-ui-feature'
-      APP_BUNDLE: 'example-rcp-app-ui-plugin'
-  
-    runs-on: ubuntu-latest
+      REPOSILITE_USER_RELEASE: '${{ secrets.REPOSILITE_USER_RELEASE }}'
+      REPOSILITE_TOKEN_RELEASE: '${{ secrets.REPOSILITE_TOKEN_RELEASE }}'
+      REPOSILITE_USER_SNAPSHOT: '${{ secrets.REPOSILITE_USER_SNAPSHOT }}'
+      REPOSILITE_TOKEN_SNAPSHOT: '${{ secrets.REPOSILITE_TOKEN_SNAPSHOT }}'
 
     steps:
 
@@ -34,29 +30,59 @@ jobs:
 #          ~/.p2
 #        key: dev-${{ hashFiles('~/.klibio/klibio.sh') }}
 
-    - name: setup idefix
-      shell: bash
-      run: |
-        .github/workflows/setup-idefix.sh
-      continue-on-error: false
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: |
+          8
+          11
+          17
+          21
 
     - name: build
       shell: bash
       run: |
+        echo -e "#\n# build\n#\n"
+        echo "# configure environment for maven/tycho calls"
+        export JAVA_HOME_8=$JAVA_HOME_8_X64
+        export JAVA_HOME_11=$JAVA_HOME_11_X64
+        export JAVA_HOME_17=$JAVA_HOME_17_X64
+        export JAVA_HOME_21=$JAVA_HOME_21_X64
+        export PATH=$JAVA_HOME/bin:$PATH
         ./build.sh --jar-signing --deploy
-      continue-on-error: false
-     
-    - name: Generate Changelog
-      run: echo "# Good things have arrived" > ${{ github.workspace }}-CHANGELOG.txt
+      continue-on-error: true
 
-    - name: Release
-      uses: softprops/action-gh-release@v2
-#      if: startsWith(github.ref, 'refs/tags/')
-      with:
-          files: |
-            ${{ github.workspace }}-CHANGELOG.txt
-            releng/repo.binary/target/repository/p2.index
-            releng/repo.binary/target/repository/content.xml.xz
-            releng/repo.binary/target/repository/artifacts.xml.xz
-          draft: true
-          prerelease: false
+    - name: create release
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        pom_version=$(grep -oPm1 "(?<=<version>)[^<]+" "pom.xml")
+        if [[ $pom_version =~ ([0-9]+)\.([0-9]+)\.([0-9]+)(.*) ]]; then
+          major="${BASH_REMATCH[1]}"
+          minor="${BASH_REMATCH[2]}"
+          bugfix="${BASH_REMATCH[3]}"
+          snapshot="${BASH_REMATCH[4]}"
+        else
+          echo "Version format not recognized."
+          exit 1
+        fi
+        version=$major.$minor.$bugfix
+        release=rel_$version
+        snapshot=snapshot_$version
+        PRODUCTS=$(find releng/products/target -name 'example.rcp.app.ui.*' -type f)
+        REPO_PRODUCT=$(find releng/products/target -name 'products-*.zip' -type f)
+        REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
+        REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
+        if [[ $pom_version =~ (.*+SNAPSHOT.*+) ]]; then
+          echo "eval if snapshot release $snapshot is already existing"
+          gh release list --json tagName | jq --arg jqSnapshot "$snapshot" 'select(.[].tagName == $jqSnapshot)' > snapshot.json
+          if [[ -s snapshot.json ]]; then
+            echo "delete existiong snapshot release, before creating new one"
+            gh release delete $snapshot
+            git push --delete origin $snapshot
+          fi
+          gh release create $snapshot $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK -p
+        else
+          gh release create $release $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK --latest
+        fi

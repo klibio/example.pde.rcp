@@ -5,7 +5,7 @@
 
   <groupId>example.rcp</groupId>
   <artifactId>example.rcp.parent</artifactId>
-  <version>0.4.0-SNAPSHOT</version>
+  <version>0.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <properties>
@@ -215,14 +215,12 @@
           <products>
             <product>
               <id>example.rcp.app.ui.feature.product</id>
-              <archiveFileName>
-                example.rcp.app.ui.feature.product-${project.version}.${buildQualifier}</archiveFileName>
+              <archiveFileName>example.rcp.app.ui.feature.product-${project.version}.${buildQualifier}</archiveFileName>
               <rootFolder>example-rcp-app</rootFolder>
             </product>
             <product>
               <id>example.rcp.app.ui.plugin.product</id>
-              <archiveFileName>
-                example.rcp.app.ui.plugin.product-${project.version}.${buildQualifier}</archiveFileName>
+              <archiveFileName>example.rcp.app.ui.plugin.product-${project.version}.${buildQualifier}</archiveFileName>
               <rootFolder>example-rcp-app</rootFolder>
             </product>
           </products>
