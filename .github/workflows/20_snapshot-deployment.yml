@@ -87,6 +87,7 @@ jobs:
         jq --version
         if [[ $pom_version =~ (.*+SNAPSHOT.*+) ]]; then
           echo "eval if snapshot release $snapshot is already existing"
+          gh release list --json tagName
           gh release list --json tagName | jq --arg jqSnapshot "$snapshot" 'select(.[].tagName == $jqSnapshot)' | grep $snapshot
           retVal=$?
           if [[ $retVal == 0 ]]; then
