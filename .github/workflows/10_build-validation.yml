@@ -8,12 +8,13 @@ on:
 
 jobs:
   build:
-    environment: dev
     env:
-      REPOSILITE_ID: ${{ vars.REPOSILITE_ID }}
-      REPOSILITE_URL: ${{ vars.REPOSILITE_URL }}
-      REPOSILITE_USERNAME: ${{ secrets.REPOSILITE_USERNAME }}
-      REPOSILITE_TOKEN: ${{ secrets.REPOSILITE_TOKEN }}
+      REPOSILITE_ID: '${{ vars.REPOSILITE_ID }}'
+      REPOSILITE_URL: '${{ vars.REPOSILITE_URL }}'
+      REPOSILITE_USER_RELEASE: '${{ secrets.REPOSILITE_USER_RELEASE }}'
+      REPOSILITE_TOKEN_RELEASE: '${{ secrets.REPOSILITE_TOKEN_RELEASE }}'
+      REPOSILITE_USER_SNAPSHOT: '${{ secrets.REPOSILITE_USER_SNAPSHOT }}'
+      REPOSILITE_TOKEN_SNAPSHOT: '${{ secrets.REPOSILITE_TOKEN_SNAPSHOT }}'
       APP_FEATURE_PRODUCT: 'example.rcp.app.ui.feature.product'
       APP_BUNDLE_PRODUCT: 'example.rcp.app.ui.plugin.product'
       APP_FEATURE: 'example-rcp-app-ui-feature'
@@ -35,14 +36,25 @@ jobs:
 #          ~/.p2
 #        key: dev-${{ hashFiles('~/.klibio/klibio.sh') }}
 
-    - name: setup idefix
-      shell: bash
-      run: |
-        $GITHUB_WORKSPACE/.github/workflows/setup-idefix.sh
-      continue-on-error: false
-        
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: |
+          8
+          11
+          17
+          21
+
     - name: build
       shell: bash
       run: |
-        ./build.sh
-      continue-on-error: false
+        echo -e "#\n# build\n#\n"
+        echo "# configure environment for maven/tycho calls"
+        export JAVA_HOME_8=$JAVA_HOME_8_X64
+        export JAVA_HOME_11=$JAVA_HOME_11_X64
+        export JAVA_HOME_17=$JAVA_HOME_17_X64
+        export JAVA_HOME_21=$JAVA_HOME_21_X64
+        export PATH=$JAVA_HOME/bin:$PATH
+        ./build.sh --jar-signing
+      continue-on-error: true
+        

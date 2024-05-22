@@ -7,7 +7,6 @@ on:
 
 jobs:
   snapshot:
-    environment: dev
     env:
       REPOSILITE_ID: '${{ vars.REPOSILITE_ID }}'
       REPOSILITE_URL: '${{ vars.REPOSILITE_URL }}'
@@ -55,15 +54,19 @@ jobs:
         REPOSILITE_USER_SNAPSHOT: '${{ secrets.REPOSILITE_USER_SNAPSHOT }}'
         REPOSILITE_TOKEN_SNAPSHOT: '${{ secrets.REPOSILITE_TOKEN_SNAPSHOT }}'
       run: |
+        echo -e "#\n# build\n#\n"
+        echo "# configure environment for maven/tycho calls"
         export JAVA_HOME_8=$JAVA_HOME_8_X64
         export JAVA_HOME_11=$JAVA_HOME_11_X64
         export JAVA_HOME_17=$JAVA_HOME_17_X64
         export JAVA_HOME_21=$JAVA_HOME_21_X64
         export PATH=$JAVA_HOME/bin:$PATH
+      
         ./build.sh --jar-signing --deploy
       continue-on-error: true
 
     - name: create release
+      shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
