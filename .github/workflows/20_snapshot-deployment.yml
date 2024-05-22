@@ -75,14 +75,20 @@ jobs:
           minor="${BASH_REMATCH[2]}"
           bugfix="${BASH_REMATCH[3]}"
           snapshot="${BASH_REMATCH[4]}"
-          else
+          rel=$major.$minor.$bugfix
+        else
           echo "Version format not recognized."
           exit 1
         fi
 
-        if [[ $version =~ (.*+SNAPSHOT.*+) ]]; then        
-          gh release create snapshot_$major.$minor.$bugfix $PRODUCTS $REPO_BINARY $REPO_SDK -p
+        if [[ $version =~ (.*+SNAPSHOT.*+) ]]; then
+          gh release list --json tagName | jq --arg rel $rel 'select(.[].tagName == $rel)' | grep $rel
+          if [[ $? ]]; then
+            gh release delete snapshot_$rel
+            git push --delete origin snapshot_$rel
+          fi
+          gh release create snapshot_$rel $PRODUCTS $REPO_BINARY $REPO_SDK -p
         else
-          gh release create rel_$major.$minor.$bugfix $PRODUCTS $REPO_BINARY $REPO_SDK --latest
+          gh release create rel_$rel $PRODUCTS $REPO_BINARY $REPO_SDK --latest
         fi
 
