@@ -5,21 +5,10 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
-    env:
-      REPOSILITE_ID: '${{ vars.REPOSILITE_ID }}'
-      REPOSILITE_URL: '${{ vars.REPOSILITE_URL }}'
-      REPOSILITE_USER_RELEASE: '${{ secrets.REPOSILITE_USER_RELEASE }}'
-      REPOSILITE_TOKEN_RELEASE: '${{ secrets.REPOSILITE_TOKEN_RELEASE }}'
-      REPOSILITE_USER_SNAPSHOT: '${{ secrets.REPOSILITE_USER_SNAPSHOT }}'
-      REPOSILITE_TOKEN_SNAPSHOT: '${{ secrets.REPOSILITE_TOKEN_SNAPSHOT }}'
-      APP_FEATURE_PRODUCT: 'example.rcp.app.ui.feature.product'
-      APP_BUNDLE_PRODUCT: 'example.rcp.app.ui.plugin.product'
-      APP_FEATURE: 'example-rcp-app-ui-feature'
-      APP_BUNDLE: 'example-rcp-app-ui-plugin'
-  
     runs-on: ubuntu-latest
 
     steps:
@@ -57,4 +46,3 @@ jobs:
         export PATH=$JAVA_HOME/bin:$PATH
         ./build.sh --jar-signing
       continue-on-error: true
-        
