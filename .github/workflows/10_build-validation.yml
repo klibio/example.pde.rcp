@@ -50,14 +50,12 @@ jobs:
     - name: validate-build-results
       shell: bash
       run: |
-        PRODUCTS=$(find releng/products/target -name 'example.rcp.app.ui.*' -type f)
-        REPO_PRODUCT=$(find releng/products/target -name 'products-*.zip' -type f)
-        REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
-        REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
+        NUM_PRODUCTS=$(find releng/products/target -name 'example.rcp.app.ui.*' -type f | wc -l)
+        NUM_REPO_PRODUCT=$(find releng/products/target -name 'products-*.zip' -type f | wc -l)
+        NUM_REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f | wc -l)
+        NUM_REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f | wc -l)
 
-        for product in "${PRODUCTS[@]}"; do
-          test -f "$product"
-        done
-        test -f $REPO_PRODUCT
-        test -f $REPO_BINARY
-        test -f $REPO_SDK
+        [[ $NUM_PRODUCTS -ne 0]] echo "products existing!"
+        [[ $NUM_REPO_PRODUCT -ne 0]] echo "product repo existing!"
+        [[ $NUM_REPO_BINARY -ne 0]] echo "binary repo existing!"
+        [[ $NUM_REPO_SDK -ne 0]] echo "sdk repo existing!"
