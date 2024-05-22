@@ -47,6 +47,13 @@ jobs:
 
     - name: build
       shell: bash
+      env:
+        REPOSILITE_ID: '${{ vars.REPOSILITE_ID }}'
+        REPOSILITE_URL: '${{ vars.REPOSILITE_URL }}'
+        REPOSILITE_USER_RELEASE: '${{ secrets.REPOSILITE_USER_RELEASE }}'
+        REPOSILITE_TOKEN_RELEASE: '${{ secrets.REPOSILITE_TOKEN_RELEASE }}'
+        REPOSILITE_USER_SNAPSHOT: '${{ secrets.REPOSILITE_USER_SNAPSHOT }}'
+        REPOSILITE_TOKEN_SNAPSHOT: '${{ secrets.REPOSILITE_TOKEN_SNAPSHOT }}'
       run: |
         export JAVA_HOME_8=$JAVA_HOME_8_X64
         export JAVA_HOME_11=$JAVA_HOME_11_X64
@@ -59,10 +66,6 @@ jobs:
     - name: create release
       env:
         GH_TOKEN: ${{ github.token }}
-        REPOSILITE_ID: '${{ vars.REPOSILITE_ID }}'
-        REPOSILITE_URL: '${{ vars.REPOSILITE_URL }}'
-        REPOSILITE_USERNAME: '${{ secrets.REPOSILITE_USERNAME }}'
-        REPOSILITE_TOKEN: '${{ secrets.REPOSILITE_TOKEN }}'
       run: |
         pom_version=$(grep -oPm1 "(?<=<version>)[^<]+" "pom.xml")
         if [[ $pom_version =~ ([0-9]+)\.([0-9]+)\.([0-9]+)(.*) ]]; then
@@ -84,7 +87,7 @@ jobs:
         jq --version
         if [[ $pom_version =~ (.*+SNAPSHOT.*+) ]]; then
           echo "eval if snapshot release $snapshot is already existing"
-          gh release list --json tagName | jq --arg jqSnapshot $snapshot 'select(.[].tagName == $jqSnapshot)' | grep $snapshot
+          gh release list --json tagName | jq --arg jqSnapshot "$snapshot" 'select(.[].tagName == $jqSnapshot)' | grep $snapshot
           retVal=$?
           if [[ $retVal == 0 ]]; then
             echo "delete existiong snapshot release, before creating new one"
@@ -93,5 +96,5 @@ jobs:
           fi
           gh release create $snapshot $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK -p
         else
-          gh release create release $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK --latest
+          gh release create $release $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK --latest
         fi
