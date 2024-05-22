@@ -74,13 +74,14 @@ jobs:
 
         echo -e "#\n# RELEASE build and deploy to artifactory\n#\n"
         MAVEN_OPTS="-Dtycho.localArtifacts=ignore -Dmaven.repo.local=.local_m2_cache"
-        ./build.sh --jar-signing --deploy
+        ./build.sh --jar-signing --gpg-signing --deploy
       continue-on-error: true
 
     - name: create release
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
+        RELEASE_VERSION: '${{ github.event.inputs.release-version }}'
       run: |
         pom_version=$(grep -oPm1 "(?<=<version>)[^<]+" "pom.xml")
         if [[ $pom_version =~ ([0-9]+)\.([0-9]+)\.([0-9]+)(.*) ]]; then
@@ -93,7 +94,7 @@ jobs:
           exit 1
         fi
         version=$major.$minor.$bugfix
-        release=rel_$version
+        release=rel_$RELEASE_VERSION
         snapshot=snapshot_$version
         PRODUCTS=$(find releng/products/target -name 'example.rcp.app.ui.*' -type f)
         REPO_PRODUCT=$(find releng/products/target -name 'products-*.zip' -type f)
@@ -116,6 +117,7 @@ jobs:
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
+        NEXT_SNAPSHOT_VERSION: '${{ github.event.inputs.next-snaphot-version }}'
       run:
         echo -e "#\n# start next development cycle with new version $NEXT_SNAPSHOT_VERSION\n#\n"
         ./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=$NEXT_SNAPSHOT_VERSION
