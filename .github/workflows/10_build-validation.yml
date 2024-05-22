@@ -55,7 +55,7 @@ jobs:
         NUM_REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f | wc -l)
         NUM_REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f | wc -l)
 
-        [[ $NUM_PRODUCTS -ne 0]] echo "products existing!"
-        [[ $NUM_REPO_PRODUCT -ne 0]] echo "product repo existing!"
-        [[ $NUM_REPO_BINARY -ne 0]] echo "binary repo existing!"
-        [[ $NUM_REPO_SDK -ne 0]] echo "sdk repo existing!"
+        [[ $NUM_PRODUCTS -gt 0 ]] echo "products existing!"
+        [[ $NUM_REPO_PRODUCT -ne 0 ]] echo "product repo existing!"
+        [[ $NUM_REPO_BINARY -ne 0 ]] echo "binary repo existing!"
+        [[ $NUM_REPO_SDK -ne 0 ]] echo "sdk repo existing!"
