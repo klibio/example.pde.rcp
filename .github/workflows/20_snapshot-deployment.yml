@@ -88,8 +88,8 @@ jobs:
           retVal=$?
           if [[ $retVal == 0 ]]; then
             echo "delete existiong snapshot release, before creating new one"
-        #    gh release delete $snapshot
-        #    git push --delete origin $snapshot
+            gh release delete $snapshot
+            git push --delete origin $snapshot
           fi
           gh release create $snapshot $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK -p
         else
