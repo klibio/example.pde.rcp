@@ -81,15 +81,16 @@ jobs:
         REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)
         jq --version
         if [[ $version =~ (.*+SNAPSHOT.*+) ]]; then
-          echo "eval if snapshot release $rel is already existing"
-          gh release list --json tagName | jq --arg rel $rel 'select(.[].tagName == $rel)' | grep $rel
+          snapshot_rel=snapshot_$rel
+          echo "eval if snapshot release $snapshot_rel is already existing"
+          gh release list --json tagName | jq --arg rel $snapshot_rel 'select(.[].tagName == $snapshot_rel)' | grep $snapshot_rel
           retVal=$?
           if [[ $retVal == 0 ]]; then
             echo "delete existiong snapshot release, before creating new one"
-        #    gh release delete snapshot_$rel
-        #    git push --delete origin snapshot_$rel
+        #    gh release delete $snapshot_rel
+        #    git push --delete origin $snapshot_rel
           fi
-          gh release create snapshot_$rel $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK -p
+          gh release create $snapshot_rel $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK -p
         else
           gh release create rel_$rel $PRODUCTS $REPO_BINARY $REPO_PRODUCT $REPO_SDK --latest
         fi
