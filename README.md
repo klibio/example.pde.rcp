@@ -99,6 +99,11 @@ export 'REPOSILITE_TOKEN=<your-token-here>'
 ./build.sh --jar-signing --gpg-signing --deploy
 ```
 
+**Note:** When using `--deploy`, the build will:
+- Deploy all bundles and features to the Maven repository
+- Deploy p2 repositories (repo.binary, repo.sdk) as zipped Maven artifacts
+- Deploy the products repository as a zipped Maven artifact
+
 ### deploy snapshot
 
 ```bash
