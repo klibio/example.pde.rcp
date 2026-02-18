@@ -6,4 +6,4 @@ Automatic-Module-Name: example.rcp.headless
 Bundle-Vendor: Kirschners GmbH
 Bundle-Version: 0.1.0.qualifier
 Require-Bundle: org.eclipse.core.runtime
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21

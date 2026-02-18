@@ -9,3 +9,23 @@
 
 [Error resolving touchpoint action](https://stackoverflow.com/a/72619147)
 [tycho-p2-director:materialize-products](https://tycho.eclipseprojects.io/doc/latest/tycho-p2-director-plugin/materialize-products-mojo.html)
+
+## Custom touchpoint action scaffold in this repository
+
+This project now contains a minimal custom action provider bundle:
+
+- bundle: `example.rcp.touchpoint`
+- extension point: `org.eclipse.equinox.p2.engine.actions`
+- action name: `log`
+- touchpoint type: `org.eclipse.equinox.p2.osgi`
+
+To invoke it from `p2.inf`, use e.g.:
+
+```properties
+instructions.configure = \
+	example.rcp.touchpoint.log(message:hello from p2);
+instructions.configure.import = \
+	example.rcp.touchpoint.log
+```
+
+Note: this is intentionally not enabled by default in `p2.inf` so normal builds stay deterministic.

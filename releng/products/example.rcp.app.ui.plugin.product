@@ -25,20 +25,23 @@
    </vm>
 
    <plugins>
+      <plugin id="com.github.weisj.jsvg"/>
       <plugin id="com.ibm.icu"/>
       <plugin id="com.sun.jna"/>
       <plugin id="com.sun.jna.platform"/>
       <plugin id="example.rcp.app.ui"/>
+      <plugin id="example.rcp.comp1.view"/>
+      <plugin id="example.rcp.comp2.view"/>
+      <plugin id="example.rcp.headless"/>
       <plugin id="example.rcp.view"/>
-      <plugin id="jakarta.annotation"/>
-      <plugin id="jakarta.inject"/>
+      <plugin id="jakarta.annotation-api"/>
+      <plugin id="jakarta.inject.jakarta.inject-api"/>
       <plugin id="org.apache.batik.constants"/>
       <plugin id="org.apache.batik.css"/>
       <plugin id="org.apache.batik.i18n"/>
       <plugin id="org.apache.batik.util"/>
       <plugin id="org.apache.commons.commons-io"/>
-      <plugin id="org.apache.commons.jxpath"/>
-      <plugin id="org.apache.commons.logging"/>
+      <plugin id="org.apache.commons.commons-logging"/>
       <plugin id="org.apache.felix.scr"/>
       <plugin id="org.apache.xmlgraphics"/>
       <plugin id="org.eclipse.core.commands"/>
@@ -65,7 +68,7 @@
       <plugin id="org.eclipse.e4.ui.dialogs"/>
       <plugin id="org.eclipse.e4.ui.model.workbench"/>
       <plugin id="org.eclipse.e4.ui.services"/>
-      <plugin id="org.eclipse.e4.ui.swt.win32" fragment="true"/>
+      <plugin id="org.eclipse.e4.ui.swt.win32"/>
       <plugin id="org.eclipse.e4.ui.widgets"/>
       <plugin id="org.eclipse.e4.ui.workbench"/>
       <plugin id="org.eclipse.e4.ui.workbench.addons.swt"/>
@@ -84,38 +87,22 @@
       <plugin id="org.eclipse.help"/>
       <plugin id="org.eclipse.jface"/>
       <plugin id="org.eclipse.jface.databinding"/>
+      <plugin id="org.eclipse.orbit.xml-apis-ext"/>
       <plugin id="org.eclipse.osgi"/>
-      <plugin id="org.eclipse.osgi.compatibility.state" fragment="true"/>
-      <plugin id="org.eclipse.osgi.services"/>
+      <plugin id="org.eclipse.osgi.compatibility.state"/>
       <plugin id="org.eclipse.swt"/>
-      <plugin id="org.eclipse.swt.win32.win32.x86_64" fragment="true"/>
+      <plugin id="org.eclipse.swt.svg"/>
+      <plugin id="org.eclipse.swt.win32.win32.x86_64"/>
       <plugin id="org.eclipse.ui"/>
       <plugin id="org.eclipse.ui.workbench"/>
       <plugin id="org.eclipse.urischeme"/>
-      <plugin id="org.osgi.service.cm"/>
       <plugin id="org.osgi.service.component"/>
-      <plugin id="org.osgi.service.device"/>
       <plugin id="org.osgi.service.event"/>
-      <plugin id="org.osgi.service.metatype"/>
       <plugin id="org.osgi.service.prefs"/>
-      <plugin id="org.osgi.service.provisioning"/>
-      <plugin id="org.osgi.service.upnp"/>
-      <plugin id="org.osgi.service.useradmin"/>
-      <plugin id="org.osgi.service.wireadmin"/>
       <plugin id="org.osgi.util.function"/>
       <plugin id="org.osgi.util.promise"/>
-      <plugin id="org.w3c.css.sac"/>
-      <plugin id="org.w3c.dom.events"/>
-      <plugin id="org.w3c.dom.smil"/>
-      <plugin id="org.w3c.dom.svg"/>
    </plugins>
 
-   <configurations>
-      <plugin id="org.apache.felix.scr" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
-      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
-      <plugin id="org.eclipse.equinox.event" autoStart="true" startLevel="2" />
-   </configurations>
 
    <preferencesInfo>
       <targetfile overwrite="false"/>

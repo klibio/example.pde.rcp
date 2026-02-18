@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Example Touchpoint Actions
+Bundle-SymbolicName: example.rcp.touchpoint;singleton:=true
+Automatic-Module-Name: example.rcp.touchpoint
+Bundle-Vendor: Kirschners GmbH
+Bundle-Version: 0.1.0.qualifier
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.equinox.p2.engine
+Bundle-RequiredExecutionEnvironment: JavaSE-21

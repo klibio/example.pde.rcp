@@ -45,14 +45,31 @@ log_file=_log/${ts}_build.log
 echo -e "#\n# build - log file $log_file\n#\n"      2>&1 | tee -a $log_file
 
 echo -e "#\n# sourcing environment from build\n#\n" 2>&1 | tee -a $log_file
-. ~/.klibio/klibio.sh
-. ~/.klibio/set-java.sh 17 # must not use pipe `2>&1 | tee -a $log_file`, cause export env vars will not work
+if [[ -f ~/.klibio/klibio.sh ]]; then
+    . ~/.klibio/klibio.sh
+else
+    echo "warning: ~/.klibio/klibio.sh not found, continuing without it" 2>&1 | tee -a $log_file
+fi
+if [[ -f ~/.klibio/set-java.sh ]]; then
+    . ~/.klibio/set-java.sh 21 # must not use pipe `2>&1 | tee -a $log_file`, cause export env vars will not work
+else
+    echo "warning: ~/.klibio/set-java.sh not found, using current JAVA_HOME=$JAVA_HOME" 2>&1 | tee -a $log_file
+    if [[ "$JAVA_HOME" != *"JAVA21"* && -d "$HOME/.ecdev/java/ee/JAVA21" ]]; then
+        export JAVA_HOME="$HOME/.ecdev/java/ee/JAVA21"
+        export PATH="$JAVA_HOME/bin:$PATH"
+        echo "info: fallback JAVA_HOME set to $JAVA_HOME" 2>&1 | tee -a $log_file
+    fi
+fi
 
 # signing 
 echo -e "#\n# sourcing sign properties\n#\n" 2>&1 | tee -a $log_file
-readPropertyFile certificate/sign.properties # must not use pipe `2>&1 | tee -a $log_file`, cause export env vars will not work
+if command -v readPropertyFile >/dev/null 2>&1; then
+    readPropertyFile certificate/sign.properties # must not use pipe `2>&1 | tee -a $log_file`, cause export env vars will not work
+elif [[ -f certificate/sign.properties ]]; then
+    echo "warning: readPropertyFile function not available, skipping certificate/sign.properties import" 2>&1 | tee -a $log_file
+fi
 env | grep "sign_" 2>&1 | tee -a $log_file
-if [[ $sign_skip -eq "true" ]]; then
+if [[ "${sign_skip}" == "true" ]]; then
     keystore=-Dkeystore=${build_dir}/certificate/${sign_keystore}
     read -r -d '' signVM << EOM
 -Dsign_skip=$sign_skip \
@@ -62,14 +79,14 @@ if [[ $sign_skip -eq "true" ]]; then
 -Dsign_storepass=$sign_storepass
 EOM
 fi
-echo -e "# end of signing properties\n"2>&1 | tee -a $log_file
+echo -e "# end of signing properties\n" 2>&1 | tee -a $log_file
 
 if [[ ${diag} -eq 1 ]]; then
     echo -e "#\n# execute diagnose\n#\n" 2>&1 | tee -a $log_file
     ./mvnw \
         ${MAVEN_OPTS} \
         ${mvnDebug} \
-        ${gpg_signing}
+        ${gpg_signing} \
         ${local_cache} \
         help:effective-settings 2>&1 | tee -a $log_file
 fi

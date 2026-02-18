@@ -3,10 +3,12 @@
 <target name="Example RCP Platform Target" sequenceNumber="114">
 	<locations>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
-			<repository id="R-4.38-202512010920" location="https://download.eclipse.org/eclipse/updates/4.38/R-4.38-202512010920/"/>
+			<repository id="R-4.38-202512010920" location="https://download.eclipse.org/eclipse/updates/4.38/R-4.38-202512010920"/>
 			<unit id="org.eclipse.equinox.sdk.feature.group" version="3.23.1900.v20251126-0427"/>
 			<unit id="org.eclipse.rcp.feature.group" version="4.38.0.v20251201-0920"/>
+			<unit id="org.eclipse.equinox.executable.feature.group" version="3.8.3100.v20251111-0406"/>
+			<unit id="org.eclipse.equinox.p2.engine" version="0.0.0"/>
 		</location>
 	</locations>
-	<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17"/>
+	<targetJRE path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21"/>
 </target>

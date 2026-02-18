@@ -6,7 +6,7 @@ Bundle-Vendor: Kirschners GmbH
 Bundle-Version: 0.1.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Import-Package: jakarta.annotation;version="0.0.0",
  jakarta.inject,
  org.eclipse.e4.core.contexts;version="1.7.0",
