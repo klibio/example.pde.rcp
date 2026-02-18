@@ -30,8 +30,8 @@
       <plugin id="com.sun.jna.platform"/>
       <plugin id="example.rcp.app.ui"/>
       <plugin id="example.rcp.view"/>
-      <plugin id="javax.annotation"/>
-      <plugin id="javax.inject"/>
+      <plugin id="jakarta.annotation"/>
+      <plugin id="jakarta.inject"/>
       <plugin id="org.apache.batik.constants"/>
       <plugin id="org.apache.batik.css"/>
       <plugin id="org.apache.batik.i18n"/>
