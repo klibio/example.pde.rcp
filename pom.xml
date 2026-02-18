@@ -10,7 +10,7 @@
 
   <properties>
     <!-- specified inside file .mvn/extensions.xml -->
-    <tycho.version>${tycho.version}</tycho.version>
+    <tycho.version>${tycho-version}</tycho.version>
     <!-- plugin version -->
     <artifactory-maven-plugin-version>3.6.1</artifactory-maven-plugin-version>
     <exec-maven-plugin-version>3.2.0</exec-maven-plugin-version>
@@ -55,13 +55,13 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-maven-plugin</artifactId>
-        <version>${tycho.version}</version>
+        <version>${tycho-version}</version>
         <extensions>true</extensions>
       </plugin>
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-packaging-plugin</artifactId>
-        <version>${tycho.version}</version>
+        <version>${tycho-version}</version>
         <configuration>
           <!-- FEATURE git based timestamps # PART_1_START -->
           <forceContextQualifier>${forceContextQualifier}</forceContextQualifier>
@@ -83,12 +83,12 @@
           <dependency>
             <groupId>org.eclipse.tycho</groupId>
             <artifactId>tycho-buildtimestamp-jgit</artifactId>
-            <version>${tycho.version}</version>
+            <version>${tycho-version}</version>
           </dependency>
           <dependency>
             <groupId>org.eclipse.tycho.extras</groupId>
             <artifactId>tycho-sourceref-jgit</artifactId>
-            <version>${tycho.version}</version>
+            <version>${tycho-version}</version>
           </dependency>
         </dependencies>
         <!-- FEATURE git based timestamps # PART_2_END -->
@@ -105,7 +105,7 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-compiler-plugin</artifactId>
-        <version>${tycho.version}</version>
+        <version>${tycho-version}</version>
         <configuration>
           <compilerArgs>
             <arg>-warn:-restriction</arg>
@@ -117,7 +117,7 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>target-platform-configuration</artifactId>
-        <version>${tycho.version}</version>
+        <version>${tycho-version}</version>
         <configuration>
           <target>
             <artifact>
@@ -158,7 +158,7 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-source-plugin</artifactId>
-        <version>${tycho.version}</version>
+        <version>${tycho-version}</version>
         <executions>
           <execution>
             <id>plugin-source</id>
@@ -173,7 +173,7 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-p2-plugin</artifactId>
-        <version>${tycho.version}</version>
+        <version>${tycho-version}</version>
         <executions>
           <execution>
             <id>attach-p2-metadata</id>
@@ -187,7 +187,7 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-p2-repository-plugin</artifactId>
-        <version>${tycho.version}</version>
+        <version>${tycho-version}</version>
         <configuration>
           <includeAllDependencies>true</includeAllDependencies>
         </configuration>
@@ -195,7 +195,7 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-versions-plugin</artifactId>
-        <version>${tycho.version}</version>
+        <version>${tycho-version}</version>
       </plugin>
       <plugin>
         <groupId>com.github.spotbugs</groupId>
@@ -210,7 +210,7 @@
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-p2-director-plugin</artifactId>
-        <version>${tycho.version}</version>
+        <version>${tycho-version}</version>
         <configuration>
           <products>
             <product>

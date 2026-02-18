@@ -58,7 +58,7 @@ jobs:
         export PATH=$JAVA_HOME/bin:$PATH
       
         echo -e "#\n# update to release version $RELEASE_VERSION\n#\n"
-        ./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=$RELEASE_VERSION
+        ./mvnw -ntp org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=$RELEASE_VERSION
         git config user.name "$(git log -n 1 --pretty=format:%an)"
         git config user.email "$(git log -n 1 --pretty=format:%ae)"
         git add . && git commit -m "releasing $RELEASE_VERSION" && git push
@@ -109,7 +109,7 @@ jobs:
         GH_TOKEN: ${{ github.token }}
       run:
         echo -e "#\n# start next development cycle with new version $NEXT_SNAPSHOT_VERSION\n#\n"
-        ./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=$NEXT_SNAPSHOT_VERSION
+        ./mvnw -ntp org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=$NEXT_SNAPSHOT_VERSION
         git add . && git commit -m "starting next dev cycle - new version $NEXT_SNAPSHOT_VERSION" && git push
         git tag -a $NEXT_SNAPSHOT_VERSION -m "start dev cycle with version $NEXT_SNAPSHOT_VERSION" && git push --tags
       continue-on-error: false
