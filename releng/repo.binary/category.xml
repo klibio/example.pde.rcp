@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
 
-   <category-def name="category.example.pde.rcp" label="example.rcp.pde"/>
+   <category-def name="category.example.rcp.ui" label="Example RCP UI Applications">
+      <description>Eclipse RCP UI application features</description>
+   </category-def>
+   <category-def name="category.example.rcp.headless" label="Example RCP Headless Applications">
+      <description>Eclipse RCP headless application features</description>
+   </category-def>
+   <category-def name="category.example.rcp.all" label="Example RCP All Features">
+      <description>All Example RCP features including touchpoint</description>
+   </category-def>
+
    <feature id="example.rcp.feature.app.ui" version="0.0.0">
-      <category name="category.example.pde.rcp"/>
+      <category name="category.example.rcp.ui"/>
+      <category name="category.example.rcp.all"/>
    </feature>
    <feature id="example.rcp.feature.headless" version="0.0.0">
-      <category name="category.example.pde.rcp"/>
+      <category name="category.example.rcp.headless"/>
+      <category name="category.example.rcp.all"/>
+   </feature>
+   <feature id="example.rcp.feature.touchpoint" version="0.0.0">
+      <category name="category.example.rcp.all"/>
    </feature>
 
 </site>

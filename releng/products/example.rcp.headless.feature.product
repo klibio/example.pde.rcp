@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?pde version="3.5"?>
+
+<product name="example.rcp.headless" uid="example-rcp-headless-feature" id="example.rcp.headless.product" application="example.rcp.headless.application" version="0.1.0.qualifier" type="features" includeLaunchers="true" autoIncludeRequirements="true">
+
+   <configIni use="default">
+   </configIni>
+
+   <launcherArgs>
+   </launcherArgs>
+
+   <windowImages/>
+
+   <plugins>
+   </plugins>
+
+   <features>
+      <feature id="example.rcp.feature.headless" installMode="root"/>
+   </features>
+
+   <configurations>
+      <plugin id="org.eclipse.core.runtime" autoStart="true" startLevel="0" />
+      <plugin id="org.eclipse.equinox.common" autoStart="true" startLevel="2" />
+   </configurations>
+
+</product>

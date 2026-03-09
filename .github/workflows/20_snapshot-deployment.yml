@@ -70,7 +70,7 @@ jobs:
         version=$major.$minor.$bugfix
         release=rel_$version
         snapshot=snapshot_$version
-        PRODUCTS=$(find releng/products/target -name 'example.rcp.app.ui.*' -type f)
+        PRODUCTS=$(find releng/products/target -name 'example.rcp.*.product-*' -type f \( -name '*.tar.gz' -o -name '*.zip' \))
         REPO_PRODUCT=$(find releng/products/target -name 'products-*.zip' -type f)
         REPO_BINARY=$(find releng/repo.binary/target -name 'repo.binary-*.zip' -type f)
         REPO_SDK=$(find releng/repo.sdk/target -name 'repo.sdk-*.zip' -type f)

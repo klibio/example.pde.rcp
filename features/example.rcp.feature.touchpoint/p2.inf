@@ -1,5 +1,5 @@
+instructions.install.filter = (|(osgi.os=linux)(osgi.os=macosx))
 instructions.install = \
-    chmod(targetFile:${installFolder}/script.bat,permissions:755);\
-    chmod(targetFile:${installFolder}/script.sh,permissions:755);
- instructions.install.import= \
+    chmod(targetDir:${installFolder},targetFile:script.sh,permissions:755);
+instructions.install.import= \
     org.eclipse.equinox.p2.touchpoint.natives.chmod
