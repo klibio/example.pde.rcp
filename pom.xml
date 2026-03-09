@@ -221,6 +221,16 @@
               <archiveFileName>example.rcp.app.ui.plugin.product-${project.version}.${buildQualifier}</archiveFileName>
               <rootFolder>example-rcp-app</rootFolder>
             </product>
+            <product>
+              <id>example.rcp.app.ui.mixed.product</id>
+              <archiveFileName>example.rcp.app.ui.mixed.product-${project.version}.${buildQualifier}</archiveFileName>
+              <rootFolder>example-rcp-app</rootFolder>
+            </product>
+            <product>
+              <id>example.rcp.headless.feature.product</id>
+              <archiveFileName>example.rcp.headless.feature.product-${project.version}.${buildQualifier}</archiveFileName>
+              <rootFolder>example-rcp-headless</rootFolder>
+            </product>
           </products>
         </configuration>
       </plugin>

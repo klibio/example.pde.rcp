@@ -12,4 +12,17 @@
       </application>
    </extension>
 
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="example.rcp.headless.application"
+            name="example.rcp.headless">
+         <property
+               name="appName"
+               value="example.rcp.headless">
+         </property>
+      </product>
+   </extension>
+
 </plugin>
