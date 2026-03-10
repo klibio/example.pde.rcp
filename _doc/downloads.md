@@ -4,7 +4,7 @@ title: Downloads
 # Latest Build Artifacts
 
 This page provides a stable link to the latest artifacts from the last successful build on the `main` branch.
-Artifact information is loaded directly from the [GitHub Actions API](https://docs.github.com/en/rest/actions/artifacts).
+Artifact information is loaded from the [GitHub Releases API](https://docs.github.com/en/rest/releases/releases#get-a-release-by-tag-name).
 
 <div id="build-info">
   <p id="loading-msg">&#9203; Loading latest build information from GitHub&hellip;</p>
@@ -13,6 +13,8 @@ Artifact information is loaded directly from the [GitHub Actions API](https://do
     <blockquote>
       <strong>Latest Build:</strong>
       Run <a id="run-link" href="#">#<span id="run-number"></span></a>
+      &nbsp;|&nbsp;
+      <strong>Commit:</strong> <a id="commit-link" href="#"><span id="commit-sha"></span></a>
       &nbsp;|&nbsp;
       <strong>Committed:</strong> <span id="run-date"></span>
     </blockquote>
@@ -53,10 +55,10 @@ Artifact information is loaded directly from the [GitHub Actions API](https://do
     <p>&#9888;&#65039; Could not load artifact information automatically.</p>
     <p>
       Please visit the
-      <a href="https://github.com/klibio/example.pde.rcp/actions/workflows/10_build-validation.yml">
-        GitHub Actions workflow page
+      <a href="https://github.com/klibio/example.pde.rcp/releases/tag/latest-main">
+        latest-main release page
       </a>
-      and open the latest successful run to download artifacts manually.
+      and download artifacts manually.
     </p>
   </div>
 </div>
@@ -65,8 +67,8 @@ Artifact information is loaded directly from the [GitHub Actions API](https://do
 (function () {
   'use strict';
 
-  var REPO     = 'klibio/example.pde.rcp';
-  var WORKFLOW = '10_build-validation.yml';
+  var REPO        = 'klibio/example.pde.rcp';
+  var RELEASE_TAG = 'latest-main';
 
   /* Human-readable metadata for every artifact produced by the build workflow */
   var ARTIFACT_META = {
@@ -114,22 +116,12 @@ Artifact information is loaded directly from the [GitHub Actions API](https://do
   }
 
   function loadArtifacts() {
-    var runsUrl = 'https://api.github.com/repos/' + REPO +
-      '/actions/workflows/' + WORKFLOW +
-      '/runs?branch=main&status=success&per_page=1';
+    var releaseUrl = 'https://api.github.com/repos/' + REPO +
+      '/releases/tags/' + RELEASE_TAG;
 
-    fetchJSON(runsUrl)
-      .then(function (runsData) {
-        if (!runsData.workflow_runs || runsData.workflow_runs.length === 0) {
-          throw new Error('No successful runs found');
-        }
-        var run = runsData.workflow_runs[0];
-        var artifactsUrl = 'https://api.github.com/repos/' + REPO +
-          '/actions/runs/' + run.id + '/artifacts?per_page=100';
-
-        return fetchJSON(artifactsUrl).then(function (artifactsData) {
-          renderPage(run, artifactsData.artifacts || []);
-        });
+    fetchJSON(releaseUrl)
+      .then(function (release) {
+        renderPage(release, release.assets || []);
       })
       .catch(function (err) {
         console.error('Failed to load artifacts:', err);
@@ -138,10 +130,16 @@ Artifact information is loaded directly from the [GitHub Actions API](https://do
       });
   }
 
-  function renderPage(run, artifacts) {
-    document.getElementById('run-link').href = run.html_url;
-    document.getElementById('run-number').textContent = run.run_number;
-    document.getElementById('run-date').textContent = new Date(run.created_at).toUTCString();
+  function renderPage(release, artifacts) {
+    var releaseLabel = release.name || release.tag_name || RELEASE_TAG;
+    var releaseTime = release.published_at || release.created_at;
+    var headSha = release.target_commitish || '';
+
+    document.getElementById('run-link').href = release.html_url;
+    document.getElementById('run-number').textContent = releaseLabel;
+    document.getElementById('commit-link').href = 'https://github.com/' + REPO + '/commit/' + headSha;
+    document.getElementById('commit-sha').textContent = headSha ? String(headSha).substring(0, 12) : 'n/a';
+    document.getElementById('run-date').textContent = releaseTime ? new Date(releaseTime).toUTCString() : 'n/a';
 
     var byName = {};
     artifacts.forEach(function (a) { byName[a.name] = a; });
@@ -151,9 +149,9 @@ Artifact information is loaded directly from the [GitHub Actions API](https://do
 
     Object.keys(ARTIFACT_META).sort().forEach(function (name) {
       var meta     = ARTIFACT_META[name];
-      var artifact = byName[name];
+      var artifact = byName[name] || byName[name + '.zip'] || byName[name + '.tar.gz'];
       var downloadCell = artifact
-        ? '<a href="' + esc(artifact.archive_download_url) + '">\u2b07 Download</a>'
+        ? '<a href="' + esc(artifact.browser_download_url) + '">\u2b07 Download</a>'
         : '<em>not available</em>';
 
       if (meta.repo) {

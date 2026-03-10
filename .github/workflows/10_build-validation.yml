@@ -7,6 +7,9 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -232,4 +235,68 @@ jobs:
         name: example.rcp.headless.feature.product-win32.win32.x86_64
         path: releng/products/target/**/example.rcp.headless.feature.product-*win32.win32.x86_64.zip
         if-no-files-found: warn
+
+    - name: publish stable latest-main release assets
+      if: ${{ github.event_name != 'pull_request' }}
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        set -euo pipefail
+
+        TAG="latest-main"
+        TITLE="Latest main build"
+
+        gh release view "$TAG" >/dev/null 2>&1 || \
+          gh release create "$TAG" --target "$GITHUB_SHA" --title "$TITLE" --notes "Rolling release for latest successful main build."
+
+        gh release edit "$TAG" --target "$GITHUB_SHA" --title "$TITLE"
+
+        mkdir -p .release-assets
+        shopt -s globstar nullglob
+
+        copy_first() {
+          local out_name="$1"
+          local pattern="$2"
+          local files=( $pattern )
+          if [[ ${#files[@]} -eq 0 ]]; then
+            echo "warning: no match for pattern '$pattern'"
+            return 0
+          fi
+          cp "${files[0]}" ".release-assets/$out_name"
+        }
+
+        copy_first "repo.binary.zip" "releng/repo.binary/target/repo.binary-*.zip"
+        copy_first "repo.sdk.zip" "releng/repo.sdk/target/repo.sdk-*.zip"
+        copy_first "repo.products.zip" "releng/products/target/**/**/products-*.zip"
+
+        copy_first "example.rcp.app.ui.feature.product-linux.gtk.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.feature.product-*linux.gtk.x86_64.tar.gz"
+        copy_first "example.rcp.app.ui.feature.product-linux.gtk.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.feature.product-*linux.gtk.aarch64.tar.gz"
+        copy_first "example.rcp.app.ui.feature.product-macosx.cocoa.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.feature.product-*macosx.cocoa.x86_64.tar.gz"
+        copy_first "example.rcp.app.ui.feature.product-macosx.cocoa.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.feature.product-*macosx.cocoa.aarch64.tar.gz"
+        copy_first "example.rcp.app.ui.feature.product-win32.win32.x86_64.zip" "releng/products/target/**/**/example.rcp.app.ui.feature.product-*win32.win32.x86_64.zip"
+
+        copy_first "example.rcp.app.ui.plugin.product-linux.gtk.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.plugin.product-*linux.gtk.x86_64.tar.gz"
+        copy_first "example.rcp.app.ui.plugin.product-linux.gtk.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.plugin.product-*linux.gtk.aarch64.tar.gz"
+        copy_first "example.rcp.app.ui.plugin.product-macosx.cocoa.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.plugin.product-*macosx.cocoa.x86_64.tar.gz"
+        copy_first "example.rcp.app.ui.plugin.product-macosx.cocoa.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.plugin.product-*macosx.cocoa.aarch64.tar.gz"
+        copy_first "example.rcp.app.ui.plugin.product-win32.win32.x86_64.zip" "releng/products/target/**/**/example.rcp.app.ui.plugin.product-*win32.win32.x86_64.zip"
+
+        copy_first "example.rcp.app.ui.mixed.product-linux.gtk.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.mixed.product-*linux.gtk.x86_64.tar.gz"
+        copy_first "example.rcp.app.ui.mixed.product-linux.gtk.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.mixed.product-*linux.gtk.aarch64.tar.gz"
+        copy_first "example.rcp.app.ui.mixed.product-macosx.cocoa.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.mixed.product-*macosx.cocoa.x86_64.tar.gz"
+        copy_first "example.rcp.app.ui.mixed.product-macosx.cocoa.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.mixed.product-*macosx.cocoa.aarch64.tar.gz"
+        copy_first "example.rcp.app.ui.mixed.product-win32.win32.x86_64.zip" "releng/products/target/**/**/example.rcp.app.ui.mixed.product-*win32.win32.x86_64.zip"
+
+        copy_first "example.rcp.headless.feature.product-linux.gtk.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.headless.feature.product-*linux.gtk.x86_64.tar.gz"
+        copy_first "example.rcp.headless.feature.product-linux.gtk.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.headless.feature.product-*linux.gtk.aarch64.tar.gz"
+        copy_first "example.rcp.headless.feature.product-macosx.cocoa.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.headless.feature.product-*macosx.cocoa.x86_64.tar.gz"
+        copy_first "example.rcp.headless.feature.product-macosx.cocoa.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.headless.feature.product-*macosx.cocoa.aarch64.tar.gz"
+        copy_first "example.rcp.headless.feature.product-win32.win32.x86_64.zip" "releng/products/target/**/**/example.rcp.headless.feature.product-*win32.win32.x86_64.zip"
+
+        if compgen -G ".release-assets/*" > /dev/null; then
+          gh release upload "$TAG" .release-assets/* --clobber
+        else
+          echo "warning: no files prepared for release upload"
+        fi
 

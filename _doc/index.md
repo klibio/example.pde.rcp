@@ -1,6 +1,6 @@
 # example.pde.rcp
 
-more doc to be added here
+project for matrix of os and arch Eclipse UI and headless application
 
 ## Quick Links
 
@@ -8,4 +8,4 @@ more doc to be added here
 - [Installation Guide](installation)
 
 <sup>last edit: {{ 'now' | date: "%Y%m%d-%H%M%S" }}</sup><br/>
-<sup>git-commit-id:<a href="https://github.com/klibio/example.pde.rcp/commit/{{ site.github.build_revision }}">{{ site.github.build_revision }}</a></sup>
+<sup>source-revision:<a href="https://github.com/{{ site.github.repository_nwo }}/commit/{{ site.github.build_revision }}">{{ site.github.build_revision | slice: 0, 12 }}</a></sup>
