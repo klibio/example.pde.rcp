@@ -2,6 +2,12 @@
 name: Deploy doc on GitHub Pages
 
 on:
+  # Runs after the build validation workflow completes on the main branch
+  workflow_run:
+    workflows: ["10 build validatation"]
+    branches: ["main"]
+    types: [completed]
+
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
@@ -25,6 +31,7 @@ jobs:
   # Build job
   doc-build:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
