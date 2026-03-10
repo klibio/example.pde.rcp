@@ -1,0 +1,466 @@
+name: 40 product validation
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'Build workflow run ID to download artifacts from (empty = latest successful build)'
+        required: false
+        default: ''
+  workflow_run:
+    # The name below must match the `name:` field in 10_build-validation.yml exactly (including its typo)
+    workflows: ["10 build validatation"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  validate:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-latest
+            platform: linux.gtk.x86_64
+          - runner: ubuntu-24.04-arm
+            platform: linux.gtk.aarch64
+          - runner: macos-13
+            platform: macosx.cocoa.x86_64
+          - runner: macos-latest
+            platform: macosx.cocoa.aarch64
+          - runner: windows-latest
+            platform: win32.win32.x86_64
+
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+
+    - name: checkout
+      uses: actions/checkout@v4
+
+    - uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+
+    - name: install Linux display dependencies
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        sudo apt-get update -q
+        sudo apt-get install -y xvfb libgtk-3-0 xdotool
+
+    # ----------------------------------------------------------------
+    # Determine which build run to pull artifacts from:
+    #   - workflow_run event  → use the run that triggered us
+    #   - workflow_dispatch with explicit run_id → use that run
+    #   - workflow_dispatch without run_id       → let dawidd6 pick the latest successful run
+    # ----------------------------------------------------------------
+    - name: determine artifact run_id
+      id: artifact-run
+      shell: bash
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_run" ]; then
+          echo "run_id=${{ github.event.workflow_run.id }}" >> "$GITHUB_OUTPUT"
+        elif [ -n "${{ inputs.run_id }}" ]; then
+          echo "run_id=${{ inputs.run_id }}" >> "$GITHUB_OUTPUT"
+        else
+          echo "run_id=" >> "$GITHUB_OUTPUT"
+        fi
+
+    # ----------------------------------------------------------------
+    # Download platform-specific product archives
+    # ----------------------------------------------------------------
+    - name: download feature product (${{ matrix.platform }})
+      uses: dawidd6/action-download-artifact@v6
+      with:
+        workflow: 10_build-validation.yml
+        workflow_conclusion: success
+        run_id: ${{ steps.artifact-run.outputs.run_id }}
+        name: example.rcp.app.ui.feature.product-${{ matrix.platform }}
+        path: artifacts/feature
+
+    - name: download plugin product (${{ matrix.platform }})
+      uses: dawidd6/action-download-artifact@v6
+      with:
+        workflow: 10_build-validation.yml
+        workflow_conclusion: success
+        run_id: ${{ steps.artifact-run.outputs.run_id }}
+        name: example.rcp.app.ui.plugin.product-${{ matrix.platform }}
+        path: artifacts/plugin
+
+    - name: download mixed product (${{ matrix.platform }})
+      uses: dawidd6/action-download-artifact@v6
+      with:
+        workflow: 10_build-validation.yml
+        workflow_conclusion: success
+        run_id: ${{ steps.artifact-run.outputs.run_id }}
+        name: example.rcp.app.ui.mixed.product-${{ matrix.platform }}
+        path: artifacts/mixed
+
+    - name: download headless product (${{ matrix.platform }})
+      uses: dawidd6/action-download-artifact@v6
+      with:
+        workflow: 10_build-validation.yml
+        workflow_conclusion: success
+        run_id: ${{ steps.artifact-run.outputs.run_id }}
+        name: example.rcp.headless.feature.product-${{ matrix.platform }}
+        path: artifacts/headless
+
+    # ----------------------------------------------------------------
+    # Extract archives
+    # ----------------------------------------------------------------
+    - name: extract archives (Unix)
+      if: runner.os != 'Windows'
+      shell: bash
+      run: |
+        echo "### Extracting product archives"
+        for product in feature plugin mixed headless; do
+          mkdir -p "products/$product"
+          archive=$(find "artifacts/$product" -name '*.tar.gz' | head -1)
+          if [ -n "$archive" ]; then
+            echo "Extracting: $archive -> products/$product"
+            tar -xzf "$archive" -C "products/$product"
+          else
+            echo "::warning::No tar.gz archive found in artifacts/$product"
+          fi
+        done
+        echo "### Extracted file structure (3 levels):"
+        find products -maxdepth 3 | sort
+
+    - name: extract archives (Windows)
+      if: runner.os == 'Windows'
+      shell: powershell
+      run: |
+        Write-Host "### Extracting product archives"
+        foreach ($product in @('feature', 'plugin', 'mixed', 'headless')) {
+          New-Item -ItemType Directory -Force -Path "products/$product" | Out-Null
+          $archive = Get-ChildItem -Path "artifacts/$product" -Filter "*.zip" -ErrorAction SilentlyContinue | Select-Object -First 1
+          if ($archive) {
+            Write-Host "Extracting: $($archive.FullName) -> products/$product"
+            Expand-Archive -Path $archive.FullName -DestinationPath "products/$product" -Force
+          } else {
+            Write-Warning "No zip archive found in artifacts/$product"
+          }
+        }
+
+    # ----------------------------------------------------------------
+    # Test headless product – verify "Hello RCP World!" console output
+    # ----------------------------------------------------------------
+    - name: test headless product (Unix)
+      if: runner.os != 'Windows'
+      shell: bash
+      run: |
+        echo "##################################################"
+        echo "### Testing headless product"
+        echo "##################################################"
+
+        LAUNCHER=$(find products/headless -name "example.rcp.headless" -type f | head -1)
+        if [ -z "$LAUNCHER" ]; then
+          echo "::error::Headless launcher not found; listing products/headless:"
+          find products/headless -type f | sort
+          exit 1
+        fi
+
+        chmod +x "$LAUNCHER"
+        echo "Running: $LAUNCHER"
+
+        OUTPUT=$(timeout 60 "$LAUNCHER" -clearPersistedState 2>&1) || true
+        echo "--- output ---"
+        echo "$OUTPUT"
+        echo "--- end output ---"
+
+        if echo "$OUTPUT" | grep -q "Hello RCP World!"; then
+          echo "✅ Headless: 'Hello RCP World!' found in output"
+        else
+          echo "::error::Headless verification failed: 'Hello RCP World!' not found in output"
+          exit 1
+        fi
+
+    - name: test headless product (Windows)
+      if: runner.os == 'Windows'
+      shell: powershell
+      run: |
+        Write-Host "##################################################"
+        Write-Host "### Testing headless product"
+        Write-Host "##################################################"
+
+        $launcher = Get-ChildItem -Path "products/headless" -Filter "example.rcp.headless.exe" -Recurse | Select-Object -First 1
+        if (-not $launcher) {
+          Write-Error "Headless launcher not found; listing products/headless:"
+          Get-ChildItem -Path "products/headless" -Recurse | Select-Object FullName
+          exit 1
+        }
+
+        Write-Host "Running: $($launcher.FullName)"
+
+        $pinfo = New-Object System.Diagnostics.ProcessStartInfo
+        $pinfo.FileName = $launcher.FullName
+        $pinfo.Arguments = "-clearPersistedState"
+        $pinfo.RedirectStandardOutput = $true
+        $pinfo.RedirectStandardError = $true
+        $pinfo.UseShellExecute = $false
+        $p = New-Object System.Diagnostics.Process
+        $p.StartInfo = $pinfo
+        $p.Start() | Out-Null
+        $stdout = $p.StandardOutput.ReadToEnd()
+        $stderr = $p.StandardError.ReadToEnd()
+        $p.WaitForExit(60000)
+
+        $output = $stdout + $stderr
+        Write-Host "--- output ---"
+        Write-Host $output
+        Write-Host "--- end output ---"
+
+        if ($output -match "Hello RCP World!") {
+          Write-Host "✅ Headless: 'Hello RCP World!' found in output"
+        } else {
+          Write-Error "Headless verification failed: 'Hello RCP World!' not found in output"
+          exit 1
+        }
+
+    # ----------------------------------------------------------------
+    # Test UI products on Linux (xvfb virtual display)
+    # ----------------------------------------------------------------
+    - name: test UI products (Linux)
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        for product in feature plugin mixed; do
+          echo ""
+          echo "##################################################"
+          echo "### Testing UI $product product (Linux/xvfb)"
+          echo "##################################################"
+
+          LAUNCHER=$(find "products/$product" -name "example.rcp.app.ui" -type f | head -1)
+          if [ -z "$LAUNCHER" ]; then
+            echo "::error::UI launcher not found for $product; listing:"
+            find "products/$product" -type f | sort
+            exit 1
+          fi
+          chmod +x "$LAUNCHER"
+
+          # Start a dedicated virtual framebuffer
+          DISPLAY_NUM=$((50 + RANDOM % 200))
+          Xvfb ":$DISPLAY_NUM" -screen 0 1280x1024x24 &
+          XVFB_PID=$!
+          sleep 2
+
+          echo "Starting: $LAUNCHER  (DISPLAY=:$DISPLAY_NUM)"
+          DISPLAY=":$DISPLAY_NUM" "$LAUNCHER" -clearPersistedState &
+          APP_PID=$!
+          echo "App PID: $APP_PID"
+
+          # Allow time for the Eclipse workbench to fully initialise
+          sleep 20
+
+          # Check whether a window appeared on the virtual display
+          WINDOW_COUNT=$(DISPLAY=":$DISPLAY_NUM" xdotool search --onlyvisible --name ".*" 2>/dev/null | wc -l) || WINDOW_COUNT=0
+          if [ "$WINDOW_COUNT" -gt 0 ]; then
+            echo "✅ UI window detected ($WINDOW_COUNT window(s)) for $product"
+          else
+            echo "::warning::No visible window detected for $product (app may still be initialising)"
+          fi
+
+          # The process must still be alive – any earlier crash is a failure
+          if ps -p "$APP_PID" > /dev/null 2>&1; then
+            echo "✅ UI application $product is running (PID: $APP_PID)"
+          else
+            echo "::error::UI application $product exited unexpectedly"
+            kill "$XVFB_PID" 2>/dev/null || true
+            exit 1
+          fi
+
+          # Clean shutdown
+          kill "$APP_PID" 2>/dev/null || true
+          sleep 2
+          kill -9 "$APP_PID" 2>/dev/null || true
+          kill "$XVFB_PID" 2>/dev/null || true
+          wait "$XVFB_PID" 2>/dev/null || true
+
+          echo "✅ UI product $product passed"
+        done
+
+    # ----------------------------------------------------------------
+    # Test UI products on macOS
+    # ----------------------------------------------------------------
+    - name: test UI products (macOS)
+      if: runner.os == 'macOS'
+      shell: bash
+      run: |
+        for product in feature plugin mixed; do
+          echo ""
+          echo "##################################################"
+          echo "### Testing UI $product product (macOS)"
+          echo "##################################################"
+
+          # Prefer the executable inside the .app bundle
+          LAUNCHER=$(find "products/$product" -path "*/Contents/MacOS/example.rcp.app.ui" -type f | head -1)
+          if [ -z "$LAUNCHER" ]; then
+            LAUNCHER=$(find "products/$product" -name "example.rcp.app.ui" -type f | head -1)
+          fi
+          if [ -z "$LAUNCHER" ]; then
+            echo "::error::UI launcher not found for $product; listing:"
+            find "products/$product" -type f | sort
+            exit 1
+          fi
+          chmod +x "$LAUNCHER"
+
+          # Strip macOS quarantine attribute so the app can execute
+          APP_BUNDLE=$(find "products/$product" -name "*.app" -type d | head -1)
+          if [ -n "$APP_BUNDLE" ]; then
+            xattr -cr "$APP_BUNDLE" 2>/dev/null || true
+          fi
+
+          echo "Starting: $LAUNCHER"
+          "$LAUNCHER" -clearPersistedState &
+          APP_PID=$!
+          echo "App PID: $APP_PID"
+
+          sleep 20
+
+          if ps -p "$APP_PID" > /dev/null 2>&1; then
+            echo "✅ UI application $product is running (PID: $APP_PID)"
+          else
+            echo "::error::UI application $product exited unexpectedly"
+            exit 1
+          fi
+
+          kill "$APP_PID" 2>/dev/null || true
+          sleep 2
+          kill -9 "$APP_PID" 2>/dev/null || true
+
+          echo "✅ UI product $product passed"
+        done
+
+    # ----------------------------------------------------------------
+    # Test UI products on Windows
+    # ----------------------------------------------------------------
+    - name: test UI products (Windows)
+      if: runner.os == 'Windows'
+      shell: powershell
+      run: |
+        foreach ($product in @('feature', 'plugin', 'mixed')) {
+          Write-Host ""
+          Write-Host "##################################################"
+          Write-Host "### Testing UI $product product (Windows)"
+          Write-Host "##################################################"
+
+          $launcher = Get-ChildItem -Path "products/$product" -Filter "example.rcp.app.ui.exe" -Recurse | Select-Object -First 1
+          if (-not $launcher) {
+            Write-Error "UI launcher not found for $product; listing:"
+            Get-ChildItem -Path "products/$product" -Recurse | Select-Object FullName
+            exit 1
+          }
+
+          Write-Host "Starting: $($launcher.FullName)"
+          $process = Start-Process -FilePath $launcher.FullName -ArgumentList "-clearPersistedState" -PassThru
+          Write-Host "App PID: $($process.Id)"
+
+          Start-Sleep -Seconds 20
+
+          $process.Refresh()
+          if (-not $process.HasExited) {
+            Write-Host "✅ UI application $product is running (PID: $($process.Id))"
+          } else {
+            Write-Error "UI application $product exited unexpectedly (exit code: $($process.ExitCode))"
+            exit 1
+          }
+
+          try { $process.Kill() } catch {}
+          Start-Sleep -Seconds 2
+
+          Write-Host "✅ UI product $product passed"
+        }
+
+    # ----------------------------------------------------------------
+    # Check all *.log files produced by the products for errors
+    # Eclipse log severity: 1=INFO, 2=WARNING, 4=ERROR
+    # Java stack traces appear as lines starting with a tab after "!MESSAGE"
+    # ----------------------------------------------------------------
+    - name: check log files for exceptions (Unix)
+      if: always() && runner.os != 'Windows'
+      shell: bash
+      run: |
+        echo "### Scanning for log files under products/"
+        LOG_COUNT=$(find products -name "*.log" -type f 2>/dev/null | wc -l)
+
+        if [ "$LOG_COUNT" -eq 0 ]; then
+          echo "No log files found – nothing to check"
+          exit 0
+        fi
+
+        ERRORS_FOUND=0
+        while IFS= read -r log_file; do
+          echo "Checking: $log_file"
+
+          # Eclipse error entries (severity 4 = ERROR)
+          if grep -qE "^!ENTRY .* 4 " "$log_file" 2>/dev/null; then
+            echo "::error::Eclipse ERROR entries found in $log_file:"
+            grep -A5 -E "^!ENTRY .* 4 " "$log_file" | head -40
+            ERRORS_FOUND=1
+          fi
+
+          # Java exception stack traces
+          if grep -qE "(Exception|Error):" "$log_file" 2>/dev/null; then
+            echo "::warning::Exception/Error lines found in $log_file:"
+            grep -E "(Exception|Error):" "$log_file" | head -20
+          fi
+        done < <(find products -name "*.log" -type f 2>/dev/null)
+
+        if [ "$ERRORS_FOUND" -eq 1 ]; then
+          echo "::error::Eclipse ERROR entries were found in product log files"
+          exit 1
+        fi
+        echo "✅ No Eclipse ERROR entries found in log files"
+
+    - name: check log files for exceptions (Windows)
+      if: always() && runner.os == 'Windows'
+      shell: powershell
+      run: |
+        Write-Host "### Scanning for log files under products/"
+        $logFiles = Get-ChildItem -Path "products" -Filter "*.log" -Recurse -ErrorAction SilentlyContinue
+
+        if (-not $logFiles) {
+          Write-Host "No log files found – nothing to check"
+          exit 0
+        }
+
+        $errorsFound = $false
+        foreach ($logFile in $logFiles) {
+          Write-Host "Checking: $($logFile.FullName)"
+          $content = Get-Content $logFile.FullName -ErrorAction SilentlyContinue
+
+          # Eclipse error entries (severity 4 = ERROR)
+          $errorEntries = $content | Select-String -Pattern "^!ENTRY .* 4 "
+          if ($errorEntries) {
+            Write-Error "Eclipse ERROR entries found in $($logFile.FullName):"
+            $errorEntries | ForEach-Object { Write-Host $_.Line }
+            $errorsFound = $true
+          }
+
+          # Java exception stack traces
+          $exceptionLines = $content | Select-String -Pattern "(Exception|Error):"
+          if ($exceptionLines) {
+            Write-Warning "Exception/Error lines found in $($logFile.FullName):"
+            $exceptionLines | Select-Object -First 20 | ForEach-Object { Write-Host $_.Line }
+          }
+        }
+
+        if ($errorsFound) {
+          Write-Error "Eclipse ERROR entries were found in product log files"
+          exit 1
+        }
+        Write-Host "✅ No Eclipse ERROR entries found in log files"
+
+    # ----------------------------------------------------------------
+    # Always upload any log files produced – useful for post-mortem
+    # ----------------------------------------------------------------
+    - name: upload product logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: product-logs-${{ matrix.platform }}
+        path: products/**/*.log
+        if-no-files-found: ignore
