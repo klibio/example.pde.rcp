@@ -5,14 +5,14 @@ Showcase for Eclipse RCP products and applications
 * providing UI and headless applications
 * using feature, plugin and mixed based products
 * provided on different OS (linux, macosx, win32) and different Processors (aarch64, x86_64)
-* running on Java 21
-* builded by Maven Tycho build version 5.0.2
+* running on `Java 21`
+* builded by `Maven Tycho` build version `5.0.2`
 * release process for proper snapshot and release versioning
 * deploying of builded products and repositories
-    * maven-based [Reposilite}(https://reposilite.klib.io) repository
-    * github releases
+    * maven-based [Reposilite](https://reposilite.klib.io) repository
+    * github [releases](https://github.com/{{ repository_nwo }}/releases)
 * documentation via github pages
-    * provide download of latest build artifacts
+    * provide download of [latest build artifacts](downloads)
     * provide p2.director and maven tycho based instructions on product installations
 
 ## Source repository
@@ -22,7 +22,7 @@ Showcase for Eclipse RCP products and applications
 ## Quick Links
 
 - [Downloads](downloads) — latest artifacts from the last successful build on `main`
-- [Installation](installation) - instructions for `p2.director` and `mvn tycho` based installations
+- [Installation](installation) — instructions for `p2.director` and `mvn tycho` based installations
 
 <sup>last edit: {{ 'now' | date: "%Y%m%d-%H%M%S" }}</sup><br/>
 {% assign source_revision = site.source_revision | default: site.github.build_revision %}
