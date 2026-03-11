@@ -17,12 +17,12 @@ Showcase for Eclipse RCP products and applications
 
 ## Source repository
 
-https://github.com/klibio/example.pde.rcp
+[github.com/klibio/example.pde.rcp](https://github.com/klibio/example.pde.rcp)
 
 ## Quick Links
 
 - [Downloads](downloads) — latest artifacts from the last successful build on `main`
-- [Installation Guide](installation)
+- [Installation](installation) - instructions for `p2.director` and `mvn tycho` based installations
 
 <sup>last edit: {{ 'now' | date: "%Y%m%d-%H%M%S" }}</sup><br/>
 {% assign source_revision = site.source_revision | default: site.github.build_revision %}

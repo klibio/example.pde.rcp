@@ -35,6 +35,10 @@ Products are available for the following platform combinations:
 - Eclipse IDE with p2 tooling
 
 Set the repository URL (replace `<repo-url>` with the actual p2 repository URL, e.g. from a GitHub release):
+e.g. 
+```
+jar:https://github.com/klibio/example.pde.rcp/releases/download/latest-main/repo.products.zip!/
+```
 
 ```bash
 REPO_URL=<repo-url>
