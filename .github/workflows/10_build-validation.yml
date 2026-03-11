@@ -19,15 +19,6 @@ jobs:
     - name: checkout
       uses: actions/checkout@v4
 
-#    - name: caching idefix / ~/.klibio
-#      uses: actions/cache@v3
-#      with:
-#        path: |
-#          ~/.ecdev
-#          ~/.m2
-#          ~/.p2
-#        key: dev-${{ hashFiles('~/.klibio/klibio.sh') }}
-
     - uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
