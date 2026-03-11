@@ -44,22 +44,13 @@ mkdir _log >/dev/null 2>&1
 log_file=_log/${ts}_build.log
 echo -e "#\n# build - log file $log_file\n#\n"      2>&1 | tee -a $log_file
 
-echo -e "#\n# sourcing environment from build\n#\n" 2>&1 | tee -a $log_file
-if [[ -f ~/.klibio/klibio.sh ]]; then
-    . ~/.klibio/klibio.sh
-else
-    echo "warning: ~/.klibio/klibio.sh not found, continuing without it" 2>&1 | tee -a $log_file
+echo -e "#\n# verify JAVA version\n#\n" 2>&1 | tee -a $log_file
+java_version=$(java -version 2>&1 | grep -oP '(?<=version ")[^"]+' | cut -d. -f1)
+if [[ $java_version -lt 21 ]]; then
+    echo "ERROR: Java 21 or greater required, found version $java_version" 2>&1 | tee -a $log_file
+    exit 1
 fi
-if [[ -f ~/.klibio/set-java.sh ]]; then
-    . ~/.klibio/set-java.sh 21 # must not use pipe `2>&1 | tee -a $log_file`, cause export env vars will not work
-else
-    echo "warning: ~/.klibio/set-java.sh not found, using current JAVA_HOME=$JAVA_HOME" 2>&1 | tee -a $log_file
-    if [[ "$JAVA_HOME" != *"JAVA21"* && -d "$HOME/.ecdev/java/ee/JAVA21" ]]; then
-        export JAVA_HOME="$HOME/.ecdev/java/ee/JAVA21"
-        export PATH="$JAVA_HOME/bin:$PATH"
-        echo "info: fallback JAVA_HOME set to $JAVA_HOME" 2>&1 | tee -a $log_file
-    fi
-fi
+java -version 2>&1 | tee -a $log_file
 
 # signing 
 echo -e "#\n# sourcing sign properties\n#\n" 2>&1 | tee -a $log_file

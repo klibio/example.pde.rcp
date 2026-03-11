@@ -11,7 +11,7 @@
 
 ## pre-requisites
 
-based on github repo [klibio/bootstrap](https://github.com/klibio/bootstrap)
+JDK 21 or greater installed and configured as env var `JAVA_HOME` and in env `PATH`
 
 ## tycho build example
 
@@ -29,8 +29,8 @@ creating products for following os, ws, arch configurations
 * linux.gtk.x86_64
 * win32.win32.x86_64
 
-with Maven Tycho build version 4.0.4
-using Java 17
+with Maven Tycho build version 5.0.2
+using Java 21
 signing with self-signed code certificate
 
 ## repository structure
@@ -86,8 +86,6 @@ signing with self-signed code certificate
                                 releng
 
 ```
-
-## W-I-P
 
 ### local build and deployments
 
