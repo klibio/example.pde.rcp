@@ -29,8 +29,8 @@ creating products for following os, ws, arch configurations
 * linux.gtk.x86_64
 * win32.win32.x86_64
 
-with Maven Tycho build version 4.0.4
-using Java 17
+with Maven Tycho build version 5.0.2
+using Java 21
 signing with self-signed code certificate
 
 ## repository structure
