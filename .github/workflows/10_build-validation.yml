@@ -39,7 +39,6 @@ jobs:
         export JAVA_HOME_21=$JAVA_HOME_21_X64
         export PATH=$JAVA_HOME/bin:$PATH
         ./build.sh --jar-signing
-      continue-on-error: true
 
     - name: validate-build-results
       shell: bash
