@@ -3,12 +3,56 @@
     <toolchain>
         <type>jdk</type>
         <provides>
+            <id>JavaSE-8</id>
+            <vendor>OpenJDK Runtime Environment Temurin</vendor>
+            <version>8</version>
+        </provides>
+        <configuration>
+            <jdkHome>${env.JAVA_HOME_8}</jdkHome>
+        </configuration>
+    </toolchain>
+    <toolchain>
+        <type>jdk</type>
+        <provides>
+            <id>JavaSE-11</id>
+            <vendor>OpenJDK Runtime Environment Temurin</vendor>
+            <version>11</version>
+        </provides>
+        <configuration>
+            <jdkHome>${env.JAVA_HOME_11}</jdkHome>
+        </configuration>
+    </toolchain>
+    <toolchain>
+        <type>jdk</type>
+        <provides>
+            <id>JavaSE-17</id>
+            <vendor>OpenJDK Runtime Environment Temurin</vendor>
+            <version>17</version>
+        </provides>
+        <configuration>
+            <jdkHome>${env.JAVA_HOME_17}</jdkHome>
+        </configuration>
+    </toolchain>
+    <toolchain>
+        <type>jdk</type>
+        <provides>
             <id>JavaSE-21</id>
             <vendor>OpenJDK Runtime Environment Temurin</vendor>
             <version>21</version>
         </provides>
         <configuration>
-            <jdkHome>${env.JAVA_HOME}</jdkHome>
+            <jdkHome>${env.JAVA_HOME_21}</jdkHome>
+        </configuration>
+    </toolchain>
+    <toolchain>
+        <type>jdk</type>
+        <provides>
+            <id>JavaSE-25</id>
+            <vendor>OpenJDK Runtime Environment Temurin</vendor>
+            <version>25</version>
+        </provides>
+        <configuration>
+            <jdkHome>${env.JAVA_HOME_25}</jdkHome>
         </configuration>
     </toolchain>
 </toolchains>
