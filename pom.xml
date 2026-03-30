@@ -262,6 +262,16 @@
             <goals>
               <goal>prepare-agent</goal>
             </goals>
+            <configuration>
+              <excludes>
+                <exclude>java/**</exclude>
+                <exclude>javax/**</exclude>
+                <exclude>jdk/**</exclude>
+                <exclude>sun/**</exclude>
+                <exclude>com/sun/**</exclude>
+                <exclude>org/jcp/**</exclude>
+              </excludes>
+            </configuration>
           </execution>
         </executions>
       </plugin>
