@@ -85,7 +85,7 @@ fi
 if [[ ${build_local} -eq 1 ]]; then
     echo -e "#\n# execute local build - log file $log_file\n#\n"  2>&1 | tee -a $log_file
 read -r -d '' command << EOM
-./mvnw clean verify \
+./mvnw clean verify -ntp \
   ${MAVEN_OPTS} \
   ${mvnDebug} \
   ${local_cache} \
