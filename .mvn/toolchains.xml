@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="UTF8"?>
 <toolchains>
-    <!-- JDK toolchains -->
-    <toolchain>
-        <type>jdk</type>
-        <provides>
-            <id>JavaSE-17</id>
-            <vendor>OpenJDK Runtime Environment Temurin</vendor>
-            <version>17</version>
-        </provides>
-        <configuration>
-            <jdkHome>C:/Users/pekirsc/.ecdev/java/ee/JAVA17</jdkHome>
-        </configuration>
-    </toolchain>
     <toolchain>
         <type>jdk</type>
         <provides>
