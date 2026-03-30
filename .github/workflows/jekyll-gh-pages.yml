@@ -34,7 +34,7 @@ jobs:
     if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Inject source revision for docs
         run: 'echo "source_revision: ${GITHUB_SHA}" >> _doc/_config.yml'
       - name: Setup Pages
