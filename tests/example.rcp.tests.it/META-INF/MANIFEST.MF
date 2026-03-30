@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Automatic-Module-Name: example.rcp.tests.it
+Bundle-Name: Integration Tests
+Bundle-SymbolicName: example.rcp.tests.it
+Bundle-Version: 0.7.0.qualifier
+Bundle-Vendor: Kirschners GmbH
+Fragment-Host: example.rcp.app.ui;bundle-version="0.7.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Require-Bundle: org.junit;bundle-version="4.12.0",
+ org.eclipse.swtbot.junit4_x;bundle-version="2.3.0",
+ org.eclipse.swtbot.swt.finder;bundle-version="2.3.0"

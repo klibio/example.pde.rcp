@@ -2,82 +2,101 @@
 
 ## Overview
 
-This repository contains examples for Eclipse RCP applications built using Java and Maven with Tycho for p2-based products.
+This repository contains Eclipse RCP and Equinox examples built with a pomless Tycho layout. The workspace produces bundles, features, p2 repositories, and packaged products for multiple platforms.
 
-## Build System
+Link to existing docs instead of repeating them:
 
-- **Language**: Java 17
-- **Build Tool**: Maven with Tycho 4.0.4
-- **Build Type**: P2-based product build
-- **Results**: Bundles, p2 products, repositories, and archives
+- `README.md` for the main build and release flow
+- `_doc/installation.md` for product installation
+- `certificate/README_signing.md` for signing setup
+- `features/example.rcp.feature.touchpoint/README_p2touchpoint.md` for the custom p2 touchpoint example
 
-## Build Commands
+## Build And Toolchain
+
+- Language: Java 21+
+- Build tool: Maven Wrapper with Tycho 5.0.2
+- Build entrypoint: `./build.sh`
+- Tycho version and Maven settings are injected from `.mvn/maven.config`
+- The build writes logs into `_log/`
+
+Use these commands:
 
 ```bash
-# Local build
+# Local verification build
 ./build.sh
 
-# Build with signing
+# Print effective settings and other diagnostics
+./build.sh --diag
+
+# Build with signing enabled
 ./build.sh --jar-signing --gpg-signing
 
-# Build with signing and deploy
+# Build and deploy to configured Maven repositories
 ./build.sh --jar-signing --gpg-signing --deploy
-```
 
-## Project Structure
-
-The repository follows a structured Tycho build layout with pomless builds:
-
-- **bundles/** - Top-level product bundles
-  - Eclipse RCP application UI bundle
-  - Eclipse headless application bundle
-  - View bundles
-
-- **comp1/** and **comp2/** - Component/domain features
-  - Each contains bundles/ and features/ subdirectories
-
-- **features/** - Root feature folder
-  - Container features for different application types
-
-- **releng/** - Release engineering folder
-  - Products configuration
-  - Repository/update site
-  - Target platform
-
-## Target Platforms
-
-Products are built for:
-- macOS (cocoa.aarch64, cocoa.x86_64)
-- Linux (gtk.aarch64, gtk.x86_64)
-- Windows (win32.x86_64)
-
-## Code Signing
-
-- Uses self-signed code certificates
-- Configuration in `certificate/` directory
-
-## Version Management
-
-```bash
 # Set release version
 ./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=X.Y.Z
 
-# Set development version
+# Set next development version
 ./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=X.Y.Z-SNAPSHOT
 ```
 
-## Important Conventions
+## Repository Structure
 
-1. Follow pomless Tycho build structure
-2. Bundles use OSGi bundle conventions
-3. Features define product compositions
-4. Products are defined in releng/e.r.products/
-5. All Maven coordinates use groupId: `example.rcp`
+- `bundles/`: top-level application bundles such as `example.rcp.app.ui`, `example.rcp.headless`, `example.rcp.touchpoint`, and `example.rcp.view`
+- `comp1/` and `comp2/`: example domain components with their own bundles and features
+- `features/`: root features and container features such as `example.rcp.feature.all`
+- `releng/products/`: product definitions and packaged product outputs
+- `releng/repo.binary/` and `releng/repo.sdk/`: p2 repository assembly
+- `releng/target.platform/`: target platform definition
+- `tests/`: unit and integration/UI test bundles
+
+## Product Variants
+
+The build defines these product IDs in `pom.xml`:
+
+- `example.rcp.app.ui.feature.product`
+- `example.rcp.app.ui.plugin.product`
+- `example.rcp.app.ui.mixed.product`
+- `example.rcp.headless.feature.product`
+
+Target environments:
+
+- macOS: `cocoa/aarch64`, `cocoa/x86_64`
+- Linux: `gtk/aarch64`, `gtk/x86_64`
+- Windows: `win32/x86_64`
+
+## Conventions And Pitfalls
+
+1. Keep the pomless Tycho layout intact. Files such as `.polyglot.pom.tycho`, `feature.xml`, `target-platform.target`, and `no_deploy.txt` are used by `.mvn/settings.xml` to activate Maven profiles. Do not remove or rename these marker files casually.
+2. Do not bypass `.mvn/maven.config`. It provides the Tycho version, settings file, toolchains file, and thread count. If Tycho placeholders do not resolve, check this file first.
+3. `build.sh` enforces Java 21 or newer. If the environment does not satisfy that requirement, the build exits before Maven runs.
+4. Bundle and feature versions follow Tycho qualifier conventions. Avoid hardcoding timestamped versions.
+5. When changing OSGi dependencies, update the relevant `MANIFEST.MF`, feature definitions, and product definitions together.
+6. The integration test bundle `tests/example.rcp.tests.it` is a fragment of `example.rcp.app.ui` and enables `useUIHarness=true`. Fragment host version mismatches will break the test build.
+7. The custom p2 touchpoint action lives in `bundles/example.rcp.touchpoint`. Normal builds keep the example action disabled in `p2.inf` for determinism.
+8. Signing is optional and based on the demo configuration in `certificate/`. `build.sh` reads `certificate/sign.properties` when available.
+9. Generated output under `target/` and `_log/` should not be treated as source of truth when editing code.
 
 ## When Making Changes
 
-- Ensure changes maintain compatibility with Tycho 4.0.4
-- Follow existing OSGi/Eclipse RCP patterns
-- Update MANIFEST.MF files when changing bundle dependencies
-- Test builds locally before committing
-- Consider all target platforms when making UI changes
+- Preserve existing OSGi and Eclipse RCP patterns instead of introducing non-standard build wiring.
+- Prefer changing the smallest relevant bundle, feature, or product definition rather than broad cross-repo edits.
+- Validate with `./build.sh` after build-related, manifest, feature, target-platform, or product changes.
+- For signing or deployment changes, verify the required environment variables before editing build logic.
+- For UI changes, consider all target platforms because SWT and product packaging are cross-platform.
+
+## Files To Inspect First
+
+- `pom.xml`
+- `build.sh`
+- `.mvn/maven.config`
+- `.mvn/settings.xml`
+- `releng/target.platform/target-platform.target`
+- `tests/example.rcp.tests.it/pom.xml`
+
+## AI Agent Guidance
+
+- Link to the existing documentation files above instead of copying long instructions into new files.
+- When answering repo questions, prefer verified build facts from `build.sh`, `.mvn/`, and `pom.xml` over stale generated output or assumptions.
+- If a user asks for test generation around the RCP UI, inspect `tests/example.rcp.tests.it` first because UI test behavior differs from the root Tycho surefire defaults.

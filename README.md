@@ -106,7 +106,7 @@ export 'REPOSILITE_TOKEN=<your-token-here>'
 ### deploy snapshot
 
 ```bash
-# starting point is current development version e.g. 0.1.0-SNAPSHOT
+# starting point is current development version e.g. 0.7.0-SNAPSHOT
 
 # before the SNAPSHOT deployment , validate via local build
 ./build.sh --jar-signing --gpg-signing
@@ -120,19 +120,19 @@ export 'REPOSILITE_TOKEN=<your-token-here>'
 ### deploy release
 
 ```bash
-# starting point is current development version e.g. 0.1.0-SNAPSHOT
+# starting point is current development version e.g. 0.7.0-SNAPSHOT
 
 # before the RELEASE deployment, validate via local build
 ./build.sh --jar-signing --gpg-signing
 
 # set the release version before building and deploying
-./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=0.1.0
+./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=0.7.0
 
 # build and deploy bundle to RELEASE repository
 ./build.sh --jar-signing --gpg-signing --deploy
 
 # tag release
-git tag -a rel_0.1.0 -m "release 0.1.0" && git push --tags
+git tag -a rel_0.7.0 -m "release 0.7.0" && git push --tags
 
 # start next development release cycle with new version e.g. 0.2.0-SNAPSHOT
 ./mvnw org.eclipse.tycho:tycho-versions-plugin:set-version -DnewVersion=0.2.0-SNAPSHOT

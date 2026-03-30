@@ -87,6 +87,130 @@ jobs:
           echo "| $f | $size |" >> $GITHUB_STEP_SUMMARY
         done < <(find releng/products/target \( -name '*.tar.gz' -o -name '*.zip' \) -path '*/example.rcp.*' -type f | sort)
 
+    - name: collect test and coverage reports
+      if: always()
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        REPORT_ROOT=".ci-reports"
+        TEST_DIR="$REPORT_ROOT/test-results"
+        COVERAGE_DIR="$REPORT_ROOT/coverage"
+
+        mkdir -p "$TEST_DIR" "$COVERAGE_DIR"
+
+        # Copy test execution reports if available.
+        for d in \
+          tests/example.rcp.tests/target/surefire-reports \
+          tests/example.rcp.tests.it/target/surefire-reports
+        do
+          if [[ -d "$d" ]]; then
+            cp -r "$d" "$TEST_DIR/"
+          fi
+        done
+
+        # Copy JaCoCo HTML site if available.
+        if [[ -d tests/example.rcp.tests.reports/target/site ]]; then
+          cp -r tests/example.rcp.tests.reports/target/site "$COVERAGE_DIR/"
+        fi
+
+        cat > "$REPORT_ROOT/style.css" <<'CSS'
+        :root {
+          --bg: #0b1020;
+          --panel: #121a33;
+          --text: #e7ecff;
+          --muted: #a9b6dd;
+          --link: #7cd6ff;
+          --ok: #78f0b5;
+        }
+        * { box-sizing: border-box; }
+        body {
+          margin: 0;
+          padding: 2rem;
+          font-family: "Segoe UI", "Noto Sans", sans-serif;
+          color: var(--text);
+          background: radial-gradient(circle at top right, #1e2a57 0%, var(--bg) 45%);
+        }
+        main {
+          max-width: 1000px;
+          margin: 0 auto;
+          background: color-mix(in srgb, var(--panel), transparent 15%);
+          border: 1px solid #2f3e75;
+          border-radius: 12px;
+          padding: 1.25rem 1.5rem;
+        }
+        h1, h2 { margin-top: 0; }
+        p { color: var(--muted); }
+        ul { padding-left: 1.2rem; }
+        li { margin: 0.35rem 0; }
+        a { color: var(--link); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .badge {
+          display: inline-block;
+          margin-left: 0.5rem;
+          padding: 0.1rem 0.45rem;
+          border-radius: 999px;
+          border: 1px solid #2f3e75;
+          color: var(--ok);
+          font-size: 0.78rem;
+        }
+        CSS
+
+        {
+          echo "<!doctype html>"
+          echo "<html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'>"
+          echo "<title>Build Reports</title><link rel='stylesheet' href='style.css'></head><body><main>"
+          echo "<h1>Build Reports <span class='badge'>CI</span></h1>"
+          echo "<p>Open the generated report folders below.</p>"
+
+          echo "<h2>Test Results</h2><ul>"
+          test_count=0
+          while IFS= read -r f; do
+            rel="${f#${REPORT_ROOT}/}"
+            echo "<li><a href='${rel}'>${rel}</a></li>"
+            test_count=$((test_count + 1))
+          done < <(find "$TEST_DIR" -type f \( -name '*.xml' -o -name '*.txt' -o -name '*.html' \) | sort)
+          if [[ "$test_count" -eq 0 ]]; then
+            echo "<li>No test report files found.</li>"
+          fi
+          echo "</ul>"
+
+          echo "<h2>Coverage</h2><ul>"
+          cov_count=0
+          while IFS= read -r f; do
+            rel="${f#${REPORT_ROOT}/}"
+            echo "<li><a href='${rel}'>${rel}</a></li>"
+            cov_count=$((cov_count + 1))
+          done < <(find "$COVERAGE_DIR" -type f -name '*.html' | sort)
+          if [[ "$cov_count" -eq 0 ]]; then
+            echo "<li>No coverage HTML files found.</li>"
+          fi
+          echo "</ul>"
+
+          echo "</main></body></html>"
+        } > "$REPORT_ROOT/index.html"
+
+        echo "### Test/Coverage Reports" >> "$GITHUB_STEP_SUMMARY"
+        echo "" >> "$GITHUB_STEP_SUMMARY"
+        echo "- Artifact: ci-reports-styled (includes index.html + stylesheet)" >> "$GITHUB_STEP_SUMMARY"
+        echo "- Artifact: coverage-html (raw JaCoCo site, when available)" >> "$GITHUB_STEP_SUMMARY"
+
+    - name: upload styled test and coverage reports
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: ci-reports-styled
+        path: .ci-reports/**
+        if-no-files-found: warn
+
+    - name: upload coverage html
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-html
+        path: tests/example.rcp.tests.reports/target/site/**
+        if-no-files-found: warn
+
     - name: upload feature-product linux x86_64
       uses: actions/upload-artifact@v4
       with:

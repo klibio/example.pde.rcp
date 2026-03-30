@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test
+Bundle-SymbolicName: example.rcp.tests
+Bundle-Version: 0.7.0.qualifier
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.29.0",
+ org.junit;bundle-version="4.13.2"
+Automatic-Module-Name: example.rcp.test
+Bundle-RequiredExecutionEnvironment: JavaSE-17
