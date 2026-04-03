@@ -42,7 +42,11 @@ jobs:
 
         export JAVA_HOME_21=$JAVA_HOME_21_X64
         export PATH=$JAVA_HOME/bin:$PATH
-        ./build.sh --jar-signing
+
+        sudo apt-get update
+        sudo apt-get install -y xvfb
+
+        xvfb-run -a -s "-screen 0 1920x1080x24" ./build.sh --jar-signing
 
     - name: validate-build-results
       shell: bash
@@ -197,6 +201,28 @@ jobs:
         echo "" >> "$GITHUB_STEP_SUMMARY"
         echo "- Artifact: ci-reports-styled (includes index.html + stylesheet)" >> "$GITHUB_STEP_SUMMARY"
         echo "- Artifact: coverage-html (raw JaCoCo site, when available)" >> "$GITHUB_STEP_SUMMARY"
+
+    - name: Collect Eclipse runtime metadata
+      if: always()
+      shell: bash
+      run: |
+        set -euo pipefail
+        mkdir -p .ci-eclipse-logs
+        META_DIR="tests/example.rcp.tests.it/target/work/data/.metadata"
+        if [[ -d "$META_DIR" ]]; then
+          tar -czf .ci-eclipse-logs/example.rcp.tests.it.metadata.tar.gz -C "$(dirname "$META_DIR")" "$(basename "$META_DIR")"
+          echo "Collected $META_DIR"
+        else
+          echo "No metadata directory found at $META_DIR"
+        fi
+
+    - name: Upload Eclipse runtime logs
+      if: always()
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+      with:
+        name: eclipse-runtime-logs
+        path: .ci-eclipse-logs/**
+        if-no-files-found: warn
 
     - name: upload styled test and coverage reports
       if: always()
