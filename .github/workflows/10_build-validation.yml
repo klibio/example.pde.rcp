@@ -244,14 +244,14 @@ jobs:
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
       with:
         name: example.rcp.app.ui.feature.product-linux.gtk.x86_64
-        path: releng/products/target/**/**/example.rcp.app.ui.feature.product-*linux.gtk.x86_64.tar.gz
+        path: releng/products/target/**/**/example.rcp.app.ui.feature.product-*linux.gtk.x86_64.zip
         if-no-files-found: warn
 
     - name: upload feature-product linux aarch64
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
       with:
         name: example.rcp.app.ui.feature.product-linux.gtk.aarch64
-        path: releng/products/target/**/example.rcp.app.ui.feature.product-*linux.gtk.aarch64.tar.gz
+        path: releng/products/target/**/example.rcp.app.ui.feature.product-*linux.gtk.aarch64.zip
         if-no-files-found: warn
 
     - name: upload feature-product macosx x86_64
@@ -279,14 +279,14 @@ jobs:
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
       with:
         name: example.rcp.app.ui.plugin.product-linux.gtk.x86_64
-        path: releng/products/target/**/example.rcp.app.ui.plugin.product-*linux.gtk.x86_64.tar.gz
+        path: releng/products/target/**/example.rcp.app.ui.plugin.product-*linux.gtk.x86_64.zip
         if-no-files-found: warn
 
     - name: upload plugin-product linux aarch64
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
       with:
         name: example.rcp.app.ui.plugin.product-linux.gtk.aarch64
-        path: releng/products/target/**/example.rcp.app.ui.plugin.product-*linux.gtk.aarch64.tar.gz
+        path: releng/products/target/**/example.rcp.app.ui.plugin.product-*linux.gtk.aarch64.zip
         if-no-files-found: warn
 
     - name: upload plugin-product macosx x86_64
@@ -314,14 +314,14 @@ jobs:
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
       with:
         name: example.rcp.app.ui.mixed.product-linux.gtk.x86_64
-        path: releng/products/target/**/example.rcp.app.ui.mixed.product-*linux.gtk.x86_64.tar.gz
+        path: releng/products/target/**/example.rcp.app.ui.mixed.product-*linux.gtk.x86_64.zip
         if-no-files-found: warn
 
     - name: upload mixed-product linux aarch64
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
       with:
         name: example.rcp.app.ui.mixed.product-linux.gtk.aarch64
-        path: releng/products/target/**/example.rcp.app.ui.mixed.product-*linux.gtk.aarch64.tar.gz
+        path: releng/products/target/**/example.rcp.app.ui.mixed.product-*linux.gtk.aarch64.zip
         if-no-files-found: warn
 
     - name: upload mixed-product macosx x86_64
@@ -349,14 +349,14 @@ jobs:
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
       with:
         name: example.rcp.headless.feature.product-linux.gtk.x86_64
-        path: releng/products/target/**/example.rcp.headless.feature.product-*linux.gtk.x86_64.tar.gz
+        path: releng/products/target/**/example.rcp.headless.feature.product-*linux.gtk.x86_64.zip
         if-no-files-found: warn
 
     - name: upload headless-product linux aarch64
       uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
       with:
         name: example.rcp.headless.feature.product-linux.gtk.aarch64
-        path: releng/products/target/**/example.rcp.headless.feature.product-*linux.gtk.aarch64.tar.gz
+        path: releng/products/target/**/example.rcp.headless.feature.product-*linux.gtk.aarch64.zip
         if-no-files-found: warn
 
     - name: upload headless-product macosx x86_64
@@ -414,26 +414,26 @@ jobs:
         copy_first "repo.sdk.zip" "releng/repo.sdk/target/repo.sdk-*.zip"
         copy_first "repo.products.zip" "releng/products/target/**/**/products-*.zip"
 
-        copy_first "example.rcp.app.ui.feature.product-linux.gtk.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.feature.product-*linux.gtk.x86_64.tar.gz"
-        copy_first "example.rcp.app.ui.feature.product-linux.gtk.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.feature.product-*linux.gtk.aarch64.tar.gz"
+        copy_first "example.rcp.app.ui.feature.product-linux.gtk.x86_64.zip" "releng/products/target/**/**/example.rcp.app.ui.feature.product-*linux.gtk.x86_64.zip"
+        copy_first "example.rcp.app.ui.feature.product-linux.gtk.aarch64.zip" "releng/products/target/**/**/example.rcp.app.ui.feature.product-*linux.gtk.aarch64.zip"
         copy_first "example.rcp.app.ui.feature.product-macosx.cocoa.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.feature.product-*macosx.cocoa.x86_64.tar.gz"
         copy_first "example.rcp.app.ui.feature.product-macosx.cocoa.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.feature.product-*macosx.cocoa.aarch64.tar.gz"
         copy_first "example.rcp.app.ui.feature.product-win32.win32.x86_64.zip" "releng/products/target/**/**/example.rcp.app.ui.feature.product-*win32.win32.x86_64.zip"
 
-        copy_first "example.rcp.app.ui.plugin.product-linux.gtk.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.plugin.product-*linux.gtk.x86_64.tar.gz"
-        copy_first "example.rcp.app.ui.plugin.product-linux.gtk.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.plugin.product-*linux.gtk.aarch64.tar.gz"
+        copy_first "example.rcp.app.ui.plugin.product-linux.gtk.x86_64.zip" "releng/products/target/**/**/example.rcp.app.ui.plugin.product-*linux.gtk.x86_64.zip"
+        copy_first "example.rcp.app.ui.plugin.product-linux.gtk.aarch64.zip" "releng/products/target/**/**/example.rcp.app.ui.plugin.product-*linux.gtk.aarch64.zip"
         copy_first "example.rcp.app.ui.plugin.product-macosx.cocoa.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.plugin.product-*macosx.cocoa.x86_64.tar.gz"
         copy_first "example.rcp.app.ui.plugin.product-macosx.cocoa.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.plugin.product-*macosx.cocoa.aarch64.tar.gz"
         copy_first "example.rcp.app.ui.plugin.product-win32.win32.x86_64.zip" "releng/products/target/**/**/example.rcp.app.ui.plugin.product-*win32.win32.x86_64.zip"
 
-        copy_first "example.rcp.app.ui.mixed.product-linux.gtk.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.mixed.product-*linux.gtk.x86_64.tar.gz"
-        copy_first "example.rcp.app.ui.mixed.product-linux.gtk.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.mixed.product-*linux.gtk.aarch64.tar.gz"
+        copy_first "example.rcp.app.ui.mixed.product-linux.gtk.x86_64.zip" "releng/products/target/**/**/example.rcp.app.ui.mixed.product-*linux.gtk.x86_64.zip"
+        copy_first "example.rcp.app.ui.mixed.product-linux.gtk.aarch64.zip" "releng/products/target/**/**/example.rcp.app.ui.mixed.product-*linux.gtk.aarch64.zip"
         copy_first "example.rcp.app.ui.mixed.product-macosx.cocoa.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.mixed.product-*macosx.cocoa.x86_64.tar.gz"
         copy_first "example.rcp.app.ui.mixed.product-macosx.cocoa.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.app.ui.mixed.product-*macosx.cocoa.aarch64.tar.gz"
         copy_first "example.rcp.app.ui.mixed.product-win32.win32.x86_64.zip" "releng/products/target/**/**/example.rcp.app.ui.mixed.product-*win32.win32.x86_64.zip"
 
-        copy_first "example.rcp.headless.feature.product-linux.gtk.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.headless.feature.product-*linux.gtk.x86_64.tar.gz"
-        copy_first "example.rcp.headless.feature.product-linux.gtk.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.headless.feature.product-*linux.gtk.aarch64.tar.gz"
+        copy_first "example.rcp.headless.feature.product-linux.gtk.x86_64.zip" "releng/products/target/**/**/example.rcp.headless.feature.product-*linux.gtk.x86_64.zip"
+        copy_first "example.rcp.headless.feature.product-linux.gtk.aarch64.zip" "releng/products/target/**/**/example.rcp.headless.feature.product-*linux.gtk.aarch64.zip"
         copy_first "example.rcp.headless.feature.product-macosx.cocoa.x86_64.tar.gz" "releng/products/target/**/**/example.rcp.headless.feature.product-*macosx.cocoa.x86_64.tar.gz"
         copy_first "example.rcp.headless.feature.product-macosx.cocoa.aarch64.tar.gz" "releng/products/target/**/**/example.rcp.headless.feature.product-*macosx.cocoa.aarch64.tar.gz"
         copy_first "example.rcp.headless.feature.product-win32.win32.x86_64.zip" "releng/products/target/**/**/example.rcp.headless.feature.product-*win32.win32.x86_64.zip"
