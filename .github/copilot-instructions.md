@@ -78,6 +78,23 @@ Target environments:
 8. Signing is optional and based on the demo configuration in `certificate/`. `build.sh` reads `certificate/sign.properties` when available.
 9. Generated output under `target/` and `_log/` should not be treated as source of truth when editing code.
 
+## GitHub Actions Security
+
+All GitHub Actions steps must reference actions by their full commit SHA, not by a mutable tag or branch. This prevents supply-chain attacks where a tag could be silently moved to a different (malicious) commit.
+
+Format: `uses: owner/repo@<full-commit-sha> # vX` — always include a trailing comment with the human-readable version so the SHA can be verified.
+
+Example:
+```yaml
+uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+```
+
+When adding a new action or upgrading an existing one:
+1. Look up the commit SHA for the desired tag (e.g. via `git ls-remote https://github.com/owner/repo.git refs/tags/vX`).
+2. Use the dereferenced commit SHA (`refs/tags/vX^{}`), not the tag-object SHA.
+3. Append a comment with the version tag for human readability.
+4. Update `dependabot.yml` keeps the `github-actions` ecosystem enabled so Dependabot can propose SHA-bump PRs automatically.
+
 ## When Making Changes
 
 - Preserve existing OSGi and Eclipse RCP patterns instead of introducing non-standard build wiring.
