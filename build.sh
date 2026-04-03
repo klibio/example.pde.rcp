@@ -94,7 +94,7 @@ read -r -d '' command << EOM
   ${signVM}
 EOM
     echo -e "#\n$command\n#\n"  2>&1 | tee -a $log_file
-    set -e
+    set -eo pipefail
     $command  2>&1 | tee -a $log_file
 fi
 
@@ -110,7 +110,7 @@ read -r -d '' command << EOM
   ${signVM}
 EOM
     echo -e "#\n$command\n#\n"  2>&1 | tee -a $log_file
-    set -e
+    set -eo pipefail
     $command  2>&1 | tee -a $log_file
 fi
 
