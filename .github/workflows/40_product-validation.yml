@@ -73,7 +73,7 @@ jobs:
     # Download platform-specific product archives
     # ----------------------------------------------------------------
     - name: download feature product (${{ matrix.platform }})
-      uses: dawidd6/action-download-artifact@8305c0f1062bb0d184d09ef4493ecb9288447732 # v20
+      uses: dawidd6/action-download-artifact@b6e2e70617bc3265edd6dab6c906732b2f1ae151 # v21
       with:
         workflow: 10_build-validation.yml
         workflow_conclusion: success
@@ -82,7 +82,7 @@ jobs:
         path: artifacts/feature
 
     - name: download plugin product (${{ matrix.platform }})
-      uses: dawidd6/action-download-artifact@8305c0f1062bb0d184d09ef4493ecb9288447732 # v20
+      uses: dawidd6/action-download-artifact@b6e2e70617bc3265edd6dab6c906732b2f1ae151 # v21
       with:
         workflow: 10_build-validation.yml
         workflow_conclusion: success
@@ -91,7 +91,7 @@ jobs:
         path: artifacts/plugin
 
     - name: download mixed product (${{ matrix.platform }})
-      uses: dawidd6/action-download-artifact@8305c0f1062bb0d184d09ef4493ecb9288447732 # v20
+      uses: dawidd6/action-download-artifact@b6e2e70617bc3265edd6dab6c906732b2f1ae151 # v21
       with:
         workflow: 10_build-validation.yml
         workflow_conclusion: success
@@ -100,7 +100,7 @@ jobs:
         path: artifacts/mixed
 
     - name: download headless product (${{ matrix.platform }})
-      uses: dawidd6/action-download-artifact@8305c0f1062bb0d184d09ef4493ecb9288447732 # v20
+      uses: dawidd6/action-download-artifact@b6e2e70617bc3265edd6dab6c906732b2f1ae151 # v21
       with:
         workflow: 10_build-validation.yml
         workflow_conclusion: success
